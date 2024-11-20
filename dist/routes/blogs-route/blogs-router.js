@@ -8,3 +8,7 @@ exports.blogsRouter.get("/", (req, res) => {
     const allBlogs = blogs_repository_1.blogsRepository.findAllBlogs();
     res.send(allBlogs);
 });
+exports.blogsRouter.delete("/testing/all-data", (req, res) => {
+    blogs_repository_1.blogsRepository.deleteAllBlogs();
+    res.send(204);
+});

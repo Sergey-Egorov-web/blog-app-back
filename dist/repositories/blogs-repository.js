@@ -19,4 +19,8 @@ exports.blogsRepository = {
     findAllBlogs() {
         return blogs;
     },
+    deleteAllBlogs() {
+        blogs = [];
+        return blogs;
+    },
 };

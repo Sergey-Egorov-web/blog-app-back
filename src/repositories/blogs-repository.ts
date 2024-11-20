@@ -18,4 +18,8 @@ export const blogsRepository = {
   findAllBlogs() {
     return blogs;
   },
+  deleteAllBlogs() {
+    blogs = [];
+    return blogs;
+  },
 };
