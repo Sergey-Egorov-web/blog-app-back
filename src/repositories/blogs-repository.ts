@@ -1,0 +1,21 @@
+let blogs = [
+  {
+    id: +new Date(),
+    name: "myBlog",
+    description: "blog about me",
+    websiteUrl: "aboutme@yandex.ru",
+  },
+
+  {
+    id: +new Date(),
+    name: "denBlog",
+    description: "blog about Den",
+    websiteUrl: "den@yandex.ru",
+  },
+];
+
+export const blogsRepository = {
+  findAllBlogs() {
+    return blogs;
+  },
+};
