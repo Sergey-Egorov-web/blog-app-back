@@ -6,6 +6,7 @@ import { blogsRouter } from "./routes/blogs-route/blogs-router";
 export const app = express();
 
 app.use("/blogs", blogsRouter);
+app.use(express.json()); // используем вместо bodyParser
 
 app.get("/", (req: Request, res: Response) => {
   let helloMessage = "version 1.00!!!";

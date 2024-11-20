@@ -9,6 +9,7 @@ const blogs_router_1 = require("./routes/blogs-route/blogs-router");
 // import bodyParser from "body-parser";
 exports.app = (0, express_1.default)();
 exports.app.use("/blogs", blogs_router_1.blogsRouter);
+exports.app.use(express_1.default.json()); // используем вместо bodyParser
 exports.app.get("/", (req, res) => {
     let helloMessage = "version 1.00!!!";
     res.send(helloMessage);
