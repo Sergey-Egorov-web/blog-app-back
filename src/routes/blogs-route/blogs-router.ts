@@ -1,5 +1,8 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { blogsRepository } from "../../repositories/blogs-repository";
+import { body, validationResult } from "express-validator";
+import { request } from "http";
+import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
 
 export const blogsRouter = Router({});
 
@@ -22,8 +25,30 @@ blogsRouter.delete("/testing/all-data", (req: Request, res: Response) => {
   res.send(204);
 });
 
-blogsRouter.post("/", (req: Request, res: Response) => {
-  const newBlog = blogsRepository.addNewBlog(req.body);
+function nameValidation(min: number, max: number) {
+  return body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name can't be empty")
+    .isLength({ min: min, max: max })
+    .withMessage("Name length must be between 3 and 15 characters");
+}
 
-  res.status(201).send(newBlog);
-});
+blogsRouter.post(
+  "/",
+  [
+    nameValidation(3, 15),
+    body("description")
+      .trim()
+      .notEmpty()
+      .withMessage("description can't be empty")
+      .isLength({ min: 10, max: 500 })
+      .withMessage("description length must be between 3 and 500 characters"),
+  ],
+  inputValidationMiddleware,
+  (req: Request, res: Response) => {
+    const newBlog = blogsRepository.addNewBlog(req.body);
+
+    res.status(201).send(newBlog);
+  }
+);
