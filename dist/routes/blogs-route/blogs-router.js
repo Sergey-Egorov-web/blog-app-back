@@ -27,8 +27,13 @@ exports.blogsRouter = void 0;
 const express_1 = __importStar(require("express"));
 const blogs_repository_1 = require("../../repositories/blogs-repository");
 exports.blogsRouter = (0, express_1.Router)({});
+const ITINCUBATOR = (req, res, next) => {
+    console.log("IT-INCUBATOR");
+    next();
+};
 exports.blogsRouter.use(express_1.default.json());
-exports.blogsRouter.get("/", (req, res) => {
+exports.blogsRouter.use(ITINCUBATOR);
+exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => {
     const allBlogs = blogs_repository_1.blogsRepository.findAllBlogs();
     // res.send(allBlogs);
     res.status(200).send(allBlogs);

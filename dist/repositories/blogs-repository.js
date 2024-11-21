@@ -30,7 +30,6 @@ exports.blogsRepository = {
             description: blog.description,
             websiteUrl: blog.websiteUrl,
         };
-        console.log(newBlog);
         blogs.push(newBlog);
         return newBlog;
     },
