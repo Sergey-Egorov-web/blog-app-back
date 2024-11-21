@@ -1,3 +1,5 @@
+import "dotenv/config"; // Загрузка переменных окружения из файла .env
+
 import { app } from "./settings";
 
 const port = process.env.PORT || 5000;
