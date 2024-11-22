@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { blogsRepository } from "../../repositories/blogs-repository";
 import { body, validationResult } from "express-validator";
-import { request } from "http";
+
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
 
 export const blogsRouter = Router({});
