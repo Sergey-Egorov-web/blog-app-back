@@ -34,17 +34,31 @@ function nameValidation(min: number, max: number) {
     .withMessage("Name length must be between 3 and 15 characters");
 }
 
+const descriptionValidation = () => {
+  return body("description")
+    .trim()
+    .notEmpty()
+    .withMessage("description can't be empty")
+    .isLength({ min: 10, max: 500 })
+    .withMessage("description length must be between 3 and 500 characters");
+};
+
+const webSiteUrlValidation = () => {
+  return body("websiteUrl")
+    .trim()
+    .notEmpty()
+    .withMessage("websiteUrl can't be empty")
+    .isURL()
+    .withMessage("field url must be Url")
+    .isLength({ min: 3, max: 100 })
+    .withMessage("websiteUrl length must be between 3 and 100 characters");
+};
+
 blogsRouter.post(
   "/",
-  [
-    nameValidation(3, 15),
-    body("description")
-      .trim()
-      .notEmpty()
-      .withMessage("description can't be empty")
-      .isLength({ min: 10, max: 500 })
-      .withMessage("description length must be between 3 and 500 characters"),
-  ],
+  nameValidation(3, 15),
+  descriptionValidation(),
+  webSiteUrlValidation(),
   inputValidationMiddleware,
   (req: Request, res: Response) => {
     const newBlog = blogsRepository.addNewBlog(req.body);

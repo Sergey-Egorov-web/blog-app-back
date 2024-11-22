@@ -8,7 +8,9 @@ export const inputValidationMiddleware = (
 ) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {
-    res.status(400).json({ codeResult: 1, errors: result.array() });
+    res
+      .status(400)
+      .send({ codeResult: 1, errors: result.array({ onlyFirstError: true }) });
   } else {
     next();
   }

@@ -52,15 +52,25 @@ function nameValidation(min, max) {
         .isLength({ min: min, max: max })
         .withMessage("Name length must be between 3 and 15 characters");
 }
-exports.blogsRouter.post("/", [
-    nameValidation(3, 15),
-    (0, express_validator_1.body)("description")
+const descriptionValidation = () => {
+    return (0, express_validator_1.body)("description")
         .trim()
         .notEmpty()
         .withMessage("description can't be empty")
         .isLength({ min: 10, max: 500 })
-        .withMessage("description length must be between 3 and 500 characters"),
-], input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
+        .withMessage("description length must be between 3 and 500 characters");
+};
+const webSiteUrlValidation = () => {
+    return (0, express_validator_1.body)("websiteUrl")
+        .trim()
+        .notEmpty()
+        .withMessage("websiteUrl can't be empty")
+        .isURL()
+        .withMessage("field url must be Url")
+        .isLength({ min: 3, max: 100 })
+        .withMessage("websiteUrl length must be between 3 and 100 characters");
+};
+exports.blogsRouter.post("/", nameValidation(3, 15), descriptionValidation(), webSiteUrlValidation(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
     const newBlog = blogs_repository_1.blogsRepository.addNewBlog(req.body);
     res.status(201).send(newBlog);
 });
