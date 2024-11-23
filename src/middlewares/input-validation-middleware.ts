@@ -12,8 +12,8 @@ export const inputValidationMiddleware = (
   let errors = result.array({ onlyFirstError: true });
 
   const errorsMessages = errors.map((blog) => ({
-    msg: blog.msg,
-    path: blog.path,
+    message: blog.msg,
+    field: blog.path,
   }));
 
   if (!result.isEmpty()) {

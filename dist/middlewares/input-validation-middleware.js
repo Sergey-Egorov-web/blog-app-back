@@ -6,8 +6,8 @@ const inputValidationMiddleware = (req, res, next) => {
     const result = (0, express_validator_1.validationResult)(req);
     let errors = result.array({ onlyFirstError: true });
     const errorsMessages = errors.map((blog) => ({
-        msg: blog.msg,
-        path: blog.path,
+        message: blog.msg,
+        field: blog.path,
     }));
     if (!result.isEmpty()) {
         res.status(400).send({ errorsMessages });

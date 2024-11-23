@@ -3,6 +3,7 @@ import { blogsRepository } from "../../repositories/blogs-repository";
 import { body, validationResult } from "express-validator";
 
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
+import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorization-middleware";
 
 export const blogsRouter = Router({});
 
@@ -40,7 +41,7 @@ const descriptionValidation = () => {
     .notEmpty()
     .withMessage("description can't be empty")
     .isLength({ min: 10, max: 500 })
-    .withMessage("description length must be between 3 and 500 characters");
+    .withMessage("description length must be between 10 and 500 characters");
 };
 
 const webSiteUrlValidation = () => {
@@ -56,6 +57,7 @@ const webSiteUrlValidation = () => {
 
 blogsRouter.post(
   "/",
+  basicAuthorizationMiddleware,
   nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),

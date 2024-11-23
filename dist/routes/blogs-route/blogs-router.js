@@ -28,6 +28,7 @@ const express_1 = __importStar(require("express"));
 const blogs_repository_1 = require("../../repositories/blogs-repository");
 const express_validator_1 = require("express-validator");
 const input_validation_middleware_1 = require("../../middlewares/input-validation-middleware");
+const basic_authorization_middleware_1 = require("../../middlewares/basic-authorization-middleware");
 exports.blogsRouter = (0, express_1.Router)({});
 const ITINCUBATOR = (req, res, next) => {
     console.log("IT-INCUBATOR");
@@ -58,7 +59,7 @@ const descriptionValidation = () => {
         .notEmpty()
         .withMessage("description can't be empty")
         .isLength({ min: 10, max: 500 })
-        .withMessage("description length must be between 3 and 500 characters");
+        .withMessage("description length must be between 10 and 500 characters");
 };
 const webSiteUrlValidation = () => {
     return (0, express_validator_1.body)("websiteUrl")
@@ -70,7 +71,7 @@ const webSiteUrlValidation = () => {
         .isLength({ min: 3, max: 100 })
         .withMessage("websiteUrl length must be between 3 and 100 characters");
 };
-exports.blogsRouter.post("/", nameValidation(), descriptionValidation(), webSiteUrlValidation(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
+exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, nameValidation(), descriptionValidation(), webSiteUrlValidation(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
     const newBlog = blogs_repository_1.blogsRepository.addNewBlog(req.body);
     res.status(201).send(newBlog);
 });
