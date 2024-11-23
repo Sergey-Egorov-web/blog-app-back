@@ -44,13 +44,13 @@ exports.blogsRouter.delete("/testing/all-data", (req, res) => {
     blogs_repository_1.blogsRepository.deleteAllBlogs();
     res.send(204);
 });
-function nameValidation(min, max) {
+function nameValidation() {
     return (0, express_validator_1.body)("name")
         .trim()
         .notEmpty()
-        .withMessage("Name can't be empty")
-        .isLength({ min: min, max: max })
-        .withMessage("Name length must be between 3 and 15 characters");
+        .withMessage("name can't be empty")
+        .isLength({ min: 3, max: 15 })
+        .withMessage("name length must be between 3 and 15 characters");
 }
 const descriptionValidation = () => {
     return (0, express_validator_1.body)("description")
@@ -70,7 +70,7 @@ const webSiteUrlValidation = () => {
         .isLength({ min: 3, max: 100 })
         .withMessage("websiteUrl length must be between 3 and 100 characters");
 };
-exports.blogsRouter.post("/", nameValidation(3, 15), descriptionValidation(), webSiteUrlValidation(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
+exports.blogsRouter.post("/", nameValidation(), descriptionValidation(), webSiteUrlValidation(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
     const newBlog = blogs_repository_1.blogsRepository.addNewBlog(req.body);
     res.status(201).send(newBlog);
 });

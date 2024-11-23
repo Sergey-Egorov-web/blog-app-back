@@ -25,13 +25,13 @@ blogsRouter.delete("/testing/all-data", (req: Request, res: Response) => {
   res.send(204);
 });
 
-function nameValidation(min: number, max: number) {
+function nameValidation() {
   return body("name")
     .trim()
     .notEmpty()
-    .withMessage("Name can't be empty")
-    .isLength({ min: min, max: max })
-    .withMessage("Name length must be between 3 and 15 characters");
+    .withMessage("name can't be empty")
+    .isLength({ min: 3, max: 15 })
+    .withMessage("name length must be between 3 and 15 characters");
 }
 
 const descriptionValidation = () => {
@@ -56,7 +56,7 @@ const webSiteUrlValidation = () => {
 
 blogsRouter.post(
   "/",
-  nameValidation(3, 15),
+  nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),
   inputValidationMiddleware,

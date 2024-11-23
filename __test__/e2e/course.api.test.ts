@@ -34,4 +34,22 @@ describe("/blogs", () => {
       websiteUrl: "fdsfkdfkdsf@fdffd.ru",
     });
   });
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .send({
+        name: "",
+        description: "description of the new blog",
+        websiteUrl: "fdsfkdfkdsf@fdffd.ru",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          msg: "name can't be empty",
+          path: "name",
+        },
+      ],
+    });
+  });
 });
