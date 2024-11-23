@@ -1,3 +1,9 @@
+import {
+  BlogInputType,
+  BlogOutputType,
+} from "../routes/blogs-route/blogs-router";
+
+//TODO переделать на тип, переименовать(createBLogData), перенести
 export interface Blog {
   // id: string;
   name: string;
@@ -30,7 +36,8 @@ export const blogsRepository = {
     return blogs;
   },
 
-  addNewBlog(blog: Blog) {
+  //типизировать выход
+  addNewBlog(blog: BlogInputType): BlogOutputType {
     const newBlog = {
       id: +new Date(),
       name: blog.name,

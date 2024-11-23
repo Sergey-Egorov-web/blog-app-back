@@ -12,7 +12,6 @@ const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
-blogsRouter.use(express.json());
 blogsRouter.use(ITINCUBATOR);
 
 blogsRouter.get("/", ITINCUBATOR, (req: Request, res: Response) => {
@@ -20,7 +19,7 @@ blogsRouter.get("/", ITINCUBATOR, (req: Request, res: Response) => {
   // res.send(allBlogs);
   res.status(200).send(allBlogs);
 });
-
+//TODO вынести
 blogsRouter.delete("/testing/all-data", (req: Request, res: Response) => {
   blogsRepository.deleteAllBlogs();
   res.send(204);
@@ -68,3 +67,16 @@ blogsRouter.post(
     res.status(201).send(newBlog);
   }
 );
+
+export type BlogOutputType = {
+  id: number;
+  name: string;
+  description: string;
+  websiteUrl: string;
+};
+
+export type BlogInputType = {
+  name: string;
+  description: string;
+  websiteUrl: string;
+};

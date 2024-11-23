@@ -23,6 +23,7 @@ exports.blogsRepository = {
         blogs = [];
         return blogs;
     },
+    //типизировать выход
     addNewBlog(blog) {
         const newBlog = {
             id: +new Date(),
