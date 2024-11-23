@@ -7,6 +7,7 @@ const express_validator_1 = require("express-validator");
 const input_validation_middleware_1 = require("../../middlewares/input-validation-middleware");
 const basic_authorization_middleware_1 = require("../../middlewares/basic-authorization-middleware");
 exports.blogsRouter = (0, express_1.Router)({});
+// blogsRouter.use(express.json());
 const ITINCUBATOR = (req, res, next) => {
     console.log("IT-INCUBATOR");
     next();
@@ -49,6 +50,7 @@ const webSiteUrlValidation = () => {
         .withMessage("websiteUrl length must be between 3 and 100 characters");
 };
 exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, nameValidation(), descriptionValidation(), webSiteUrlValidation(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
-    const newBlog = blogs_repository_1.blogsRepository.addNewBlog(req.body);
+    const blogCreateData = req.body;
+    const newBlog = blogs_repository_1.blogsRepository.addNewBlog(blogCreateData);
     res.status(201).send(newBlog);
 });

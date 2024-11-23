@@ -7,6 +7,8 @@ import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorizat
 
 export const blogsRouter = Router({});
 
+// blogsRouter.use(express.json());
+
 const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
   console.log("IT-INCUBATOR");
   next();
@@ -62,7 +64,8 @@ blogsRouter.post(
   webSiteUrlValidation(),
   inputValidationMiddleware,
   (req: Request, res: Response) => {
-    const newBlog = blogsRepository.addNewBlog(req.body);
+    const blogCreateData: BlogInputType = req.body;
+    const newBlog: BlogOutputType = blogsRepository.addNewBlog(blogCreateData);
 
     res.status(201).send(newBlog);
   }

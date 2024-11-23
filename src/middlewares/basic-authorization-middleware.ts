@@ -13,7 +13,7 @@ export const basicAuthorizationMiddleware = (
   //' Basic xxxx'
 
   //TODO убрать let, вынести в переменные
-  //   const data = `${username}:${password}`; // admin:qwerty
+  // const data = `${username}:${password}`; // admin:qwerty
 
   const data = `${"admin"}:${"qwerty"}`;
 

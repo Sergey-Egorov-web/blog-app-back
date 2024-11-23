@@ -11,7 +11,14 @@ export interface Blog {
   websiteUrl: string;
 }
 
-let blogs = [
+export type BlogDbType = {
+  id: number;
+  name: string;
+  description: string;
+  websiteUrl: string;
+};
+
+let blogs: BlogDbType[] = [
   {
     id: 1,
     name: "myBlog",
