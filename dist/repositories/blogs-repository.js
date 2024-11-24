@@ -50,4 +50,16 @@ exports.blogsRepository = {
         exports.blogs.push(newBlog);
         return newBlog;
     },
+    updateBlogById(blog, id) {
+        let updateBlog = exports.blogs.find((p) => p.id === id);
+        if (updateBlog) {
+            updateBlog.name = blog.name;
+            updateBlog.description = blog.description;
+            updateBlog.websiteUrl = blog.websiteUrl;
+            return updateBlog;
+        }
+        else {
+            return undefined;
+        }
+    },
 };

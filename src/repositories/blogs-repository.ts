@@ -68,4 +68,16 @@ export const blogsRepository = {
     blogs.push(newBlog);
     return newBlog;
   },
+
+  updateBlogById(blog: BlogInputType, id: Number) {
+    let updateBlog = blogs.find((p) => p.id === id);
+    if (updateBlog) {
+      updateBlog.name = blog.name;
+      updateBlog.description = blog.description;
+      updateBlog.websiteUrl = blog.websiteUrl;
+      return updateBlog;
+    } else {
+      return undefined;
+    }
+  },
 };

@@ -47,6 +47,25 @@ blogsRouter.post(
   }
 );
 
+blogsRouter.put(
+  "/:id",
+  basicAuthorizationMiddleware,
+  nameValidation(),
+  descriptionValidation(),
+  webSiteUrlValidation(),
+  inputValidationMiddleware,
+  (req: Request, res: Response) => {
+    const id: Number = +req.params.id;
+    const blogUpdateData: BlogInputType = req.body;
+    const updateBlog = blogsRepository.updateBlogById(blogUpdateData, id);
+    if (updateBlog) {
+      res.status(201).send(updateBlog);
+    } else {
+      res.sendStatus(404);
+    }
+  }
+);
+
 blogsRouter.get("/:id", (req: Request, res: Response) => {
   const id: Number = +req.params.id;
   let blog = blogsRepository.findBlog(id);
