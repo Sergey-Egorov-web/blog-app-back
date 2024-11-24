@@ -35,12 +35,17 @@ export const blogsRepository = {
   findAllBlogs() {
     return blogs;
   },
+  findBlog(id: Number) {
+    let blog = blogs.find((p) => p.id === id);
+    if (blog) {
+      return blog;
+    }
+  },
   deleteAllBlogs() {
     blogs = [];
     return blogs;
   },
 
-  //типизировать выход
   addNewBlog(blog: BlogInputType): BlogOutputType {
     const newBlog = {
       id: +new Date(),

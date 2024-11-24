@@ -29,3 +29,12 @@ exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
     const newBlog = blogs_repository_1.blogsRepository.addNewBlog(blogCreateData);
     res.status(201).send(newBlog);
 });
+exports.blogsRouter.get("/:id", (req, res) => {
+    const id = +req.params.id;
+    let blog = blogs_repository_1.blogsRepository.findBlog(id);
+    if (blog) {
+        res.send(blog);
+    }
+    else
+        res.send(404);
+});

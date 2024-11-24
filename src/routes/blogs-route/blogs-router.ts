@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { blogsRepository } from "../../repositories/blogs-repository";
+import { blogs, blogsRepository } from "../../repositories/blogs-repository";
 import { body, validationResult } from "express-validator";
 
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
@@ -46,3 +46,11 @@ blogsRouter.post(
     res.status(201).send(newBlog);
   }
 );
+
+blogsRouter.get("/:id", (req: Request, res: Response) => {
+  const id: Number = +req.params.id;
+  let blog = blogsRepository.findBlog(id);
+  if (blog) {
+    res.send(blog);
+  } else res.send(404);
+});

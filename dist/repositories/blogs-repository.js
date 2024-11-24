@@ -19,11 +19,16 @@ exports.blogsRepository = {
     findAllBlogs() {
         return exports.blogs;
     },
+    findBlog(id) {
+        let blog = exports.blogs.find((p) => p.id === id);
+        if (blog) {
+            return blog;
+        }
+    },
     deleteAllBlogs() {
         exports.blogs = [];
         return exports.blogs;
     },
-    //типизировать выход
     addNewBlog(blog) {
         const newBlog = {
             id: +new Date(),
