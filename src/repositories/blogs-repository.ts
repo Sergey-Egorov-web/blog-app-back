@@ -46,6 +46,17 @@ export const blogsRepository = {
     return blogs;
   },
 
+  deleteBlogById(id: Number) {
+    for (let i = 0; i < blogs.length; i++) {
+      if (blogs[i].id === id) {
+        blogs.splice(i, 1);
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+
   addNewBlog(blog: BlogInputType): BlogOutputType {
     const newBlog = {
       id: +new Date(),

@@ -38,3 +38,13 @@ exports.blogsRouter.get("/:id", (req, res) => {
     else
         res.send(404);
 });
+exports.blogsRouter.delete("/:id", (req, res) => {
+    const id = +req.params.id;
+    const answer = blogs_repository_1.blogsRepository.deleteBlogById(id);
+    if (answer) {
+        res.sendStatus(204);
+    }
+    else {
+        res.send(404);
+    }
+});

@@ -29,6 +29,17 @@ exports.blogsRepository = {
         exports.blogs = [];
         return exports.blogs;
     },
+    deleteBlogById(id) {
+        for (let i = 0; i < exports.blogs.length; i++) {
+            if (exports.blogs[i].id === id) {
+                exports.blogs.splice(i, 1);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    },
     addNewBlog(blog) {
         const newBlog = {
             id: +new Date(),

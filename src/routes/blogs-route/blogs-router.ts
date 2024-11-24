@@ -54,3 +54,13 @@ blogsRouter.get("/:id", (req: Request, res: Response) => {
     res.send(blog);
   } else res.send(404);
 });
+
+blogsRouter.delete("/:id", (req: Request, res: Response) => {
+  const id: Number = +req.params.id;
+  const answer = blogsRepository.deleteBlogById(id);
+  if (answer) {
+    res.sendStatus(204);
+  } else {
+    res.send(404);
+  }
+});
