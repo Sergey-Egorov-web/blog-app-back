@@ -1,15 +1,12 @@
-import {
-  BlogInputType,
-  BlogOutputType,
-} from "../routes/blogs-route/blogs-router";
+import { BlogInputType, BlogOutputType } from "../types";
 
 //TODO переделать на тип, переименовать(createBLogData), перенести
-export interface Blog {
-  // id: string;
-  name: string;
-  description: string;
-  websiteUrl: string;
-}
+// export interface Blog {
+//   // id: string;
+//   name: string;
+//   description: string;
+//   websiteUrl: string;
+// }
 
 export type BlogDbType = {
   id: number;
@@ -18,7 +15,7 @@ export type BlogDbType = {
   websiteUrl: string;
 };
 
-let blogs: BlogDbType[] = [
+export let blogs: BlogDbType[] = [
   {
     id: 1,
     name: "myBlog",

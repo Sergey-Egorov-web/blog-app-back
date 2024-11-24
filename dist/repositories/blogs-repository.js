@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsRepository = void 0;
-let blogs = [
+exports.blogsRepository = exports.blogs = void 0;
+exports.blogs = [
     {
         id: 1,
         name: "myBlog",
@@ -17,11 +17,11 @@ let blogs = [
 ];
 exports.blogsRepository = {
     findAllBlogs() {
-        return blogs;
+        return exports.blogs;
     },
     deleteAllBlogs() {
-        blogs = [];
-        return blogs;
+        exports.blogs = [];
+        return exports.blogs;
     },
     //типизировать выход
     addNewBlog(blog) {
@@ -31,7 +31,7 @@ exports.blogsRepository = {
             description: blog.description,
             websiteUrl: blog.websiteUrl,
         };
-        blogs.push(newBlog);
+        exports.blogs.push(newBlog);
         return newBlog;
     },
 };

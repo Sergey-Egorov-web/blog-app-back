@@ -1,7 +1,7 @@
 import request, { Response } from "supertest";
 
 import { app } from "../../src/settings";
-import { Blog } from "../../src/repositories/blogs-repository";
+// import { Blog } from "../../src/repositories/blogs-repository";
 // import { response } from "express";
 
 describe("/", () => {
@@ -39,139 +39,180 @@ describe("/blogs", () => {
       websiteUrl: "ya-ruru.ru",
     });
   });
-  // it("it should return 400 and next errors", async () => {
-  //   const response: Response = await request(app)
-  //     .post("/blogs")
-  //     .send({
-  //       name: "",
-  //       description: "description of the new blog",
-  //       websiteUrl: "fdsfkdfkdsf@fdffd.ru",
-  //     })
-  //     .expect(400);
-  //   expect(response.body).toEqual({
-  //     errorsMessages: [
-  //       {
-  //         msg: "name can't be empty",
-  //         path: "name",
-  //       },
-  //     ],
-  //   });
-  // });
-  // it("it should return 400 and next errors", async () => {
-  //   const response: Response = await request(app)
-  //     .post("/blogs")
-  //     .send({
-  //       name: "dsfdsfsdflsdf'dslf'sdlfs'dflsd'\f",
-  //       description: "description of the new blog",
-  //       websiteUrl: "fdsfkdfkdsf@fdffd.ru",
-  //     })
-  //     .expect(400);
-  //   expect(response.body).toEqual({
-  //     errorsMessages: [
-  //       {
-  //         msg: "name length must be between 3 and 15 characters",
-  //         path: "name",
-  //       },
-  //     ],
-  //   });
-  // });
-  // it("it should return 400 and next errors", async () => {
-  //   const response: Response = await request(app)
-  //     .post("/blogs")
-  //     .send({
-  //       name: "blog name",
-  //       description: "",
-  //       websiteUrl: "fdsfkdfkdsf@fdffd.ru",
-  //     })
-  //     .expect(400);
-  //   expect(response.body).toEqual({
-  //     errorsMessages: [
-  //       {
-  //         msg: "description can't be empty",
-  //         path: "description",
-  //       },
-  //     ],
-  //   });
-  // });
-  // it("it should return 400 and next errors", async () => {
-  //   const response: Response = await request(app)
-  //     .post("/blogs")
-  //     .send({
-  //       name: "name of blog",
-  //       description: "de",
-  //       websiteUrl: "fdsfkdfkdsf@fdffd.ru",
-  //     })
-  //     .expect(400);
-  //   expect(response.body).toEqual({
-  //     errorsMessages: [
-  //       {
-  //         msg: "description length must be between 10 and 500 characters",
-  //         path: "description",
-  //       },
-  //     ],
-  //   });
-  // });
-  // it("it should return 400 and next errors", async () => {
-  //   const response: Response = await request(app)
-  //     .post("/blogs")
-  //     .send({
-  //       name: "blog name",
-  //       description: "it is description of the blog",
-  //       websiteUrl: "",
-  //     })
-  //     .expect(400);
-  //   expect(response.body).toEqual({
-  //     errorsMessages: [
-  //       {
-  //         msg: "websiteUrl can't be empty",
-  //         path: "websiteUrl",
-  //       },
-  //     ],
-  //   });
-  // });
-  // it("it should return 400 and next errors", async () => {
-  //   const response: Response = await request(app)
-  //     .post("/blogs")
-  //     .send({
-  //       name: "name of blog",
-  //       description: "it is description of the blog",
-  //       websiteUrl: "fdsfkdfkdsf@fdffru",
-  //     })
-  //     .expect(400);
-  //   expect(response.body).toEqual({
-  //     errorsMessages: [
-  //       {
-  //         msg: "field url must be Url",
-  //         path: "websiteUrl",
-  //       },
-  //     ],
-  //   });
-  // });
 
-  // it("it should return 400 and next errors", async () => {
-  //   const response: Response = await request(app)
-  //     .post("/blogs")
-  //     .send({
-  //       name: "",
-  //       description: "it is ",
-  //       websiteUrl: "fdsfkdfkdsf@fdffru",
-  //     })
-  //     .expect(400);
-  //   expect(response.body).toEqual({
-  //     errorsMessages: [
-  //       {
-  //         msg: "name can't be empty",
-  //         path: "name",
-  //       },
-  //       {
-  //         msg: "description length must be between 10 and 500 characters",
-  //         path: "description",
-  //       },
-  //       {
-  //         msg: "field url must be Url",
-  //         path: "websiteUrl",
-  //       },
-  //     ],
-  //   });
-  // });
+  it("it should return 401 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+
+      .send({
+        name: "Dmitrov",
+        description: "description of the new blog",
+        websiteUrl: "fdsfkdfkdsf@fdffd.ru",
+      })
+      .expect(401);
+  });
+
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+      )
+      .send({
+        name: "",
+        description: "description of the new blog",
+        websiteUrl: "fdsfkdfkdsf@fdffd.ru",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "name can't be empty",
+          field: "name",
+        },
+      ],
+    });
+  });
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+      )
+      .send({
+        name: "dsfdsfsdflsdf'dslf'sdlfs'dflsd'\f",
+        description: "description of the new blog",
+        websiteUrl: "fdsfkdfkdsf@fdffd.ru",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "name length must be between 3 and 15 characters",
+          field: "name",
+        },
+      ],
+    });
+  });
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+      )
+      .send({
+        name: "blog name",
+        description: "",
+        websiteUrl: "fdsfkdfkdsf@fdffd.ru",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "description can't be empty",
+          field: "description",
+        },
+      ],
+    });
+  });
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+      )
+      .send({
+        name: "name of blog",
+        description: "de",
+        websiteUrl: "fdsfkdfkdsf@fdffd.ru",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "description length must be between 10 and 500 characters",
+          field: "description",
+        },
+      ],
+    });
+  });
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+      )
+      .send({
+        name: "blog name",
+        description: "it is description of the blog",
+        websiteUrl: "",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "websiteUrl can't be empty",
+          field: "websiteUrl",
+        },
+      ],
+    });
+  });
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+      )
+      .send({
+        name: "name of blog",
+        description: "it is description of the blog",
+        websiteUrl: "fdsfkdfkdsf@fdffru",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "field url must be Url",
+          field: "websiteUrl",
+        },
+      ],
+    });
+  });
+
+  it("it should return 400 and next errors", async () => {
+    const response: Response = await request(app)
+      .post("/blogs")
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+      )
+      .send({
+        name: "",
+        description: "it is ",
+        websiteUrl: "fdsfkdfkdsf@fdffru",
+      })
+      .expect(400);
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "name can't be empty",
+          field: "name",
+        },
+        {
+          message: "description length must be between 10 and 500 characters",
+          field: "description",
+        },
+        {
+          message: "field url must be Url",
+          field: "websiteUrl",
+        },
+      ],
+    });
+  });
 });
