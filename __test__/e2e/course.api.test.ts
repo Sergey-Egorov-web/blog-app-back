@@ -18,6 +18,20 @@ describe("/blogs", () => {
     await request(app).get("/blogs").expect(200, []);
   });
 
+  //__________________________________________________________________________________
+  //   it("should return 204 no content", async () => {
+  //     const response: Response = await request(app)
+  //       .post("/blogs")
+  //       .set(
+  //         "Authorization",
+  //         "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+  //       )
+  //       .send({
+  //         name: "nameOfNewBlog",
+  //         description: "description of the new blog",
+  //         websiteUrl: "ya-ruru.ru",
+  //       })
+  // //______________________________________________________________________________________
   it("should return 201 and newly created blog", async () => {
     const response: Response = await request(app)
       .post("/blogs")
