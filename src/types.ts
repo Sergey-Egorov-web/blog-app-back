@@ -10,19 +10,18 @@ export type BlogInputType = {
   description: string;
   websiteUrl: string;
 };
-export type POstOutputType = {
-  id: string;
+export type PostOutputType = {
+  id: number;
   title: string;
   shortDescription: string;
   content: string;
   blogId: string;
   blogName: string;
 };
-export type POstInputType = {
-  id: string;
+export type PostInputType = {
   title: string;
   shortDescription: string;
   content: string;
   blogId: string;
-  blogName: string;
+  // blogName: string;
 };

@@ -41,9 +41,10 @@ blogsRouter.post(
   inputValidationMiddleware,
   (req: Request, res: Response) => {
     const blogCreateData: BlogInputType = req.body;
-    const newBlog: BlogOutputType = blogsRepository.addNewBlog(blogCreateData);
+    // const newBlog: BlogOutputType =
+    blogsRepository.addNewBlog(blogCreateData);
 
-    res.status(201).send(newBlog);
+    res.status(204).send("No Content");
   }
 );
 
@@ -55,7 +56,7 @@ blogsRouter.put(
   webSiteUrlValidation(),
   inputValidationMiddleware,
   (req: Request, res: Response) => {
-    const id: Number = +req.params.id;
+    const id: number = +req.params.id;
     const blogUpdateData: BlogInputType = req.body;
     const updateBlog = blogsRepository.updateBlogById(blogUpdateData, id);
     if (updateBlog) {
@@ -67,7 +68,7 @@ blogsRouter.put(
 );
 
 blogsRouter.get("/:id", (req: Request, res: Response) => {
-  const id: Number = +req.params.id;
+  const id: number = +req.params.id;
   let blog = blogsRepository.findBlog(id);
   if (blog) {
     res.send(blog);

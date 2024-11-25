@@ -45,7 +45,7 @@ describe("/blogs", () => {
         description: "description of the new blog",
         websiteUrl: "ya-ruru.ru",
       })
-      .expect(201);
+      .expect(204);
     expect(response.body).toEqual({
       id: expect.any(Number), // любое число в качестве id
       name: "nameOfNewBlog",

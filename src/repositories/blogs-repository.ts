@@ -35,7 +35,7 @@ export const blogsRepository = {
   findAllBlogs() {
     return blogs;
   },
-  findBlog(id: Number) {
+  findBlog(id: number) {
     let blog = blogs.find((p) => p.id === id);
     if (blog) {
       return blog;
@@ -46,7 +46,7 @@ export const blogsRepository = {
     return blogs;
   },
 
-  deleteBlogById(id: Number) {
+  deleteBlogById(id: number) {
     for (let i = 0; i < blogs.length; i++) {
       if (blogs[i].id === id) {
         blogs.splice(i, 1);

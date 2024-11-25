@@ -1,7 +1,13 @@
-import { BlogInputType, BlogOutputType } from "../types";
+import {
+  BlogInputType,
+  BlogOutputType,
+  PostInputType,
+  PostOutputType,
+} from "../types";
+import { BlogDbType, blogsRepository } from "./blogs-repository";
 
 export type PostDbType = {
-  id: string;
+  id: number;
   title: string;
   shortDescription: string;
   content: string;
@@ -11,7 +17,7 @@ export type PostDbType = {
 
 export let posts: PostDbType[] = [
   {
-    id: "1",
+    id: 1,
     title: "firstPost",
     shortDescription: "it is small description",
     content: "we will make a lot of content today and i the future",
@@ -20,7 +26,7 @@ export let posts: PostDbType[] = [
   },
 
   {
-    id: "2",
+    id: 2,
     title: "firstPost",
     shortDescription: "it is small description",
     content: "we will make a lot of content today and i the future",
@@ -33,14 +39,68 @@ export const postRepositories = {
   findAllPosts() {
     return posts;
   },
-  findPost(id: string) {
+  findPost(id: number) {
     let post = posts.find((p) => p.id === id);
     if (post) {
       return post;
     }
   },
-  deleteAllBlogs() {
+  deleteAllPosts() {
     posts = [];
     return posts;
+  },
+  deletePostById(id: number) {
+    for (let i = 0; i < posts.length; i++) {
+      if (posts[i].id === id) {
+        posts.splice(i, 1);
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  addNewPost(post: PostInputType): PostOutputType | undefined {
+    const blog: BlogDbType | undefined = blogsRepository.findBlog(+post.blogId);
+    //   if (blog) {
+    //     updatePost.blogName = blog.name;
+    //     return updatePost;
+    //   }
+    // } else {
+    //   return undefined;
+    // }
+    if (blog) {
+      const newPost = {
+        id: +new Date(),
+
+        title: post.title,
+        shortDescription: post.shortDescription,
+        content: post.content,
+        blogId: post.blogId,
+        blogName: blog.name,
+      };
+      posts.push(newPost);
+      return newPost;
+    } else {
+      return undefined;
+    }
+  },
+  updatePostById(post: PostInputType, id: number): PostOutputType | undefined {
+    let updatePost = posts.find((p) => p.id === id);
+    if (updatePost) {
+      updatePost.title = post.title;
+      updatePost.shortDescription = post.shortDescription;
+      updatePost.content = post.content;
+      updatePost.blogId = post.blogId;
+
+      const blog: BlogDbType | undefined = blogsRepository.findBlog(
+        +post.blogId
+      );
+      if (blog) {
+        updatePost.blogName = blog.name;
+        return updatePost;
+      }
+    } else {
+      return undefined;
+    }
   },
 };

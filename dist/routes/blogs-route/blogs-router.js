@@ -26,8 +26,9 @@ exports.blogsRouter.delete("/testing/all-data", (req, res) => {
 });
 exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
     const blogCreateData = req.body;
-    const newBlog = blogs_repository_1.blogsRepository.addNewBlog(blogCreateData);
-    res.status(201).send(newBlog);
+    // const newBlog: BlogOutputType =
+    blogs_repository_1.blogsRepository.addNewBlog(blogCreateData);
+    res.status(204).send("No Content");
 });
 exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
     const id = +req.params.id;
