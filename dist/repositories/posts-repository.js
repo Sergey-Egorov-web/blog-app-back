@@ -4,7 +4,7 @@ exports.postRepositories = exports.posts = void 0;
 const blogs_repository_1 = require("./blogs-repository");
 exports.posts = [
     {
-        id: 1,
+        id: "1",
         title: "firstPost",
         shortDescription: "it is small description",
         content: "we will make a lot of content today and i the future",
@@ -12,7 +12,7 @@ exports.posts = [
         blogName: "myBlog",
     },
     {
-        id: 2,
+        id: "2",
         title: "firstPost",
         shortDescription: "it is small description",
         content: "we will make a lot of content today and i the future",
@@ -56,7 +56,7 @@ exports.postRepositories = {
         // }
         if (blog) {
             const newPost = {
-                id: +new Date(),
+                id: Date.now().toString(),
                 title: post.title,
                 shortDescription: post.shortDescription,
                 content: post.content,

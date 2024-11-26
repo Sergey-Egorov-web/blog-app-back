@@ -11,7 +11,7 @@ export type BlogInputType = {
   websiteUrl: string;
 };
 export type PostOutputType = {
-  id: number;
+  id: string;
   title: string;
   shortDescription: string;
   content: string;

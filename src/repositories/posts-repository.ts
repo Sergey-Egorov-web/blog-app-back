@@ -1,13 +1,8 @@
-import {
-  BlogInputType,
-  BlogOutputType,
-  PostInputType,
-  PostOutputType,
-} from "../types";
+import { PostInputType, PostOutputType } from "../types";
 import { BlogDbType, blogsRepository } from "./blogs-repository";
 
 export type PostDbType = {
-  id: number;
+  id: string;
   title: string;
   shortDescription: string;
   content: string;
@@ -17,7 +12,7 @@ export type PostDbType = {
 
 export let posts: PostDbType[] = [
   {
-    id: 1,
+    id: "1",
     title: "firstPost",
     shortDescription: "it is small description",
     content: "we will make a lot of content today and i the future",
@@ -26,7 +21,7 @@ export let posts: PostDbType[] = [
   },
 
   {
-    id: 2,
+    id: "2",
     title: "firstPost",
     shortDescription: "it is small description",
     content: "we will make a lot of content today and i the future",
@@ -39,7 +34,7 @@ export const postRepositories = {
   findAllPosts() {
     return posts;
   },
-  findPost(id: number) {
+  findPost(id: string) {
     let post = posts.find((p) => p.id === id);
     if (post) {
       return post;
@@ -49,7 +44,7 @@ export const postRepositories = {
     posts = [];
     return posts;
   },
-  deletePostById(id: number) {
+  deletePostById(id: string) {
     for (let i = 0; i < posts.length; i++) {
       if (posts[i].id === id) {
         posts.splice(i, 1);
@@ -70,7 +65,7 @@ export const postRepositories = {
     // }
     if (blog) {
       const newPost = {
-        id: +new Date(),
+        id: Date.now().toString(),
 
         title: post.title,
         shortDescription: post.shortDescription,
@@ -84,7 +79,7 @@ export const postRepositories = {
       return undefined;
     }
   },
-  updatePostById(post: PostInputType, id: number): PostOutputType | undefined {
+  updatePostById(post: PostInputType, id: string): PostOutputType | undefined {
     let updatePost = posts.find((p) => p.id === id);
     if (updatePost) {
       updatePost.title = post.title;

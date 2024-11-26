@@ -1,13 +1,5 @@
 import { BlogInputType, BlogOutputType } from "../types";
 
-//TODO переделать на тип, переименовать(createBLogData), перенести
-// export interface Blog {
-//   // id: string;
-//   name: string;
-//   description: string;
-//   websiteUrl: string;
-// }
-
 export type BlogDbType = {
   id: string;
   name: string;
