@@ -50,11 +50,12 @@ export const blogsRepository = {
     for (let i = 0; i < blogs.length; i++) {
       if (blogs[i].id === id) {
         blogs.splice(i, 1);
+
         return true;
-      } else {
-        return false;
       }
     }
+    // console.log(false);
+    // return false;
   },
 
   addNewBlog(blog: BlogInputType): BlogOutputType {
@@ -64,8 +65,8 @@ export const blogsRepository = {
       description: blog.description,
       websiteUrl: blog.websiteUrl,
     };
-    console.log(typeof newBlog.id);
-    console.log(newBlog.id);
+    // console.log(typeof newBlog.id);
+    // console.log(newBlog.id);
     blogs.push(newBlog);
     return newBlog;
   },

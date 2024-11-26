@@ -35,10 +35,9 @@ exports.blogsRepository = {
                 exports.blogs.splice(i, 1);
                 return true;
             }
-            else {
-                return false;
-            }
         }
+        // console.log(false);
+        // return false;
     },
     addNewBlog(blog) {
         const newBlog = {
@@ -47,8 +46,8 @@ exports.blogsRepository = {
             description: blog.description,
             websiteUrl: blog.websiteUrl,
         };
-        console.log(typeof newBlog.id);
-        console.log(newBlog.id);
+        // console.log(typeof newBlog.id);
+        // console.log(newBlog.id);
         exports.blogs.push(newBlog);
         return newBlog;
     },
