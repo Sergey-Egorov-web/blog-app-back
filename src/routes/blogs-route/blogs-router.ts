@@ -59,7 +59,7 @@ blogsRouter.put(
     const blogUpdateData: BlogInputType = req.body;
     const updateBlog = blogsRepository.updateBlogById(blogUpdateData, id);
     if (updateBlog) {
-      res.status(201).send(updateBlog);
+      res.status(204).send(updateBlog);
     } else {
       res.sendStatus(404);
     }
@@ -80,7 +80,7 @@ blogsRouter.delete(
   (req: Request, res: Response) => {
     const id: string = req.params.id;
     const answer = blogsRepository.deleteBlogById(id);
-    if (answer) {
+    if (answer === true) {
       res.sendStatus(204);
     } else {
       res.sendStatus(404);

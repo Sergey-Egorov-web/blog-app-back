@@ -34,7 +34,7 @@ exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
     const blogUpdateData = req.body;
     const updateBlog = blogs_repository_1.blogsRepository.updateBlogById(blogUpdateData, id);
     if (updateBlog) {
-        res.status(201).send(updateBlog);
+        res.status(204).send(updateBlog);
     }
     else {
         res.sendStatus(404);
@@ -52,7 +52,7 @@ exports.blogsRouter.get("/:id", (req, res) => {
 exports.blogsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (req, res) => {
     const id = req.params.id;
     const answer = blogs_repository_1.blogsRepository.deleteBlogById(id);
-    if (answer) {
+    if (answer === true) {
         res.sendStatus(204);
     }
     else {
