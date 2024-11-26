@@ -60,7 +60,7 @@ export const postRepositories = {
     }
   },
   addNewPost(post: PostInputType): PostOutputType | undefined {
-    const blog: BlogDbType | undefined = blogsRepository.findBlog(+post.blogId);
+    const blog: BlogDbType | undefined = blogsRepository.findBlog(post.blogId);
     //   if (blog) {
     //     updatePost.blogName = blog.name;
     //     return updatePost;
@@ -93,7 +93,7 @@ export const postRepositories = {
       updatePost.blogId = post.blogId;
 
       const blog: BlogDbType | undefined = blogsRepository.findBlog(
-        +post.blogId
+        post.blogId
       );
       if (blog) {
         updatePost.blogName = blog.name;

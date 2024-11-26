@@ -47,6 +47,8 @@ exports.blogsRepository = {
             description: blog.description,
             websiteUrl: blog.websiteUrl,
         };
+        console.log(typeof newBlog.id);
+        console.log(newBlog.id);
         exports.blogs.push(newBlog);
         return newBlog;
     },

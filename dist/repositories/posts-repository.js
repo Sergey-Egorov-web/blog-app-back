@@ -46,7 +46,7 @@ exports.postRepositories = {
         }
     },
     addNewPost(post) {
-        const blog = blogs_repository_1.blogsRepository.findBlog(+post.blogId);
+        const blog = blogs_repository_1.blogsRepository.findBlog(post.blogId);
         //   if (blog) {
         //     updatePost.blogName = blog.name;
         //     return updatePost;
@@ -77,7 +77,7 @@ exports.postRepositories = {
             updatePost.shortDescription = post.shortDescription;
             updatePost.content = post.content;
             updatePost.blogId = post.blogId;
-            const blog = blogs_repository_1.blogsRepository.findBlog(+post.blogId);
+            const blog = blogs_repository_1.blogsRepository.findBlog(post.blogId);
             if (blog) {
                 updatePost.blogName = blog.name;
                 return updatePost;

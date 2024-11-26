@@ -64,7 +64,8 @@ export const blogsRepository = {
       description: blog.description,
       websiteUrl: blog.websiteUrl,
     };
-
+    console.log(typeof newBlog.id);
+    console.log(newBlog.id);
     blogs.push(newBlog);
     return newBlog;
   },
