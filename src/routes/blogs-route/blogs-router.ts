@@ -43,7 +43,7 @@ blogsRouter.post(
     const blogCreateData: BlogInputType = req.body;
     const newBlog: BlogOutputType = blogsRepository.addNewBlog(blogCreateData);
 
-    res.status(204).send(newBlog);
+    res.status(201).send(newBlog);
   }
 );
 
