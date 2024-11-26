@@ -33,3 +33,45 @@ postsRouter.post(
     res.status(201).send(newPost);
   }
 );
+
+postsRouter.get("/:id", (req: Request, res: Response) => {
+  const id: string = req.params.id;
+  let post = postRepositories.findPost(id);
+  if (post) {
+    res.send(post);
+  } else res.send(404);
+});
+
+postsRouter.delete(
+  "/:id",
+  basicAuthorizationMiddleware,
+  (req: Request, res: Response) => {
+    const id: string = req.params.id;
+    const answer = postRepositories.deletePostById(id);
+    if (answer === true) {
+      res.sendStatus(204);
+    } else {
+      res.sendStatus(404);
+    }
+  }
+);
+
+postsRouter.put(
+  "/:id",
+  basicAuthorizationMiddleware,
+  titlePostValidation(),
+  shortDescriptionPostValidation(),
+  contentPostValidation(),
+  blogIdPostValidation(),
+  inputValidationMiddleware,
+  (req: Request, res: Response) => {
+    const id: string = req.params.id;
+    const postUpdateData: PostInputType = req.body;
+    const updatePost = postRepositories.updatePostById(postUpdateData, id);
+    if (updatePost) {
+      res.status(204).send(updatePost);
+    } else {
+      res.sendStatus(404);
+    }
+  }
+);

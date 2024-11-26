@@ -19,3 +19,33 @@ exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
     const newPost = posts_repository_1.postRepositories.addNewPost(postCreateData);
     res.status(201).send(newPost);
 });
+exports.postsRouter.get("/:id", (req, res) => {
+    const id = req.params.id;
+    let post = posts_repository_1.postRepositories.findPost(id);
+    if (post) {
+        res.send(post);
+    }
+    else
+        res.send(404);
+});
+exports.postsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (req, res) => {
+    const id = req.params.id;
+    const answer = posts_repository_1.postRepositories.deletePostById(id);
+    if (answer === true) {
+        res.sendStatus(204);
+    }
+    else {
+        res.sendStatus(404);
+    }
+});
+exports.postsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), (0, blogId_post_validation_1.blogIdPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
+    const id = req.params.id;
+    const postUpdateData = req.body;
+    const updatePost = posts_repository_1.postRepositories.updatePostById(postUpdateData, id);
+    if (updatePost) {
+        res.status(204).send(updatePost);
+    }
+    else {
+        res.sendStatus(404);
+    }
+});
