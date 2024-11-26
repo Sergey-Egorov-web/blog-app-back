@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepository = exports.blogs = void 0;
 exports.blogs = [
     {
-        id: 1,
+        id: "1",
         name: "myBlog",
         description: "blog about me",
         websiteUrl: "aboutme@yandex.ru",
     },
     {
-        id: 2,
+        id: "2",
         name: "denBlog",
         description: "blog about Den",
         websiteUrl: "den@yandex.ru",
@@ -42,7 +42,7 @@ exports.blogsRepository = {
     },
     addNewBlog(blog) {
         const newBlog = {
-            id: +new Date(),
+            id: Date.now().toString(),
             name: blog.name,
             description: blog.description,
             websiteUrl: blog.websiteUrl,

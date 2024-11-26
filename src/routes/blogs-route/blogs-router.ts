@@ -55,7 +55,7 @@ blogsRouter.put(
   webSiteUrlValidation(),
   inputValidationMiddleware,
   (req: Request, res: Response) => {
-    const id: number = +req.params.id;
+    const id: string = req.params.id;
     const blogUpdateData: BlogInputType = req.body;
     const updateBlog = blogsRepository.updateBlogById(blogUpdateData, id);
     if (updateBlog) {
@@ -67,7 +67,7 @@ blogsRouter.put(
 );
 
 blogsRouter.get("/:id", (req: Request, res: Response) => {
-  const id: number = +req.params.id;
+  const id: string = req.params.id;
   let blog = blogsRepository.findBlog(id);
   if (blog) {
     res.send(blog);
@@ -78,7 +78,7 @@ blogsRouter.delete(
   "/:id",
   basicAuthorizationMiddleware,
   (req: Request, res: Response) => {
-    const id: number = +req.params.id;
+    const id: string = req.params.id;
     const answer = blogsRepository.deleteBlogById(id);
     if (answer) {
       res.sendStatus(204);

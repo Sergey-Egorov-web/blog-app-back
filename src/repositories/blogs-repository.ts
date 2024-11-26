@@ -9,7 +9,7 @@ import { BlogInputType, BlogOutputType } from "../types";
 // }
 
 export type BlogDbType = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   websiteUrl: string;
@@ -17,14 +17,14 @@ export type BlogDbType = {
 
 export let blogs: BlogDbType[] = [
   {
-    id: 1,
+    id: "1",
     name: "myBlog",
     description: "blog about me",
     websiteUrl: "aboutme@yandex.ru",
   },
 
   {
-    id: 2,
+    id: "2",
     name: "denBlog",
     description: "blog about Den",
     websiteUrl: "den@yandex.ru",
@@ -35,7 +35,7 @@ export const blogsRepository = {
   findAllBlogs() {
     return blogs;
   },
-  findBlog(id: number) {
+  findBlog(id: string) {
     let blog = blogs.find((p) => p.id === id);
     if (blog) {
       return blog;
@@ -46,7 +46,7 @@ export const blogsRepository = {
     return blogs;
   },
 
-  deleteBlogById(id: number) {
+  deleteBlogById(id: string) {
     for (let i = 0; i < blogs.length; i++) {
       if (blogs[i].id === id) {
         blogs.splice(i, 1);
@@ -59,7 +59,7 @@ export const blogsRepository = {
 
   addNewBlog(blog: BlogInputType): BlogOutputType {
     const newBlog = {
-      id: +new Date(),
+      id: Date.now().toString(),
       name: blog.name,
       description: blog.description,
       websiteUrl: blog.websiteUrl,
@@ -69,7 +69,7 @@ export const blogsRepository = {
     return newBlog;
   },
 
-  updateBlogById(blog: BlogInputType, id: Number) {
+  updateBlogById(blog: BlogInputType, id: string) {
     let updateBlog = blogs.find((p) => p.id === id);
     if (updateBlog) {
       updateBlog.name = blog.name;

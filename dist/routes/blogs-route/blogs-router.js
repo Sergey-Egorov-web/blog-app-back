@@ -30,7 +30,7 @@ exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
     res.status(201).send(newBlog);
 });
 exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
-    const id = +req.params.id;
+    const id = req.params.id;
     const blogUpdateData = req.body;
     const updateBlog = blogs_repository_1.blogsRepository.updateBlogById(blogUpdateData, id);
     if (updateBlog) {
@@ -41,7 +41,7 @@ exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
     }
 });
 exports.blogsRouter.get("/:id", (req, res) => {
-    const id = +req.params.id;
+    const id = req.params.id;
     let blog = blogs_repository_1.blogsRepository.findBlog(id);
     if (blog) {
         res.send(blog);
@@ -50,7 +50,7 @@ exports.blogsRouter.get("/:id", (req, res) => {
         res.send(404);
 });
 exports.blogsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (req, res) => {
-    const id = +req.params.id;
+    const id = req.params.id;
     const answer = blogs_repository_1.blogsRepository.deleteBlogById(id);
     if (answer) {
         res.sendStatus(204);
