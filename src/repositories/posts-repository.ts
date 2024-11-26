@@ -64,7 +64,7 @@ export const postRepositories = {
     //   return undefined;
     // }
     if (blog) {
-      const newPost = {
+      const newPost: PostOutputType = {
         id: Date.now().toString(),
 
         title: post.title,
@@ -73,6 +73,8 @@ export const postRepositories = {
         blogId: post.blogId,
         blogName: blog.name,
       };
+      console.log(typeof newPost.id);
+      console.log(newPost.id);
       posts.push(newPost);
       return newPost;
     } else {

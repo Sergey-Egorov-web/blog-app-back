@@ -63,6 +63,8 @@ exports.postRepositories = {
                 blogId: post.blogId,
                 blogName: blog.name,
             };
+            console.log(typeof newPost.id);
+            console.log(newPost.id);
             exports.posts.push(newPost);
             return newPost;
         }
