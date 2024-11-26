@@ -27,9 +27,9 @@ postsRouter.post(
   inputValidationMiddleware,
   (req: Request, res: Response) => {
     const postCreateData: PostInputType = req.body;
-    // const newBlog: PostOutputType | undefined =
-    postRepositories.addNewPost(postCreateData);
+    const newPost: PostOutputType | undefined =
+      postRepositories.addNewPost(postCreateData);
 
-    res.sendStatus(204);
+    res.status(201).send(newPost);
   }
 );
