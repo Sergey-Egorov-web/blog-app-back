@@ -20,9 +20,9 @@ exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
     if (newPost) {
         res.status(201).send(newPost);
     }
-    else {
-        res.status(404).send("Blog not found");
-    }
+    // else {
+    //   res.status(404).send("Blog not found");
+    // }
 });
 exports.postsRouter.get("/:id", (req, res) => {
     const id = req.params.id;
