@@ -70,7 +70,7 @@ export const postRepositories = {
         title: post.title,
         shortDescription: post.shortDescription,
         content: post.content,
-        blogId: post.blogId,
+        blogId: blog.id,
         blogName: blog.name,
       };
       console.log(typeof newPost.id);
