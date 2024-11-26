@@ -49,8 +49,6 @@ export const postRepositories = {
       if (posts[i].id === id) {
         posts.splice(i, 1);
         return true;
-      } else {
-        return false;
       }
     }
   },

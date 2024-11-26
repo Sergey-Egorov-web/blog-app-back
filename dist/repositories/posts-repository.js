@@ -40,9 +40,6 @@ exports.postRepositories = {
                 exports.posts.splice(i, 1);
                 return true;
             }
-            else {
-                return false;
-            }
         }
     },
     addNewPost(post) {
