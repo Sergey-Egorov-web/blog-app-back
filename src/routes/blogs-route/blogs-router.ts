@@ -41,10 +41,9 @@ blogsRouter.post(
   inputValidationMiddleware,
   (req: Request, res: Response) => {
     const blogCreateData: BlogInputType = req.body;
-    // const newBlog: BlogOutputType =
-    blogsRepository.addNewBlog(blogCreateData);
+    const newBlog: BlogOutputType = blogsRepository.addNewBlog(blogCreateData);
 
-    res.status(204).send("No Content");
+    res.status(204).send(newBlog);
   }
 );
 
