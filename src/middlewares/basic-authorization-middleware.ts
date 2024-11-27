@@ -13,9 +13,9 @@ export const basicAuthorizationMiddleware = (
   //' Basic xxxx'
 
   //TODO убрать let, вынести в переменные
-  // const data = `${username}:${password}`; // admin:qwerty
+  const data = `${username}:${password}`; // admin:qwerty
 
-  const data = `${"admin"}:${"qwerty"}`;
+  // const data = `${"admin"}:${"qwerty"}`;
 
   const base64data = Buffer.from(data).toString("base64"); //кодируем data в String base64
   const validAuthorizationValue = `Basic ${base64data}`;

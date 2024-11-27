@@ -1,8 +1,12 @@
 import request, { Response } from "supertest";
+import "dotenv/config";
 
 import { app } from "../../src/settings";
 // import { Blog } from "../../src/repositories/blogs-repository";
 // import { response } from "express";
+
+const username = process.env.USERNAME;
+const password = process.env.PASSWORD;
 
 describe("/", () => {
   it("should return 200 and empty array", () => {
@@ -37,7 +41,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
 
       .send({
@@ -71,7 +76,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .send({
         name: "",
@@ -93,7 +99,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .send({
         name: "dsfdsfsdflsdf'dslf'sdlfs'dflsd'\f",
@@ -115,7 +122,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .send({
         name: "blog name",
@@ -137,7 +145,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .send({
         name: "name of blog",
@@ -159,7 +168,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .send({
         name: "blog name",
@@ -181,7 +191,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .send({
         name: "name of blog",
@@ -204,7 +215,8 @@ describe("/blogs", () => {
       .post("/blogs")
       .set(
         "Authorization",
-        "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        // "Basic " + Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64")
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .send({
         name: "",
