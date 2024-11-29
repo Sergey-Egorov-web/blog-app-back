@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.client = void 0;
 exports.runDB = runDB;
 const mongodb_1 = require("mongodb");
-const mongoURI = process.env.mongoURL || "mongodb://0.0.0.0:27017";
-exports.client = new mongodb_1.MongoClient(mongoURI);
+const mongoUri = process.env.mongoURL || "mongodb://0.0.0.0:27017/BloggerPlatform";
+exports.client = new mongodb_1.MongoClient(mongoUri);
 function runDB() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield exports.client.connect();
-            yield exports.client.db("Blogger Platform").command({ ping: 1 });
+            yield exports.client.db("BloggerPlatform").command({ ping: 1 });
             console.log("Connected successfully to mongo server");
         }
         catch (_a) {
@@ -27,3 +27,4 @@ function runDB() {
         }
     });
 }
+// connectToDatabase();
