@@ -1,8 +1,5 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import {
-  blogs,
-  blogsRepository,
-} from "../../repositories/blogs-in-memory-repository";
+import { blogs, blogsRepository } from "../../repositories/blogs-db-repository";
 import { body, validationResult } from "express-validator";
 
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
@@ -24,14 +21,14 @@ const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
 
 blogsRouter.use(ITINCUBATOR);
 
-blogsRouter.get("/", ITINCUBATOR, (req: Request, res: Response) => {
-  const allBlogs = blogsRepository.findAllBlogs();
+blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
+  const allBlogs = await blogsRepository.findAllBlogs();
 
   res.status(200).send(allBlogs);
 });
 //TODO вынести
-blogsRouter.delete("/testing/all-data", (req: Request, res: Response) => {
-  blogsRepository.deleteAllBlogs();
+blogsRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
+  await blogsRepository.deleteAllBlogs();
   res.send(204);
 });
 
@@ -59,10 +56,10 @@ blogsRouter.put(
   descriptionValidation(),
   webSiteUrlValidation(),
   inputValidationMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const blogUpdateData: BlogInputType = req.body;
-    const updateBlog = blogsRepository.updateBlogById(blogUpdateData, id);
+    const updateBlog = await blogsRepository.updateBlogById(blogUpdateData, id);
     if (updateBlog) {
       res.status(204).send(updateBlog);
     } else {

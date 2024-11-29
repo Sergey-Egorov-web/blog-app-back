@@ -1,5 +1,5 @@
 import { PostInputType, PostOutputType } from "../types";
-import { BlogDbType, blogsRepository } from "./blogs-in-memory-repository";
+import { BlogDbType, blogsRepository } from "./blogs-db-repository";
 
 export type PostDbType = {
   id: string;
@@ -31,36 +31,33 @@ export let posts: PostDbType[] = [
 ];
 
 export const postRepositories = {
-  findAllPosts() {
+  async findAllPosts(): Promise<PostDbType[] | null> {
     return posts;
   },
-  findPost(id: string) {
+  async findPost(id: string): Promise<PostOutputType | null> {
     let post = posts.find((p) => p.id === id);
     if (post) {
       return post;
+    } else {
+      return null;
     }
   },
-  deleteAllPosts() {
+  async deleteAllPosts(): Promise<PostDbType[]> {
     posts = [];
     return posts;
   },
-  deletePostById(id: string) {
+  async deletePostById(id: string): Promise<boolean> {
     for (let i = 0; i < posts.length; i++) {
       if (posts[i].id === id) {
         posts.splice(i, 1);
         return true;
       }
     }
+    return false;
   },
   async addNewPost(post: PostInputType): Promise<PostOutputType | null> {
     const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
-    //   if (blog) {
-    //     updatePost.blogName = blog.name;
-    //     return updatePost;
-    //   }
-    // } else {
-    //   return undefined;
-    // }
+
     if (blog) {
       const newPost: PostOutputType | null = {
         id: Date.now().toString(),

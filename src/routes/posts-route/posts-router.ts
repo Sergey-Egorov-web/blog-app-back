@@ -3,7 +3,7 @@ import express, { NextFunction, Request, Response, Router } from "express";
 export const postsRouter = Router({});
 
 import { PostInputType, PostOutputType } from "../../types";
-import { postRepositories } from "../../repositories/posts-repository";
+import { postRepositories } from "../../repositories/posts-db-repository";
 import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorization-middleware";
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
 import { titlePostValidation } from "../../middlewares/title-post-validation";
@@ -11,8 +11,8 @@ import { shortDescriptionPostValidation } from "../../middlewares/short-descript
 import { contentPostValidation } from "../../middlewares/content-post-validation";
 import { blogIdPostValidation } from "../../middlewares/blogId-post-validation";
 
-postsRouter.get("/", (req: Request, res: Response) => {
-  const allPosts = postRepositories.findAllPosts();
+postsRouter.get("/", async (req: Request, res: Response) => {
+  const allPosts = await postRepositories.findAllPosts();
 
   res.status(200).send(allPosts);
 });
@@ -40,9 +40,9 @@ postsRouter.post(
   }
 );
 
-postsRouter.get("/:id", (req: Request, res: Response) => {
+postsRouter.get("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  let post = postRepositories.findPost(id);
+  let post = await postRepositories.findPost(id);
   if (post) {
     res.send(post);
   } else res.send(404);
@@ -51,9 +51,9 @@ postsRouter.get("/:id", (req: Request, res: Response) => {
 postsRouter.delete(
   "/:id",
   basicAuthorizationMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    const answer = postRepositories.deletePostById(id);
+    const answer = await postRepositories.deletePostById(id);
     if (answer === true) {
       res.sendStatus(204);
     } else {
@@ -70,10 +70,13 @@ postsRouter.put(
   contentPostValidation(),
   blogIdPostValidation(),
   inputValidationMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const postUpdateData: PostInputType = req.body;
-    const updatePost = postRepositories.updatePostById(postUpdateData, id);
+    const updatePost = await postRepositories.updatePostById(
+      postUpdateData,
+      id
+    );
     if (updatePost) {
       res.status(204).send(updatePost);
     } else {
