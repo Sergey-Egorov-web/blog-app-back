@@ -1,5 +1,5 @@
 import { PostInputType, PostOutputType } from "../types";
-import { BlogDbType, blogsRepository } from "./blogs-repository";
+import { BlogDbType, blogsRepository } from "./blogs-in-memory-repository";
 
 export type PostDbType = {
   id: string;
@@ -52,8 +52,8 @@ export const postRepositories = {
       }
     }
   },
-  addNewPost(post: PostInputType): PostOutputType | undefined {
-    const blog: BlogDbType | undefined = blogsRepository.findBlog(post.blogId);
+  async addNewPost(post: PostInputType): Promise<PostOutputType | null> {
+    const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
     //   if (blog) {
     //     updatePost.blogName = blog.name;
     //     return updatePost;
@@ -62,7 +62,7 @@ export const postRepositories = {
     //   return undefined;
     // }
     if (blog) {
-      const newPost: PostOutputType = {
+      const newPost: PostOutputType | null = {
         id: Date.now().toString(),
 
         title: post.title,
@@ -76,10 +76,13 @@ export const postRepositories = {
       posts.push(newPost);
       return newPost;
     } else {
-      return undefined;
+      return null;
     }
   },
-  updatePostById(post: PostInputType, id: string): PostOutputType | undefined {
+  async updatePostById(
+    post: PostInputType,
+    id: string
+  ): Promise<PostOutputType | undefined> {
     let updatePost = posts.find((p) => p.id === id);
     if (updatePost) {
       updatePost.title = post.title;
@@ -87,7 +90,7 @@ export const postRepositories = {
       updatePost.content = post.content;
       updatePost.blogId = post.blogId;
 
-      const blog: BlogDbType | undefined = blogsRepository.findBlog(
+      const blog: BlogDbType | null = await blogsRepository.findBlog(
         post.blogId
       );
       if (blog) {

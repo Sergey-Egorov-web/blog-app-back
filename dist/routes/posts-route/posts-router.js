@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRouter = void 0;
 const express_1 = require("express");
@@ -14,16 +23,16 @@ exports.postsRouter.get("/", (req, res) => {
     const allPosts = posts_repository_1.postRepositories.findAllPosts();
     res.status(200).send(allPosts);
 });
-exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), (0, blogId_post_validation_1.blogIdPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => {
+exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), (0, blogId_post_validation_1.blogIdPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const postCreateData = req.body;
-    const newPost = posts_repository_1.postRepositories.addNewPost(postCreateData);
+    const newPost = yield posts_repository_1.postRepositories.addNewPost(postCreateData);
     if (newPost) {
         res.status(201).send(newPost);
     }
     // else {
     //   res.status(404).send("Blog not found");
     // }
-});
+}));
 exports.postsRouter.get("/:id", (req, res) => {
     const id = req.params.id;
     let post = posts_repository_1.postRepositories.findPost(id);

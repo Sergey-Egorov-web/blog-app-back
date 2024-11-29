@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { blogsRepository } from "../repositories/blogs-repository";
+import { blogsRepository } from "../repositories/blogs-in-memory-repository";
 
 export function blogIdPostValidation() {
   return body("blogId")

@@ -1,8 +1,8 @@
 import { MongoClient } from "mongodb";
 
-const mongoUri = process.env.mongoUri || "mongodb://0.0.0.0:27017";
+const mongoURI = process.env.mongoURL || "mongodb://0.0.0.0:27017";
 
-export const client = new MongoClient(mongoUri);
+export const client = new MongoClient(mongoURI);
 
 export async function runDB() {
   try {
@@ -11,6 +11,7 @@ export async function runDB() {
     await client.db("Blogger Platform").command({ ping: 1 });
     console.log("Connected successfully to mongo server");
   } catch {
+    console.log("Can't connect to Db");
     await client.close();
   }
 }

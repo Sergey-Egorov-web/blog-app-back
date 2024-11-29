@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.client = void 0;
 exports.runDB = runDB;
 const mongodb_1 = require("mongodb");
-const mongoUri = process.env.mongoUri || "mongodb://0.0.0.0:27017";
-exports.client = new mongodb_1.MongoClient(mongoUri);
+const mongoURI = process.env.mongoURL || "mongodb://0.0.0.0:27017";
+exports.client = new mongodb_1.MongoClient(mongoURI);
 function runDB() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -22,6 +22,7 @@ function runDB() {
             console.log("Connected successfully to mongo server");
         }
         catch (_a) {
+            console.log("Can't connect to Db");
             yield exports.client.close();
         }
     });

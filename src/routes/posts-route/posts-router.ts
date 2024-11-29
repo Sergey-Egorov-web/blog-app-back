@@ -25,10 +25,11 @@ postsRouter.post(
   contentPostValidation(),
   blogIdPostValidation(),
   inputValidationMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const postCreateData: PostInputType = req.body;
-    const newPost: PostOutputType | undefined =
-      postRepositories.addNewPost(postCreateData);
+    const newPost: PostOutputType | null = await postRepositories.addNewPost(
+      postCreateData
+    );
 
     if (newPost) {
       res.status(201).send(newPost);

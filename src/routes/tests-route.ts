@@ -1,4 +1,4 @@
-import { blogsRepository } from "../repositories/blogs-repository";
+import { blogsRepository } from "../repositories/blogs-in-memory-repository";
 
 import { Request, Response, Router } from "express";
 

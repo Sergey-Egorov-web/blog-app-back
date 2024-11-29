@@ -24,21 +24,23 @@ export let blogs: BlogDbType[] = [
 ];
 
 export const blogsRepository = {
-  findAllBlogs() {
+  async findAllBlogs(): Promise<BlogDbType[] | null> {
     return blogs;
   },
-  findBlog(id: string) {
+  async findBlog(id: string): Promise<BlogOutputType | null> {
     let blog = blogs.find((p) => p.id === id);
     if (blog) {
       return blog;
+    } else {
+      return null;
     }
   },
-  deleteAllBlogs() {
+  async deleteAllBlogs(): Promise<BlogDbType[] | null> {
     blogs = [];
     return blogs;
   },
 
-  deleteBlogById(id: string) {
+  async deleteBlogById(id: string): Promise<boolean> {
     for (let i = 0; i < blogs.length; i++) {
       if (blogs[i].id === id) {
         blogs.splice(i, 1);
@@ -47,10 +49,10 @@ export const blogsRepository = {
       }
     }
     // console.log(false);
-    // return false;
+    return false;
   },
 
-  addNewBlog(blog: BlogInputType): BlogOutputType {
+  async addNewBlog(blog: BlogInputType): Promise<BlogOutputType> {
     const newBlog = {
       id: Date.now().toString(),
       name: blog.name,
@@ -63,7 +65,10 @@ export const blogsRepository = {
     return newBlog;
   },
 
-  updateBlogById(blog: BlogInputType, id: string) {
+  async updateBlogById(
+    blog: BlogInputType,
+    id: string
+  ): Promise<BlogOutputType | null> {
     let updateBlog = blogs.find((p) => p.id === id);
     if (updateBlog) {
       updateBlog.name = blog.name;
@@ -71,7 +76,7 @@ export const blogsRepository = {
       updateBlog.websiteUrl = blog.websiteUrl;
       return updateBlog;
     } else {
-      return undefined;
+      return null;
     }
   },
 };

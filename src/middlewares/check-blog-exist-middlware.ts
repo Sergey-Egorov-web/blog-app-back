@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { blogsRepository } from "../repositories/blogs-repository";
+import { blogsRepository } from "../repositories/blogs-in-memory-repository";
 
 export const checkBlogExistsMiddleware = (
   req: Request,

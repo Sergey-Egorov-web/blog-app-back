@@ -1,5 +1,8 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { blogs, blogsRepository } from "../../repositories/blogs-repository";
+import {
+  blogs,
+  blogsRepository,
+} from "../../repositories/blogs-in-memory-repository";
 import { body, validationResult } from "express-validator";
 
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
@@ -39,9 +42,11 @@ blogsRouter.post(
   descriptionValidation(),
   webSiteUrlValidation(),
   inputValidationMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const blogCreateData: BlogInputType = req.body;
-    const newBlog: BlogOutputType = blogsRepository.addNewBlog(blogCreateData);
+    const newBlog: BlogOutputType = await blogsRepository.addNewBlog(
+      blogCreateData
+    );
 
     res.status(201).send(newBlog);
   }
@@ -66,9 +71,9 @@ blogsRouter.put(
   }
 );
 
-blogsRouter.get("/:id", (req: Request, res: Response) => {
+blogsRouter.get("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  let blog = blogsRepository.findBlog(id);
+  let blog = await blogsRepository.findBlog(id);
   if (blog) {
     res.send(blog);
   } else res.send(404);
@@ -77,9 +82,9 @@ blogsRouter.get("/:id", (req: Request, res: Response) => {
 blogsRouter.delete(
   "/:id",
   basicAuthorizationMiddleware,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    const answer = blogsRepository.deleteBlogById(id);
+    const answer = await blogsRepository.deleteBlogById(id);
     if (answer === true) {
       res.sendStatus(204);
     } else {
