@@ -1,4 +1,5 @@
 "use strict";
+// import "dotenv/config"; // Загрузка переменных окружения из файла .env
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,16 +10,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("dotenv/config"); // Загрузка переменных окружения из файла .env
 const settings_1 = require("./settings");
 const db_1 = require("./repositories/db");
-const port = process.env.PORT || 5000;
+const configuration_1 = require("./configuration");
+// const port = process.env.PORT || 5000;
 const mongoURI = process.env.MONGO_URL || "mongodb://0.0.0.0:27017";
 console.log(process.env.MONGO_URL);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, db_1.runDB)();
-    settings_1.app.listen(port, () => {
-        console.log(`blog-app-back app listening on port ${port}`);
+    settings_1.app.listen(configuration_1.port, () => {
+        console.log(`blog-app-back app listening on port ${configuration_1.port}`);
     });
 });
 startApp();

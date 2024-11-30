@@ -11,18 +11,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepository = exports.blogs = void 0;
 exports.blogs = [
-    {
-        id: "1",
-        name: "myBlog",
-        description: "blog about me",
-        websiteUrl: "aboutme@yandex.ru",
-    },
-    {
-        id: "2",
-        name: "denBlog",
-        description: "blog about Den",
-        websiteUrl: "den@yandex.ru",
-    },
+// {
+//   id: "1",
+//   name: "myBlog",
+//   description: "blog about me",
+//   websiteUrl: "aboutme@yandex.ru",
+// },
+// {
+//   id: "2",
+//   name: "denBlog",
+//   description: "blog about Den",
+//   websiteUrl: "den@yandex.ru",
+// },
 ];
 exports.blogsRepository = {
     findAllBlogs() {
@@ -66,6 +66,8 @@ exports.blogsRepository = {
                 name: blog.name,
                 description: blog.description,
                 websiteUrl: blog.websiteUrl,
+                createdAt: new Date().toISOString(),
+                isMembership: false,
             };
             // console.log(typeof newBlog.id);
             // console.log(newBlog.id);

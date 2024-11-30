@@ -1,9 +1,10 @@
-import "dotenv/config"; // Загрузка переменных окружения из файла .env
+// import "dotenv/config"; // Загрузка переменных окружения из файла .env
 
 import { app } from "./settings";
 import { runDB } from "./repositories/db";
+import { port } from "./configuration";
 
-const port = process.env.PORT || 5000;
+// const port = process.env.PORT || 5000;
 
 const mongoURI = process.env.MONGO_URL || "mongodb://0.0.0.0:27017";
 

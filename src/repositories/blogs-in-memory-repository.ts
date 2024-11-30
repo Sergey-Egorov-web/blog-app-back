@@ -5,22 +5,23 @@ export type BlogDbType = {
   name: string;
   description: string;
   websiteUrl: string;
+  createdAt: string;
+  isMembership: boolean;
 };
 
 export let blogs: BlogDbType[] = [
-  {
-    id: "1",
-    name: "myBlog",
-    description: "blog about me",
-    websiteUrl: "aboutme@yandex.ru",
-  },
-
-  {
-    id: "2",
-    name: "denBlog",
-    description: "blog about Den",
-    websiteUrl: "den@yandex.ru",
-  },
+  // {
+  //   id: "1",
+  //   name: "myBlog",
+  //   description: "blog about me",
+  //   websiteUrl: "aboutme@yandex.ru",
+  // },
+  // {
+  //   id: "2",
+  //   name: "denBlog",
+  //   description: "blog about Den",
+  //   websiteUrl: "den@yandex.ru",
+  // },
 ];
 
 export const blogsRepository = {
@@ -58,6 +59,8 @@ export const blogsRepository = {
       name: blog.name,
       description: blog.description,
       websiteUrl: blog.websiteUrl,
+      createdAt: new Date().toISOString(),
+      isMembership: false,
     };
     // console.log(typeof newBlog.id);
     // console.log(newBlog.id);

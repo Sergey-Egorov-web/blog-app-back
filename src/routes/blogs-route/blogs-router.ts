@@ -34,7 +34,7 @@ blogsRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
 
 blogsRouter.post(
   "/",
-  // basicAuthorizationMiddleware,
+  basicAuthorizationMiddleware,
   nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),
@@ -51,7 +51,7 @@ blogsRouter.post(
 
 blogsRouter.put(
   "/:id",
-  // basicAuthorizationMiddleware,
+  basicAuthorizationMiddleware,
   nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),

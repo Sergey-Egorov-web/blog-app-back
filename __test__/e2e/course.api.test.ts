@@ -2,11 +2,12 @@ import request, { Response } from "supertest";
 import "dotenv/config";
 
 import { app } from "../../src/settings";
+import { password, username } from "../../src/configuration";
 // import { Blog } from "../../src/repositories/blogs-repository";
 // import { response } from "express";
 
-const username = process.env.USERNAME;
-const password = process.env.PASSWORD;
+// const username = process.env.USERNAME;
+// const password = process.env.PASSWORD;
 
 describe("/", () => {
   it("should return 200 and empty array", () => {
@@ -52,10 +53,15 @@ describe("/blogs", () => {
       })
       .expect(201);
     expect(response.body).toEqual({
+      _id: expect.any(String), // любое число в качестве id
       id: expect.any(String), // любое число в качестве id
       name: "nameOfNewBlog",
       description: "description of the new blog",
       websiteUrl: "ya-ruru.ru",
+      createdAt: expect.stringMatching(
+        /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/
+      ),
+      isMembership: false,
     });
   });
 

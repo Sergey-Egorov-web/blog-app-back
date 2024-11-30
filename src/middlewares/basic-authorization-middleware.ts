@@ -1,9 +1,9 @@
-import "dotenv/config";
+import { password, username } from "../configuration";
 
 import { Request, Response, NextFunction } from "express";
 
-const username = process.env.USERNAME;
-const password = process.env.PASSWORD;
+// const username = process.env.USERNAME;
+// const password = process.env.PASSWORD;
 
 export const basicAuthorizationMiddleware = (
   req: Request,
@@ -12,12 +12,14 @@ export const basicAuthorizationMiddleware = (
 ) => {
   //' Basic xxxx'
 
-  //TODO убрать let, вынести в переменные
-  const data = `${username}:${password}`; // admin:qwerty
+  //TODO вынести в переменные
+  // const data = `${username}:${password}`; // admin:qwerty
 
   // const data = `${"admin"}:${"qwerty"}`;
-
-  const base64data = Buffer.from(data).toString("base64"); //кодируем data в String base64
+  console.log(username);
+  console.log(password);
+  const base64data = Buffer.from(`${username}:${password}`).toString("base64");
+  // const base64data = Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64"); //кодируем data в String base64
   const validAuthorizationValue = `Basic ${base64data}`;
   let authorizationHeader = req.headers.authorization;
 
