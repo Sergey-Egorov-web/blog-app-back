@@ -11,23 +11,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepositories = exports.posts = void 0;
 const blogs_db_repository_1 = require("./blogs-db-repository");
+// export type PostDbType = {
+//   id: string;
+//   title: string;
+//   shortDescription: string;
+//   content: string;
+//   blogId: string;
+//   blogName: string;
+// };
 exports.posts = [
-    {
-        id: "1",
-        title: "firstPost",
-        shortDescription: "it is small description",
-        content: "we will make a lot of content today and i the future",
-        blogId: "1",
-        blogName: "myBlog",
-    },
-    {
-        id: "2",
-        title: "firstPost",
-        shortDescription: "it is small description",
-        content: "we will make a lot of content today and i the future",
-        blogId: "2",
-        blogName: "denBlog",
-    },
+// {
+//   id: "1",
+//   title: "firstPost",
+//   shortDescription: "it is small description",
+//   content: "we will make a lot of content today and i the future",
+//   blogId: "1",
+//   blogName: "myBlog",
+// },
+// {
+//   id: "2",
+//   title: "firstPost",
+//   shortDescription: "it is small description",
+//   content: "we will make a lot of content today and i the future",
+//   blogId: "2",
+//   blogName: "denBlog",
+// },
 ];
 exports.postRepositories = {
     findAllPosts() {
@@ -74,6 +82,7 @@ exports.postRepositories = {
                     content: post.content,
                     blogId: blog.id,
                     blogName: blog.name,
+                    createdAt: new Date().toISOString(),
                 };
                 console.log(typeof newPost.id);
                 console.log(newPost.id);

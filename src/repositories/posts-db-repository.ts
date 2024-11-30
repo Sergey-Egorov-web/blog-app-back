@@ -1,5 +1,6 @@
 import { PostInputType, PostOutputType } from "../types";
 import { BlogDbType, blogsRepository } from "./blogs-db-repository";
+import { client } from "./db";
 
 export type PostDbType = {
   id: string;
@@ -8,52 +9,68 @@ export type PostDbType = {
   content: string;
   blogId: string;
   blogName: string;
+  createdAt: string;
 };
 
 export let posts: PostDbType[] = [
-  {
-    id: "1",
-    title: "firstPost",
-    shortDescription: "it is small description",
-    content: "we will make a lot of content today and i the future",
-    blogId: "1",
-    blogName: "myBlog",
-  },
-
-  {
-    id: "2",
-    title: "firstPost",
-    shortDescription: "it is small description",
-    content: "we will make a lot of content today and i the future",
-    blogId: "2",
-    blogName: "denBlog",
-  },
+  //   {
+  //     id: "1",
+  //     title: "firstPost",
+  //     shortDescription: "it is small description",
+  //     content: "we will make a lot of content today and i the future",
+  //     blogId: "1",
+  //     blogName: "myBlog",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "firstPost",
+  //     shortDescription: "it is small description",
+  //     content: "we will make a lot of content today and i the future",
+  //     blogId: "2",
+  //     blogName: "denBlog",
+  //   },
 ];
 
 export const postRepositories = {
   async findAllPosts(): Promise<PostDbType[] | null> {
-    return posts;
+    return await client
+      .db("BloggerPlatform")
+      .collection<PostDbType>("posts")
+      .find({})
+      .toArray();
   },
   async findPost(id: string): Promise<PostOutputType | null> {
-    let post = posts.find((p) => p.id === id);
+    let post: PostOutputType | null = await client
+      .db("BloggerPlatform")
+      .collection<PostOutputType>("posts")
+      .findOne({ id });
     if (post) {
       return post;
     } else {
       return null;
     }
   },
-  async deleteAllPosts(): Promise<PostDbType[]> {
-    posts = [];
-    return posts;
+  async deleteAllPosts(): Promise<boolean> {
+    const result = await client
+      .db("BloggerPlatform")
+      .collection<PostOutputType>("posts")
+      .deleteMany({});
+    if (result.deletedCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
   },
   async deletePostById(id: string): Promise<boolean> {
-    for (let i = 0; i < posts.length; i++) {
-      if (posts[i].id === id) {
-        posts.splice(i, 1);
-        return true;
-      }
+    const result = await client
+      .db("BloggerPlatform")
+      .collection<PostOutputType>("posts")
+      .deleteOne({ id: id });
+    if (result.deletedCount === 1) {
+      return true;
+    } else {
+      return false;
     }
-    return false;
   },
   async addNewPost(post: PostInputType): Promise<PostOutputType | null> {
     const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
@@ -67,10 +84,12 @@ export const postRepositories = {
         content: post.content,
         blogId: blog.id,
         blogName: blog.name,
+        createdAt: new Date().toISOString(),
       };
-      console.log(typeof newPost.id);
-      console.log(newPost.id);
-      posts.push(newPost);
+      await client
+        .db("BloggerPlatform")
+        .collection<PostOutputType>("blogs")
+        .insertOne(newPost);
       return newPost;
     } else {
       return null;

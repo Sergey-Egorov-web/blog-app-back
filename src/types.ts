@@ -19,6 +19,7 @@ export type PostOutputType = {
   content: string;
   blogId: string;
   blogName: string;
+  createdAt: string;
 };
 export type PostInputType = {
   title: string;

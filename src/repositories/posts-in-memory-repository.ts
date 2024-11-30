@@ -1,33 +1,33 @@
 import { PostInputType, PostOutputType } from "../types";
 import { BlogDbType, blogsRepository } from "./blogs-db-repository";
+import { PostDbType } from "./posts-db-repository";
 
-export type PostDbType = {
-  id: string;
-  title: string;
-  shortDescription: string;
-  content: string;
-  blogId: string;
-  blogName: string;
-};
+// export type PostDbType = {
+//   id: string;
+//   title: string;
+//   shortDescription: string;
+//   content: string;
+//   blogId: string;
+//   blogName: string;
+// };
 
 export let posts: PostDbType[] = [
-  {
-    id: "1",
-    title: "firstPost",
-    shortDescription: "it is small description",
-    content: "we will make a lot of content today and i the future",
-    blogId: "1",
-    blogName: "myBlog",
-  },
-
-  {
-    id: "2",
-    title: "firstPost",
-    shortDescription: "it is small description",
-    content: "we will make a lot of content today and i the future",
-    blogId: "2",
-    blogName: "denBlog",
-  },
+  // {
+  //   id: "1",
+  //   title: "firstPost",
+  //   shortDescription: "it is small description",
+  //   content: "we will make a lot of content today and i the future",
+  //   blogId: "1",
+  //   blogName: "myBlog",
+  // },
+  // {
+  //   id: "2",
+  //   title: "firstPost",
+  //   shortDescription: "it is small description",
+  //   content: "we will make a lot of content today and i the future",
+  //   blogId: "2",
+  //   blogName: "denBlog",
+  // },
 ];
 
 export const postRepositories = {
@@ -67,6 +67,7 @@ export const postRepositories = {
         content: post.content,
         blogId: blog.id,
         blogName: blog.name,
+        createdAt: new Date().toISOString(),
       };
       console.log(typeof newPost.id);
       console.log(newPost.id);
