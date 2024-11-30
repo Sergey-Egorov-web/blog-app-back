@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { blogs, blogsRepository } from "../../repositories/blogs-db-repository";
+import { blogsRepository } from "../../repositories/blogs-db-repository";
 import { body, validationResult } from "express-validator";
 
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
@@ -34,7 +34,7 @@ blogsRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
 
 blogsRouter.post(
   "/",
-  basicAuthorizationMiddleware,
+  // basicAuthorizationMiddleware,
   nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),
@@ -51,7 +51,7 @@ blogsRouter.post(
 
 blogsRouter.put(
   "/:id",
-  basicAuthorizationMiddleware,
+  // basicAuthorizationMiddleware,
   nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),
@@ -78,7 +78,7 @@ blogsRouter.get("/:id", async (req: Request, res: Response) => {
 
 blogsRouter.delete(
   "/:id",
-  basicAuthorizationMiddleware,
+  // basicAuthorizationMiddleware,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const answer = await blogsRepository.deleteBlogById(id);

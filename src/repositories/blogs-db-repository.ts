@@ -1,55 +1,80 @@
+import { ObjectId } from "mongodb";
 import { BlogInputType, BlogOutputType } from "../types";
+import { client } from "./db";
+import { time } from "console";
 
 export type BlogDbType = {
   id: string;
   name: string;
   description: string;
   websiteUrl: string;
+  createdAt: string;
+  isMembership: boolean;
 };
 
-export let blogs: BlogDbType[] = [
-  {
-    id: "1",
-    name: "myBlog",
-    description: "blog about me",
-    websiteUrl: "aboutme@yandex.ru",
-  },
+// удалить массив blogs так как работаем с db
 
-  {
-    id: "2",
-    name: "denBlog",
-    description: "blog about Den",
-    websiteUrl: "den@yandex.ru",
-  },
-];
+// export let blogs: BlogDbType[] = [
+// {
+//   id: "1",
+//   name: "myBlog",
+//   description: "blog about me",
+//   websiteUrl: "aboutme@yandex.ru",
+// },
+// {
+//   id: "2",
+//   name: "denBlog",
+//   description: "blog about Den",
+//   websiteUrl: "den@yandex.ru",
+// },
+// ];
 
 export const blogsRepository = {
   async findAllBlogs(): Promise<BlogDbType[] | null> {
-    return blogs;
+    // return blogs;
+    return client
+      .db("BloggerPlatform")
+      .collection<BlogDbType>("blogs")
+      .find({})
+      .toArray();
   },
   async findBlog(id: string): Promise<BlogOutputType | null> {
-    let blog = blogs.find((p) => p.id === id);
+    let blog: BlogOutputType | null = await client
+      .db("BloggerPlatform")
+      .collection<BlogOutputType>("blogs")
+      .findOne({ id });
+
+    // let blog = blogs.find((p) => p.id === id);
     if (blog) {
       return blog;
     } else {
       return null;
     }
   },
-  async deleteAllBlogs(): Promise<BlogDbType[] | null> {
-    blogs = [];
-    return blogs;
+  async deleteAllBlogs(): Promise<boolean> {
+    const result = await client
+      .db("BloggerPlatform")
+      .collection("blogs")
+      .deleteMany({});
+
+    if (result.deletedCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
   },
 
   async deleteBlogById(id: string): Promise<boolean> {
-    for (let i = 0; i < blogs.length; i++) {
-      if (blogs[i].id === id) {
-        blogs.splice(i, 1);
+    const result = await client
+      .db("BloggerPlatform")
+      .collection<BlogOutputType>("blogs")
+      .deleteOne({ id: id });
 
-        return true;
-      }
+    if (result.deletedCount === 1) {
+      return true;
+    } else {
+      return false;
     }
-    // console.log(false);
-    return false;
   },
 
   async addNewBlog(blog: BlogInputType): Promise<BlogOutputType> {
@@ -58,10 +83,15 @@ export const blogsRepository = {
       name: blog.name,
       description: blog.description,
       websiteUrl: blog.websiteUrl,
+      createdAt: new Date().toISOString(),
+      isMembership: false,
     };
-    // console.log(typeof newBlog.id);
-    // console.log(newBlog.id);
-    blogs.push(newBlog);
+
+    await client
+      .db("BloggerPlatform")
+      .collection<BlogOutputType>("blogs")
+      .insertOne(newBlog);
+
     return newBlog;
   },
 
@@ -69,11 +99,25 @@ export const blogsRepository = {
     blog: BlogInputType,
     id: string
   ): Promise<BlogOutputType | null> {
-    let updateBlog = blogs.find((p) => p.id === id);
+    const result = await client
+      .db("BloggerPlatform")
+      .collection<BlogOutputType>("blogs")
+      .updateOne(
+        { id: id },
+        {
+          $set: {
+            name: blog.name,
+            description: blog.description,
+            websiteUrl: blog.websiteUrl,
+          },
+        }
+      );
+
+    let updateBlog = await client
+      .db("BloggerPlatform")
+      .collection<BlogOutputType>("blogs")
+      .findOne({ id });
     if (updateBlog) {
-      updateBlog.name = blog.name;
-      updateBlog.description = blog.description;
-      updateBlog.websiteUrl = blog.websiteUrl;
       return updateBlog;
     } else {
       return null;

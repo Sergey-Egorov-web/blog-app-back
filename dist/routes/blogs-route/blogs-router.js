@@ -13,7 +13,6 @@ exports.blogsRouter = void 0;
 const express_1 = require("express");
 const blogs_db_repository_1 = require("../../repositories/blogs-db-repository");
 const input_validation_middleware_1 = require("../../middlewares/input-validation-middleware");
-const basic_authorization_middleware_1 = require("../../middlewares/basic-authorization-middleware");
 const description_validation_1 = require("../../middlewares/description-validation");
 const webSiteUrl_validation_1 = require("../../middlewares/webSiteUrl-validation");
 const name_validation_1 = require("../../middlewares/name-validation");
@@ -33,12 +32,16 @@ exports.blogsRouter.delete("/testing/all-data", (req, res) => __awaiter(void 0, 
     yield blogs_db_repository_1.blogsRepository.deleteAllBlogs();
     res.send(204);
 }));
-exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.post("/", 
+// basicAuthorizationMiddleware,
+(0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogCreateData = req.body;
     const newBlog = yield blogs_db_repository_1.blogsRepository.addNewBlog(blogCreateData);
     res.status(201).send(newBlog);
 }));
-exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.put("/:id", 
+// basicAuthorizationMiddleware,
+(0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const blogUpdateData = req.body;
     const updateBlog = yield blogs_db_repository_1.blogsRepository.updateBlogById(blogUpdateData, id);
@@ -58,7 +61,9 @@ exports.blogsRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, 
     else
         res.send(404);
 }));
-exports.blogsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.delete("/:id", 
+// basicAuthorizationMiddleware,
+(req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const answer = yield blogs_db_repository_1.blogsRepository.deleteBlogById(id);
     if (answer === true) {

@@ -9,30 +9,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsRepository = exports.blogs = void 0;
-exports.blogs = [
-    {
-        id: "1",
-        name: "myBlog",
-        description: "blog about me",
-        websiteUrl: "aboutme@yandex.ru",
-    },
-    {
-        id: "2",
-        name: "denBlog",
-        description: "blog about Den",
-        websiteUrl: "den@yandex.ru",
-    },
-];
+exports.blogsRepository = void 0;
+const db_1 = require("./db");
+// удалить массив blogs так как работаем с db
+// export let blogs: BlogDbType[] = [
+// {
+//   id: "1",
+//   name: "myBlog",
+//   description: "blog about me",
+//   websiteUrl: "aboutme@yandex.ru",
+// },
+// {
+//   id: "2",
+//   name: "denBlog",
+//   description: "blog about Den",
+//   websiteUrl: "den@yandex.ru",
+// },
+// ];
 exports.blogsRepository = {
     findAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            return exports.blogs;
+            // return blogs;
+            return db_1.client
+                .db("BloggerPlatform")
+                .collection("blogs")
+                .find({})
+                .toArray();
         });
     },
     findBlog(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let blog = exports.blogs.find((p) => p.id === id);
+            let blog = yield db_1.client
+                .db("BloggerPlatform")
+                .collection("blogs")
+                .findOne({ id });
+            // let blog = blogs.find((p) => p.id === id);
             if (blog) {
                 return blog;
             }
@@ -43,20 +54,30 @@ exports.blogsRepository = {
     },
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            exports.blogs = [];
-            return exports.blogs;
+            const result = yield db_1.client
+                .db("BloggerPlatform")
+                .collection("blogs")
+                .deleteMany({});
+            if (result.deletedCount > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
         });
     },
     deleteBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            for (let i = 0; i < exports.blogs.length; i++) {
-                if (exports.blogs[i].id === id) {
-                    exports.blogs.splice(i, 1);
-                    return true;
-                }
+            const result = yield db_1.client
+                .db("BloggerPlatform")
+                .collection("blogs")
+                .deleteOne({ id: id });
+            if (result.deletedCount === 1) {
+                return true;
             }
-            // console.log(false);
-            return false;
+            else {
+                return false;
+            }
         });
     },
     addNewBlog(blog) {
@@ -66,20 +87,33 @@ exports.blogsRepository = {
                 name: blog.name,
                 description: blog.description,
                 websiteUrl: blog.websiteUrl,
+                createdAt: new Date().toISOString(),
+                isMembership: false,
             };
-            // console.log(typeof newBlog.id);
-            // console.log(newBlog.id);
-            exports.blogs.push(newBlog);
+            yield db_1.client
+                .db("BloggerPlatform")
+                .collection("blogs")
+                .insertOne(newBlog);
             return newBlog;
         });
     },
     updateBlogById(blog, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let updateBlog = exports.blogs.find((p) => p.id === id);
+            const result = yield db_1.client
+                .db("BloggerPlatform")
+                .collection("blogs")
+                .updateOne({ id: id }, {
+                $set: {
+                    name: blog.name,
+                    description: blog.description,
+                    websiteUrl: blog.websiteUrl,
+                },
+            });
+            let updateBlog = yield db_1.client
+                .db("BloggerPlatform")
+                .collection("blogs")
+                .findOne({ id });
             if (updateBlog) {
-                updateBlog.name = blog.name;
-                updateBlog.description = blog.description;
-                updateBlog.websiteUrl = blog.websiteUrl;
                 return updateBlog;
             }
             else {

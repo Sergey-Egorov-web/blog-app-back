@@ -50,9 +50,9 @@ describe("/blogs", () => {
         description: "description of the new blog",
         websiteUrl: "ya-ruru.ru",
       })
-      .expect(204);
+      .expect(201);
     expect(response.body).toEqual({
-      id: expect.any(Number), // любое число в качестве id
+      id: expect.any(String), // любое число в качестве id
       name: "nameOfNewBlog",
       description: "description of the new blog",
       websiteUrl: "ya-ruru.ru",
