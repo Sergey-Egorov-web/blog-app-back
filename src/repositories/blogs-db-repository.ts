@@ -13,7 +13,18 @@ export type BlogDbType = {
 export const blogsRepository = {
   async findAllBlogs(): Promise<BlogDbType[] | null> {
     // return blogs;
-    return await blogCollection.find({}).toArray();
+    const result = await blogCollection.find({}).toArray();
+
+    const resultArray = result.map((model) => ({
+      id: model.id,
+      name: model.name,
+      description: model.description,
+      websiteUrl: model.websiteUrl,
+      createdAt: model.websiteUrl,
+      isMembership: model.isMembership,
+    }));
+
+    return resultArray;
   },
   async findBlog(id: string): Promise<BlogOutputType | null> {
     const blog: BlogOutputType | null = await blogCollection.findOne({ id });

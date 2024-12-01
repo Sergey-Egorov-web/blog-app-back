@@ -15,7 +15,16 @@ exports.blogsRepository = {
     findAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
             // return blogs;
-            return yield db_1.blogCollection.find({}).toArray();
+            const result = yield db_1.blogCollection.find({}).toArray();
+            const resultArray = result.map((model) => ({
+                id: model.id,
+                name: model.name,
+                description: model.description,
+                websiteUrl: model.websiteUrl,
+                createdAt: model.websiteUrl,
+                isMembership: model.isMembership,
+            }));
+            return resultArray;
         });
     },
     findBlog(id) {
