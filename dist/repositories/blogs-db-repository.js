@@ -30,7 +30,6 @@ exports.blogsRepository = {
     findBlog(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield db_1.blogCollection.findOne({ id });
-            // let blog = blogs.find((p) => p.id === id);
             if (blog) {
                 const resultWithoutMongoId = {
                     id: blog.id,

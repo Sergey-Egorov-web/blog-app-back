@@ -29,7 +29,6 @@ export const blogsRepository = {
   async findBlog(id: string): Promise<BlogOutputType | null> {
     const blog: BlogOutputType | null = await blogCollection.findOne({ id });
 
-    // let blog = blogs.find((p) => p.id === id);
     if (blog) {
       const resultWithoutMongoId: BlogOutputType = {
         id: blog.id,
