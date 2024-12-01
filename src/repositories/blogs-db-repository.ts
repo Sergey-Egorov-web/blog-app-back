@@ -1,7 +1,5 @@
-import { ObjectId } from "mongodb";
 import { BlogInputType, BlogOutputType } from "../types";
-import { client } from "./db";
-import { time } from "console";
+import { blogCollection } from "./db";
 
 export type BlogDbType = {
   id: string;
@@ -12,37 +10,13 @@ export type BlogDbType = {
   isMembership: boolean;
 };
 
-// удалить массив blogs так как работаем с db
-
-// export let blogs: BlogDbType[] = [
-// {
-//   id: "1",
-//   name: "myBlog",
-//   description: "blog about me",
-//   websiteUrl: "aboutme@yandex.ru",
-// },
-// {
-//   id: "2",
-//   name: "denBlog",
-//   description: "blog about Den",
-//   websiteUrl: "den@yandex.ru",
-// },
-// ];
-
 export const blogsRepository = {
   async findAllBlogs(): Promise<BlogDbType[] | null> {
     // return blogs;
-    return client
-      .db("BloggerPlatform")
-      .collection<BlogDbType>("blogs")
-      .find({})
-      .toArray();
+    return await blogCollection.find({}).toArray();
   },
   async findBlog(id: string): Promise<BlogOutputType | null> {
-    let blog: BlogOutputType | null = await client
-      .db("BloggerPlatform")
-      .collection<BlogOutputType>("blogs")
-      .findOne({ id });
+    const blog: BlogOutputType | null = await blogCollection.findOne({ id });
 
     // let blog = blogs.find((p) => p.id === id);
     if (blog) {
@@ -52,10 +26,7 @@ export const blogsRepository = {
     }
   },
   async deleteAllBlogs(): Promise<boolean> {
-    const result = await client
-      .db("BloggerPlatform")
-      .collection("blogs")
-      .deleteMany({});
+    const result = await blogCollection.deleteMany({});
 
     if (result.deletedCount > 0) {
       return true;
@@ -65,10 +36,7 @@ export const blogsRepository = {
   },
 
   async deleteBlogById(id: string): Promise<boolean> {
-    const result = await client
-      .db("BloggerPlatform")
-      .collection<BlogOutputType>("blogs")
-      .deleteOne({ id: id });
+    const result = await blogCollection.deleteOne({ id: id });
 
     if (result.deletedCount === 1) {
       return true;
@@ -87,10 +55,7 @@ export const blogsRepository = {
       isMembership: false,
     };
 
-    await client
-      .db("BloggerPlatform")
-      .collection<BlogOutputType>("blogs")
-      .insertOne(newBlog);
+    await blogCollection.insertOne(newBlog);
 
     return newBlog;
   },
@@ -99,24 +64,18 @@ export const blogsRepository = {
     blog: BlogInputType,
     id: string
   ): Promise<BlogOutputType | null> {
-    const result = await client
-      .db("BloggerPlatform")
-      .collection<BlogOutputType>("blogs")
-      .updateOne(
-        { id: id },
-        {
-          $set: {
-            name: blog.name,
-            description: blog.description,
-            websiteUrl: blog.websiteUrl,
-          },
-        }
-      );
+    const result = await blogCollection.updateOne(
+      { id: id },
+      {
+        $set: {
+          name: blog.name,
+          description: blog.description,
+          websiteUrl: blog.websiteUrl,
+        },
+      }
+    );
 
-    let updateBlog = await client
-      .db("BloggerPlatform")
-      .collection<BlogOutputType>("blogs")
-      .findOne({ id });
+    let updateBlog = await blogCollection.findOne({ id });
     if (updateBlog) {
       return updateBlog;
     } else {

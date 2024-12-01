@@ -11,38 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepository = void 0;
 const db_1 = require("./db");
-// удалить массив blogs так как работаем с db
-// export let blogs: BlogDbType[] = [
-// {
-//   id: "1",
-//   name: "myBlog",
-//   description: "blog about me",
-//   websiteUrl: "aboutme@yandex.ru",
-// },
-// {
-//   id: "2",
-//   name: "denBlog",
-//   description: "blog about Den",
-//   websiteUrl: "den@yandex.ru",
-// },
-// ];
 exports.blogsRepository = {
     findAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
             // return blogs;
-            return db_1.client
-                .db("BloggerPlatform")
-                .collection("blogs")
-                .find({})
-                .toArray();
+            return yield db_1.blogCollection.find({}).toArray();
         });
     },
     findBlog(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let blog = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("blogs")
-                .findOne({ id });
+            const blog = yield db_1.blogCollection.findOne({ id });
             // let blog = blogs.find((p) => p.id === id);
             if (blog) {
                 return blog;
@@ -54,10 +32,7 @@ exports.blogsRepository = {
     },
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("blogs")
-                .deleteMany({});
+            const result = yield db_1.blogCollection.deleteMany({});
             if (result.deletedCount > 0) {
                 return true;
             }
@@ -68,10 +43,7 @@ exports.blogsRepository = {
     },
     deleteBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("blogs")
-                .deleteOne({ id: id });
+            const result = yield db_1.blogCollection.deleteOne({ id: id });
             if (result.deletedCount === 1) {
                 return true;
             }
@@ -90,29 +62,20 @@ exports.blogsRepository = {
                 createdAt: new Date().toISOString(),
                 isMembership: false,
             };
-            yield db_1.client
-                .db("BloggerPlatform")
-                .collection("blogs")
-                .insertOne(newBlog);
+            yield db_1.blogCollection.insertOne(newBlog);
             return newBlog;
         });
     },
     updateBlogById(blog, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("blogs")
-                .updateOne({ id: id }, {
+            const result = yield db_1.blogCollection.updateOne({ id: id }, {
                 $set: {
                     name: blog.name,
                     description: blog.description,
                     websiteUrl: blog.websiteUrl,
                 },
             });
-            let updateBlog = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("blogs")
-                .findOne({ id });
+            let updateBlog = yield db_1.blogCollection.findOne({ id });
             if (updateBlog) {
                 return updateBlog;
             }

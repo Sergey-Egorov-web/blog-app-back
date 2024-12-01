@@ -9,21 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.client = void 0;
+exports.blogCollection = exports.postCollection = void 0;
 exports.runDB = runDB;
 const mongodb_1 = require("mongodb");
 const mongoUri = process.env.mongoURL || "mongodb://0.0.0.0:27017/BloggerPlatform";
-exports.client = new mongodb_1.MongoClient(mongoUri);
+const client = new mongodb_1.MongoClient(mongoUri);
+exports.postCollection = client
+    .db("BloggerPlatform")
+    .collection("posts");
+exports.blogCollection = client
+    .db("BloggerPlatform")
+    .collection("blogs");
 function runDB() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield exports.client.connect();
-            yield exports.client.db("BloggerPlatform").command({ ping: 1 });
+            yield client.connect();
+            yield client.db("BloggerPlatform").command({ ping: 1 });
             console.log("Connected successfully to mongo server");
         }
         catch (_a) {
             console.log("Can't connect to Db");
-            yield exports.client.close();
+            yield client.close();
         }
     });
 }

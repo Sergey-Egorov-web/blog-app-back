@@ -9,43 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postRepositories = exports.posts = void 0;
+exports.postRepositories = void 0;
 const blogs_db_repository_1 = require("./blogs-db-repository");
 const db_1 = require("./db");
-exports.posts = [
-//   {
-//     id: "1",
-//     title: "firstPost",
-//     shortDescription: "it is small description",
-//     content: "we will make a lot of content today and i the future",
-//     blogId: "1",
-//     blogName: "myBlog",
-//   },
-//   {
-//     id: "2",
-//     title: "firstPost",
-//     shortDescription: "it is small description",
-//     content: "we will make a lot of content today and i the future",
-//     blogId: "2",
-//     blogName: "denBlog",
-//   },
-];
+// export let posts: PostDbType[] = [];
 exports.postRepositories = {
     findAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.client
-                .db("BloggerPlatform")
-                .collection("posts")
-                .find({})
-                .toArray();
+            return yield db_1.postCollection.find({}).toArray();
         });
     },
     findPost(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("posts")
-                .findOne({ id });
+            const post = yield db_1.postCollection.findOne({ id });
             if (post) {
                 return post;
             }
@@ -56,10 +32,7 @@ exports.postRepositories = {
     },
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("posts")
-                .deleteMany({});
+            const result = yield db_1.postCollection.deleteMany({});
             if (result.deletedCount > 0) {
                 return true;
             }
@@ -70,10 +43,7 @@ exports.postRepositories = {
     },
     deletePostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("posts")
-                .deleteOne({ id: id });
+            const result = yield db_1.postCollection.deleteOne({ id: id });
             if (result.deletedCount === 1) {
                 return true;
             }
@@ -95,10 +65,7 @@ exports.postRepositories = {
                     blogName: blog.name,
                     createdAt: new Date().toISOString(),
                 };
-                yield db_1.client
-                    .db("BloggerPlatform")
-                    .collection("posts")
-                    .insertOne(newPost);
+                yield db_1.postCollection.insertOne(newPost);
                 return newPost;
             }
             else {
@@ -108,10 +75,9 @@ exports.postRepositories = {
     },
     updatePostById(post, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updatePost = yield db_1.client
-                .db("BloggerPlatform")
-                .collection("posts")
-                .findOne({ id });
+            const updatePost = yield db_1.postCollection.findOne({
+                id,
+            });
             if (!updatePost) {
                 return null;
             }
