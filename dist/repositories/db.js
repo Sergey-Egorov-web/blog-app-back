@@ -12,7 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogCollection = exports.postCollection = void 0;
 exports.runDB = runDB;
 const mongodb_1 = require("mongodb");
-const mongoUri = process.env.mongoURL || "mongodb://0.0.0.0:27017/BloggerPlatform";
+require("dotenv/config");
+const mongoUri = process.env.MONGO_URL;
+// || "mongodb://0.0.0.0:27017/BloggerPlatform";
+if (!mongoUri) {
+    throw new Error("MongoDB connection string is not defined");
+}
 const client = new mongodb_1.MongoClient(mongoUri);
 exports.postCollection = client
     .db("BloggerPlatform")

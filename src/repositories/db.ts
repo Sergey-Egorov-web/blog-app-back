@@ -1,9 +1,14 @@
 import { MongoClient } from "mongodb";
 import { PostOutputType } from "../types";
 import { BlogDbType } from "./blogs-db-repository";
+import "dotenv/config";
 
-const mongoUri =
-  process.env.mongoURL || "mongodb://0.0.0.0:27017/BloggerPlatform";
+const mongoUri = process.env.MONGO_URL;
+// || "mongodb://0.0.0.0:27017/BloggerPlatform";
+
+if (!mongoUri) {
+  throw new Error("MongoDB connection string is not defined");
+}
 
 const client = new MongoClient(mongoUri);
 
