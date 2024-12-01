@@ -1,3 +1,4 @@
+import { Result } from "express-validator";
 import { BlogInputType, BlogOutputType } from "../types";
 import { blogCollection } from "./db";
 
@@ -38,6 +39,7 @@ export const blogsRepository = {
         createdAt: blog.createdAt,
         isMembership: blog.isMembership,
       };
+
       return resultWithoutMongoId;
     } else {
       return null;
@@ -63,7 +65,7 @@ export const blogsRepository = {
     }
   },
 
-  async addNewBlog(blog: BlogInputType): Promise<BlogOutputType> {
+  async addNewBlog(blog: BlogInputType): Promise<BlogOutputType | null> {
     const newBlog = {
       id: Date.now().toString(),
       name: blog.name,
@@ -75,7 +77,13 @@ export const blogsRepository = {
 
     await blogCollection.insertOne(newBlog);
 
-    return newBlog;
+    // return newBlog;
+
+    const result = await blogCollection.findOne({
+      id: newBlog.id,
+    });
+
+    return result;
   },
 
   async updateBlogById(

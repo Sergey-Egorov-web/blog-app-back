@@ -41,7 +41,7 @@ blogsRouter.post(
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
     const blogCreateData: BlogInputType = req.body;
-    const newBlog: BlogOutputType = await blogsRepository.addNewBlog(
+    const newBlog: BlogOutputType | null = await blogsRepository.addNewBlog(
       blogCreateData
     );
 
