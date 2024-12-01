@@ -26,5 +26,4 @@ export type PostInputType = {
   shortDescription: string;
   content: string;
   blogId: string;
-  // blogName: string;
 };

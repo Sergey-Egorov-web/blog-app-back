@@ -42,7 +42,7 @@ exports.postRepositories = {
     },
     findPost(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let post = yield db_1.client
+            const post = yield db_1.client
                 .db("BloggerPlatform")
                 .collection("posts")
                 .findOne({ id });
@@ -91,13 +91,13 @@ exports.postRepositories = {
                     title: post.title,
                     shortDescription: post.shortDescription,
                     content: post.content,
-                    blogId: blog.id,
+                    blogId: post.blogId,
                     blogName: blog.name,
                     createdAt: new Date().toISOString(),
                 };
                 yield db_1.client
                     .db("BloggerPlatform")
-                    .collection("blogs")
+                    .collection("posts")
                     .insertOne(newPost);
                 return newPost;
             }
@@ -108,8 +108,14 @@ exports.postRepositories = {
     },
     updatePostById(post, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            let updatePost = exports.posts.find((p) => p.id === id);
-            if (updatePost) {
+            const updatePost = yield db_1.client
+                .db("BloggerPlatform")
+                .collection("posts")
+                .findOne({ id });
+            if (!updatePost) {
+                return null;
+            }
+            else {
                 updatePost.title = post.title;
                 updatePost.shortDescription = post.shortDescription;
                 updatePost.content = post.content;
@@ -119,9 +125,9 @@ exports.postRepositories = {
                     updatePost.blogName = blog.name;
                     return updatePost;
                 }
-            }
-            else {
-                return undefined;
+                else {
+                    return null;
+                }
             }
         });
     },

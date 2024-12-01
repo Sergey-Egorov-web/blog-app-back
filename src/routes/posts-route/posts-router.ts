@@ -33,10 +33,9 @@ postsRouter.post(
 
     if (newPost) {
       res.status(201).send(newPost);
+    } else {
+      res.status(404).send("Blog not found");
     }
-    // else {
-    //   res.status(404).send("Blog not found");
-    // }
   }
 );
 

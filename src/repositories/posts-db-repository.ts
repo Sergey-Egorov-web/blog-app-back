@@ -40,7 +40,7 @@ export const postRepositories = {
       .toArray();
   },
   async findPost(id: string): Promise<PostOutputType | null> {
-    let post: PostOutputType | null = await client
+    const post: PostOutputType | null = await client
       .db("BloggerPlatform")
       .collection<PostOutputType>("posts")
       .findOne({ id });
@@ -78,17 +78,16 @@ export const postRepositories = {
     if (blog) {
       const newPost: PostOutputType | null = {
         id: Date.now().toString(),
-
         title: post.title,
         shortDescription: post.shortDescription,
         content: post.content,
-        blogId: blog.id,
+        blogId: post.blogId,
         blogName: blog.name,
         createdAt: new Date().toISOString(),
       };
       await client
         .db("BloggerPlatform")
-        .collection<PostOutputType>("blogs")
+        .collection<PostOutputType>("posts")
         .insertOne(newPost);
       return newPost;
     } else {
@@ -98,9 +97,14 @@ export const postRepositories = {
   async updatePostById(
     post: PostInputType,
     id: string
-  ): Promise<PostOutputType | undefined> {
-    let updatePost = posts.find((p) => p.id === id);
-    if (updatePost) {
+  ): Promise<PostOutputType | null> {
+    const updatePost: PostOutputType | null = await client
+      .db("BloggerPlatform")
+      .collection<PostOutputType>("posts")
+      .findOne({ id });
+    if (!updatePost) {
+      return null;
+    } else {
       updatePost.title = post.title;
       updatePost.shortDescription = post.shortDescription;
       updatePost.content = post.content;
@@ -112,9 +116,9 @@ export const postRepositories = {
       if (blog) {
         updatePost.blogName = blog.name;
         return updatePost;
+      } else {
+        return null;
       }
-    } else {
-      return undefined;
     }
   },
 };
