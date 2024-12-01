@@ -15,23 +15,31 @@ export const blogsRepository = {
     // return blogs;
     const result = await blogCollection.find({}).toArray();
 
-    const resultArray = result.map((model) => ({
+    const resultWithoutMongoId = result.map((model) => ({
       id: model.id,
       name: model.name,
       description: model.description,
       websiteUrl: model.websiteUrl,
-      createdAt: model.websiteUrl,
+      createdAt: model.createdAt,
       isMembership: model.isMembership,
     }));
 
-    return resultArray;
+    return resultWithoutMongoId;
   },
   async findBlog(id: string): Promise<BlogOutputType | null> {
     const blog: BlogOutputType | null = await blogCollection.findOne({ id });
 
     // let blog = blogs.find((p) => p.id === id);
     if (blog) {
-      return blog;
+      const resultWithoutMongoId: BlogOutputType = {
+        id: blog.id,
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership,
+      };
+      return resultWithoutMongoId;
     } else {
       return null;
     }

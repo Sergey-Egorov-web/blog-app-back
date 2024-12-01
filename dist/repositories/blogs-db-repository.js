@@ -16,15 +16,15 @@ exports.blogsRepository = {
         return __awaiter(this, void 0, void 0, function* () {
             // return blogs;
             const result = yield db_1.blogCollection.find({}).toArray();
-            const resultArray = result.map((model) => ({
+            const resultWithoutMongoId = result.map((model) => ({
                 id: model.id,
                 name: model.name,
                 description: model.description,
                 websiteUrl: model.websiteUrl,
-                createdAt: model.websiteUrl,
+                createdAt: model.createdAt,
                 isMembership: model.isMembership,
             }));
-            return resultArray;
+            return resultWithoutMongoId;
         });
     },
     findBlog(id) {
@@ -32,7 +32,15 @@ exports.blogsRepository = {
             const blog = yield db_1.blogCollection.findOne({ id });
             // let blog = blogs.find((p) => p.id === id);
             if (blog) {
-                return blog;
+                const resultWithoutMongoId = {
+                    id: blog.id,
+                    name: blog.name,
+                    description: blog.description,
+                    websiteUrl: blog.websiteUrl,
+                    createdAt: blog.createdAt,
+                    isMembership: blog.isMembership,
+                };
+                return resultWithoutMongoId;
             }
             else {
                 return null;
