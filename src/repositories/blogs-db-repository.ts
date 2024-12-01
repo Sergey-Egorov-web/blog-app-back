@@ -83,7 +83,20 @@ export const blogsRepository = {
       id: newBlog.id,
     });
 
-    return result;
+    if (result) {
+      const resultWithoutMongoId: BlogOutputType = {
+        id: result.id,
+        name: result.name,
+        description: result.description,
+        websiteUrl: result.websiteUrl,
+        createdAt: result.createdAt,
+        isMembership: result.isMembership,
+      };
+
+      return resultWithoutMongoId;
+    } else {
+      return null;
+    }
   },
 
   async updateBlogById(

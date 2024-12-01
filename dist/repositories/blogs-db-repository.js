@@ -83,7 +83,20 @@ exports.blogsRepository = {
             const result = yield db_1.blogCollection.findOne({
                 id: newBlog.id,
             });
-            return result;
+            if (result) {
+                const resultWithoutMongoId = {
+                    id: result.id,
+                    name: result.name,
+                    description: result.description,
+                    websiteUrl: result.websiteUrl,
+                    createdAt: result.createdAt,
+                    isMembership: result.isMembership,
+                };
+                return resultWithoutMongoId;
+            }
+            else {
+                return null;
+            }
         });
     },
     updateBlogById(blog, id) {
