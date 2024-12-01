@@ -29,10 +29,10 @@ exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0
     res.status(200).send(allBlogs);
 }));
 //TODO вынести
-exports.blogsRouter.delete("/testing/all-data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield blogs_db_repository_1.blogsRepository.deleteAllBlogs();
-    res.send(204);
-}));
+// blogsRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
+//   await blogsRepository.deleteAllBlogs();
+//   res.send(204);
+// });
 exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogCreateData = req.body;
     const newBlog = yield blogs_db_repository_1.blogsRepository.addNewBlog(blogCreateData);
@@ -58,9 +58,7 @@ exports.blogsRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, 
     else
         res.send(404);
 }));
-exports.blogsRouter.delete("/:id", 
-// basicAuthorizationMiddleware,
-(req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const answer = yield blogs_db_repository_1.blogsRepository.deleteBlogById(id);
     if (answer === true) {

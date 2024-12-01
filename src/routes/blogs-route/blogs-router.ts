@@ -27,10 +27,10 @@ blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
   res.status(200).send(allBlogs);
 });
 //TODO вынести
-blogsRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
-  await blogsRepository.deleteAllBlogs();
-  res.send(204);
-});
+// blogsRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
+//   await blogsRepository.deleteAllBlogs();
+//   res.send(204);
+// });
 
 blogsRouter.post(
   "/",
@@ -78,7 +78,7 @@ blogsRouter.get("/:id", async (req: Request, res: Response) => {
 
 blogsRouter.delete(
   "/:id",
-  // basicAuthorizationMiddleware,
+  basicAuthorizationMiddleware,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const answer = await blogsRepository.deleteBlogById(id);
