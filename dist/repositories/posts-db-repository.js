@@ -16,14 +16,40 @@ const db_1 = require("./db");
 exports.postRepositories = {
     findAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.postCollection.find({}).toArray();
+            const result = yield db_1.postCollection
+                .find({})
+                .toArray();
+            if (result) {
+                const resultWithoutMongoId = result.map((post) => ({
+                    id: post.id,
+                    title: post.title,
+                    shortDescription: post.shortDescription,
+                    content: post.content,
+                    blogId: post.blogId,
+                    blogName: post.blogName,
+                    createdAt: post.createdAt,
+                }));
+                return resultWithoutMongoId;
+            }
+            else {
+                return null;
+            }
         });
     },
     findPost(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield db_1.postCollection.findOne({ id });
             if (post) {
-                return post;
+                const resultWithoutMongoId = {
+                    id: post.id,
+                    title: post.title,
+                    shortDescription: post.shortDescription,
+                    content: post.content,
+                    blogId: post.blogId,
+                    blogName: post.blogName,
+                    createdAt: post.createdAt,
+                };
+                return resultWithoutMongoId;
             }
             else {
                 return null;
@@ -66,7 +92,24 @@ exports.postRepositories = {
                     createdAt: new Date().toISOString(),
                 };
                 yield db_1.postCollection.insertOne(newPost);
-                return newPost;
+                const result = yield db_1.postCollection.findOne({
+                    id: newPost.id,
+                });
+                if (result) {
+                    const resultWithoutMongoId = {
+                        id: result.id,
+                        title: result.title,
+                        shortDescription: result.shortDescription,
+                        content: result.content,
+                        blogId: result.blogId,
+                        blogName: result.blogName,
+                        createdAt: result.createdAt,
+                    };
+                    return resultWithoutMongoId;
+                }
+                else {
+                    return null;
+                }
             }
             else {
                 return null;

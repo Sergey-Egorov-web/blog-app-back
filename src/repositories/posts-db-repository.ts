@@ -15,13 +15,42 @@ export type PostDbType = {
 // export let posts: PostDbType[] = [];
 
 export const postRepositories = {
-  async findAllPosts(): Promise<PostDbType[] | null> {
-    return await postCollection.find({}).toArray();
+  async findAllPosts(): Promise<PostOutputType[] | null> {
+    const result: PostOutputType[] | null = await postCollection
+      .find({})
+      .toArray();
+
+    if (result) {
+      const resultWithoutMongoId: PostOutputType[] | null = result.map(
+        (post) => ({
+          id: post.id,
+          title: post.title,
+          shortDescription: post.shortDescription,
+          content: post.content,
+          blogId: post.blogId,
+          blogName: post.blogName,
+          createdAt: post.createdAt,
+        })
+      );
+
+      return resultWithoutMongoId;
+    } else {
+      return null;
+    }
   },
   async findPost(id: string): Promise<PostOutputType | null> {
     const post: PostOutputType | null = await postCollection.findOne({ id });
     if (post) {
-      return post;
+      const resultWithoutMongoId: PostOutputType = {
+        id: post.id,
+        title: post.title,
+        shortDescription: post.shortDescription,
+        content: post.content,
+        blogId: post.blogId,
+        blogName: post.blogName,
+        createdAt: post.createdAt,
+      };
+      return resultWithoutMongoId;
     } else {
       return null;
     }
@@ -56,7 +85,26 @@ export const postRepositories = {
         createdAt: new Date().toISOString(),
       };
       await postCollection.insertOne(newPost);
-      return newPost;
+
+      const result = await postCollection.findOne({
+        id: newPost.id,
+      });
+
+      if (result) {
+        const resultWithoutMongoId: PostOutputType = {
+          id: result.id,
+          title: result.title,
+          shortDescription: result.shortDescription,
+          content: result.content,
+          blogId: result.blogId,
+          blogName: result.blogName,
+          createdAt: result.createdAt,
+        };
+
+        return resultWithoutMongoId;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
