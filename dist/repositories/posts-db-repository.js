@@ -118,25 +118,38 @@ exports.postRepositories = {
     },
     updatePostById(post, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const updatePost = yield db_1.postCollection.findOne({
+            // const updatePost: PostOutputType | null =
+            yield db_1.postCollection.updateOne({
+                id: id,
+            }, {
+                $set: {
+                    title: post.title,
+                    shortDescription: post.shortDescription,
+                    content: post.content,
+                    // blogId: post.blogId,
+                },
+            });
+            const result = yield db_1.postCollection.findOne({
                 id,
             });
-            if (!updatePost) {
+            if (!result) {
                 return null;
             }
             else {
-                updatePost.title = post.title;
-                updatePost.shortDescription = post.shortDescription;
-                updatePost.content = post.content;
-                updatePost.blogId = post.blogId;
-                const blog = yield blogs_db_repository_1.blogsRepository.findBlog(post.blogId);
-                if (blog) {
-                    updatePost.blogName = blog.name;
-                    return updatePost;
-                }
-                else {
-                    return null;
-                }
+                // updatePost.title = post.title;
+                // updatePost.shortDescription = post.shortDescription;
+                // updatePost.content = post.content;
+                // updatePost.blogId = post.blogId;
+                return result;
+                // const blog: BlogDbType | null = await blogsRepository.findBlog(
+                //   post.blogId
+                // );
+                // if (blog) {
+                //   updatePost.blogName = blog.name;
+                //   return updatePost;
+                // } else {
+                //   return null;
+                // }
             }
         });
     },

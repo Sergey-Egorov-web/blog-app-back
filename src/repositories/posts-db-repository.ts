@@ -113,26 +113,42 @@ export const postRepositories = {
     post: PostInputType,
     id: string
   ): Promise<PostOutputType | null> {
-    const updatePost: PostOutputType | null = await postCollection.findOne({
+    // const updatePost: PostOutputType | null =
+    await postCollection.updateOne(
+      {
+        id: id,
+      },
+      {
+        $set: {
+          title: post.title,
+          shortDescription: post.shortDescription,
+          content: post.content,
+          // blogId: post.blogId,
+        },
+      }
+    );
+
+    const result = await postCollection.findOne({
       id,
     });
-    if (!updatePost) {
+    if (!result) {
       return null;
     } else {
-      updatePost.title = post.title;
-      updatePost.shortDescription = post.shortDescription;
-      updatePost.content = post.content;
-      updatePost.blogId = post.blogId;
+      // updatePost.title = post.title;
+      // updatePost.shortDescription = post.shortDescription;
+      // updatePost.content = post.content;
+      // updatePost.blogId = post.blogId;
+      return result;
 
-      const blog: BlogDbType | null = await blogsRepository.findBlog(
-        post.blogId
-      );
-      if (blog) {
-        updatePost.blogName = blog.name;
-        return updatePost;
-      } else {
-        return null;
-      }
+      // const blog: BlogDbType | null = await blogsRepository.findBlog(
+      //   post.blogId
+      // );
+      // if (blog) {
+      //   updatePost.blogName = blog.name;
+      //   return updatePost;
+      // } else {
+      //   return null;
+      // }
     }
   },
 };
