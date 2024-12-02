@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { blogsRepository } from "../repositories/blogs-in-memory-repository";
+import { blogsRepository } from "../repositories/blogs-db-repository";
 
 export function blogIdPostValidation() {
   return body("blogId")
@@ -9,7 +9,7 @@ export function blogIdPostValidation() {
     .notEmpty()
     .withMessage("blogId can't be empty")
     .custom(async (id) => {
-      const blog = blogsRepository.findBlog(id);
+      const blog = await blogsRepository.findBlog(id);
       if (!blog) {
         throw new Error("Blog not found");
       }
