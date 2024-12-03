@@ -9,6 +9,7 @@ import { descriptionValidation } from "../../middlewares/description-validation"
 import { webSiteUrlValidation } from "../../middlewares/webSiteUrl-validation";
 import { BlogInputType, BlogOutputType } from "../../types";
 import { nameValidation } from "../../middlewares/name-validation";
+import { blogsService } from "../../domains/blogs-service";
 
 export const blogsRouter = Router({});
 
@@ -22,15 +23,10 @@ const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
 blogsRouter.use(ITINCUBATOR);
 
 blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
-  const allBlogs = await blogsRepository.findAllBlogs();
+  const allBlogs = await blogsService.findAllBlogs();
 
   res.status(200).send(allBlogs);
 });
-//TODO вынести
-// blogsRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
-//   await blogsRepository.deleteAllBlogs();
-//   res.send(204);
-// });
 
 blogsRouter.post(
   "/",
@@ -41,7 +37,7 @@ blogsRouter.post(
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
     const blogCreateData: BlogInputType = req.body;
-    const newBlog: BlogOutputType | null = await blogsRepository.addNewBlog(
+    const newBlog: BlogOutputType | null = await blogsService.addNewBlog(
       blogCreateData
     );
 
@@ -59,7 +55,7 @@ blogsRouter.put(
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const blogUpdateData: BlogInputType = req.body;
-    const updateBlog = await blogsRepository.updateBlogById(blogUpdateData, id);
+    const updateBlog = await blogsService.updateBlogById(blogUpdateData, id);
     if (updateBlog) {
       res.status(204).send(updateBlog);
     } else {
@@ -70,7 +66,7 @@ blogsRouter.put(
 
 blogsRouter.get("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  let blog = await blogsRepository.findBlog(id);
+  let blog = await blogsService.findBlog(id);
   if (blog) {
     res.send(blog);
   } else res.send(404);
@@ -81,7 +77,7 @@ blogsRouter.delete(
   basicAuthorizationMiddleware,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    const answer = await blogsRepository.deleteBlogById(id);
+    const answer = await blogsService.deleteBlogById(id);
     if (answer === true) {
       res.sendStatus(204);
     } else {

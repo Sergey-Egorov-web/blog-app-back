@@ -51,7 +51,7 @@ export const blogsService = {
   async deleteAllBlogs(): Promise<boolean> {
     const result = await blogsRepository.deleteAllBlogs();
 
-    if (result.deletedCount > 0) {
+    if (result === true) {
       return true;
     } else {
       return false;
@@ -61,7 +61,7 @@ export const blogsService = {
   async deleteBlogById(id: string): Promise<boolean> {
     const result = await blogsRepository.deleteBlogById(id);
 
-    if (result.deletedCount === 1) {
+    if (result === true) {
       return true;
     } else {
       return false;
@@ -82,21 +82,10 @@ export const blogsService = {
 
     // return newBlog;
 
-    const result = await blogCollection.findOne({
-      id: newBlog.id,
-    });
+    const result = await blogsService.findBlog(newBlog.id);
 
     if (result) {
-      const resultWithoutMongoId: BlogOutputType = {
-        id: result.id,
-        name: result.name,
-        description: result.description,
-        websiteUrl: result.websiteUrl,
-        createdAt: result.createdAt,
-        isMembership: result.isMembership,
-      };
-
-      return resultWithoutMongoId;
+      return result;
     } else {
       return null;
     }
@@ -106,18 +95,19 @@ export const blogsService = {
     blog: BlogInputType,
     id: string
   ): Promise<BlogOutputType | null> {
-    const result = await blogCollection.updateOne(
-      { id: id },
-      {
-        $set: {
-          name: blog.name,
-          description: blog.description,
-          websiteUrl: blog.websiteUrl,
-        },
-      }
+    const result = await blogsRepository.updateBlogById(
+      id,
+      blog
+      // {
+      //   $set: {
+      //     name: blog.name,
+      //     description: blog.description,
+      //     websiteUrl: blog.websiteUrl,
+      //   },
+      // }
     );
 
-    let updateBlog = await blogCollection.findOne({ id });
+    let updateBlog = await blogsRepository.findBlog(id);
     if (updateBlog) {
       return updateBlog;
     } else {

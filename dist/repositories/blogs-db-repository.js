@@ -14,7 +14,6 @@ const db_1 = require("./db");
 exports.blogsRepository = {
     findAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            // return blogs;
             const result = yield db_1.blogCollection.find({}).toArray();
             // const resultWithoutMongoId = result.map((model) => ({
             //   id: model.id,
@@ -69,16 +68,16 @@ exports.blogsRepository = {
             }
         });
     },
-    addNewBlog(blog) {
+    addNewBlog(newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newBlog = {
-                id: Date.now().toString(),
-                name: blog.name,
-                description: blog.description,
-                websiteUrl: blog.websiteUrl,
-                createdAt: new Date().toISOString(),
-                isMembership: false,
-            };
+            // const newBlog = {
+            //   id: Date.now().toString(),
+            //   name: blog.name,
+            //   description: blog.description,
+            //   websiteUrl: blog.websiteUrl,
+            //   createdAt: new Date().toISOString(),
+            //   isMembership: false,
+            // };
             yield db_1.blogCollection.insertOne(newBlog);
             // return newBlog;
             const result = yield db_1.blogCollection.findOne({
@@ -100,7 +99,7 @@ exports.blogsRepository = {
             }
         });
     },
-    updateBlogById(blog, id) {
+    updateBlogById(id, blog) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield db_1.blogCollection.updateOne({ id: id }, {
                 $set: {

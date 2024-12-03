@@ -54,7 +54,7 @@ exports.blogsService = {
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield blogs_db_repository_1.blogsRepository.deleteAllBlogs();
-            if (result.deletedCount > 0) {
+            if (result === true) {
                 return true;
             }
             else {
@@ -65,7 +65,7 @@ exports.blogsService = {
     deleteBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield blogs_db_repository_1.blogsRepository.deleteBlogById(id);
-            if (result.deletedCount === 1) {
+            if (result === true) {
                 return true;
             }
             else {
@@ -85,19 +85,9 @@ exports.blogsService = {
             };
             yield blogs_db_repository_1.blogsRepository.addNewBlog(newBlog);
             // return newBlog;
-            const result = yield blogCollection.findOne({
-                id: newBlog.id,
-            });
+            const result = yield exports.blogsService.findBlog(newBlog.id);
             if (result) {
-                const resultWithoutMongoId = {
-                    id: result.id,
-                    name: result.name,
-                    description: result.description,
-                    websiteUrl: result.websiteUrl,
-                    createdAt: result.createdAt,
-                    isMembership: result.isMembership,
-                };
-                return resultWithoutMongoId;
+                return result;
             }
             else {
                 return null;
@@ -106,14 +96,16 @@ exports.blogsService = {
     },
     updateBlogById(blog, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield blogCollection.updateOne({ id: id }, {
-                $set: {
-                    name: blog.name,
-                    description: blog.description,
-                    websiteUrl: blog.websiteUrl,
-                },
-            });
-            let updateBlog = yield blogCollection.findOne({ id });
+            const result = yield blogs_db_repository_1.blogsRepository.updateBlogById(id, blog
+            // {
+            //   $set: {
+            //     name: blog.name,
+            //     description: blog.description,
+            //     websiteUrl: blog.websiteUrl,
+            //   },
+            // }
+            );
+            let updateBlog = yield blogs_db_repository_1.blogsRepository.findBlog(id);
             if (updateBlog) {
                 return updateBlog;
             }

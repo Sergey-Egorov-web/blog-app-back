@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { blogsRepository } from "../repositories/blogs-db-repository";
+
+import { blogsService } from "../domains/blogs-service";
 
 export const checkBlogExistsMiddleware = (
   req: Request,
@@ -8,7 +9,7 @@ export const checkBlogExistsMiddleware = (
 ) => {
   const blogId = req.body.blogId;
   // req.body.blogId;
-  const blog = blogsRepository.findBlog(blogId);
+  const blog = blogsService.findBlog(blogId);
 
   if (!blog) {
     return res.status(404).send("Blog not found");

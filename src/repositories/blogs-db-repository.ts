@@ -13,7 +13,6 @@ export type BlogDbType = {
 
 export const blogsRepository = {
   async findAllBlogs(): Promise<BlogDbType[] | null> {
-    // return blogs;
     const result = await blogCollection.find({}).toArray();
 
     // const resultWithoutMongoId = result.map((model) => ({
@@ -66,15 +65,15 @@ export const blogsRepository = {
     }
   },
 
-  async addNewBlog(blog: BlogInputType): Promise<BlogOutputType | null> {
-    const newBlog = {
-      id: Date.now().toString(),
-      name: blog.name,
-      description: blog.description,
-      websiteUrl: blog.websiteUrl,
-      createdAt: new Date().toISOString(),
-      isMembership: false,
-    };
+  async addNewBlog(newBlog: BlogDbType): Promise<BlogOutputType | null> {
+    // const newBlog = {
+    //   id: Date.now().toString(),
+    //   name: blog.name,
+    //   description: blog.description,
+    //   websiteUrl: blog.websiteUrl,
+    //   createdAt: new Date().toISOString(),
+    //   isMembership: false,
+    // };
 
     await blogCollection.insertOne(newBlog);
 
@@ -101,8 +100,8 @@ export const blogsRepository = {
   },
 
   async updateBlogById(
-    blog: BlogInputType,
-    id: string
+    id: string,
+    blog: BlogInputType
   ): Promise<BlogOutputType | null> {
     const result = await blogCollection.updateOne(
       { id: id },
