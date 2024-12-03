@@ -11,11 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.testingRouter = void 0;
 const express_1 = require("express");
-const posts_db_repository_1 = require("../repositories/posts-db-repository");
 const blogs_service_1 = require("../domains/blogs-service");
+const posts_service_1 = require("../domains/posts-service");
 exports.testingRouter = (0, express_1.Router)({});
 exports.testingRouter.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield blogs_service_1.blogsService.deleteAllBlogs();
-    posts_db_repository_1.postRepositories.deleteAllPosts();
+    posts_service_1.postService.deleteAllPosts();
     res.send(204);
 }));

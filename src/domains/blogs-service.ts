@@ -1,14 +1,5 @@
 import { blogsRepository } from "../repositories/blogs-db-repository";
-import { BlogInputType, BlogOutputType } from "../types";
-
-export type BlogDbType = {
-  id: string;
-  name: string;
-  description: string;
-  websiteUrl: string;
-  createdAt: string;
-  isMembership: boolean;
-};
+import { BlogDbType, BlogInputType, BlogOutputType } from "../types";
 
 export const blogsService = {
   async findAllBlogs(): Promise<BlogDbType[] | null> {
@@ -30,7 +21,7 @@ export const blogsService = {
       return null;
     }
   },
-  async findBlog(id: string): Promise<BlogOutputType | null> {
+  async findBlogById(id: string): Promise<BlogOutputType | null> {
     const blog: BlogOutputType | null = await blogsRepository.findBlog(id);
 
     if (blog) {
@@ -82,7 +73,7 @@ export const blogsService = {
 
     // return newBlog;
 
-    const result = await blogsService.findBlog(newBlog.id);
+    const result = await blogsService.findBlogById(newBlog.id);
 
     if (result) {
       return result;

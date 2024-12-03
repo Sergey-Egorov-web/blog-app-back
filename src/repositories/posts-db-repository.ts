@@ -1,16 +1,16 @@
-import { PostInputType, PostOutputType } from "../types";
+import { PostDbType, PostInputType, PostOutputType } from "../types";
 import { BlogDbType, blogsRepository } from "./blogs-db-repository";
 import { postCollection } from "./db";
 
-export type PostDbType = {
-  id: string;
-  title: string;
-  shortDescription: string;
-  content: string;
-  blogId: string;
-  blogName: string;
-  createdAt: string;
-};
+// export type PostDbType = {
+//   id: string;
+//   title: string;
+//   shortDescription: string;
+//   content: string;
+//   blogId: string;
+//   blogName: string;
+//   createdAt: string;
+// };
 
 // export let posts: PostDbType[] = [];
 
@@ -38,7 +38,7 @@ export const postRepositories = {
       return null;
     }
   },
-  async findPost(id: string): Promise<PostOutputType | null> {
+  async findPostById(id: string): Promise<PostOutputType | null> {
     const post: PostOutputType | null = await postCollection.findOne({ id });
     if (post) {
       const resultWithoutMongoId: PostOutputType = {
@@ -71,47 +71,47 @@ export const postRepositories = {
       return false;
     }
   },
-  async addNewPost(post: PostInputType): Promise<PostOutputType | null> {
-    const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
+  async addNewPost(newPost: PostDbType): Promise<PostOutputType | null> {
+    // const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
 
-    if (blog) {
-      const newPost: PostOutputType | null = {
-        id: Date.now().toString(),
-        title: post.title,
-        shortDescription: post.shortDescription,
-        content: post.content,
-        blogId: post.blogId,
-        blogName: blog.name,
-        createdAt: new Date().toISOString(),
+    // if (blog) {
+    //   const newPost: PostOutputType | null = {
+    //     id: Date.now().toString(),
+    //     title: post.title,
+    //     shortDescription: post.shortDescription,
+    //     content: post.content,
+    //     blogId: post.blogId,
+    //     blogName: blog.name,
+    //     createdAt: new Date().toISOString(),
+    //   };
+    await postCollection.insertOne(newPost);
+
+    const result = await postCollection.findOne({
+      id: newPost.id,
+    });
+
+    if (result) {
+      const resultWithoutMongoId: PostOutputType = {
+        id: result.id,
+        title: result.title,
+        shortDescription: result.shortDescription,
+        content: result.content,
+        blogId: result.blogId,
+        blogName: result.blogName,
+        createdAt: result.createdAt,
       };
-      await postCollection.insertOne(newPost);
 
-      const result = await postCollection.findOne({
-        id: newPost.id,
-      });
-
-      if (result) {
-        const resultWithoutMongoId: PostOutputType = {
-          id: result.id,
-          title: result.title,
-          shortDescription: result.shortDescription,
-          content: result.content,
-          blogId: result.blogId,
-          blogName: result.blogName,
-          createdAt: result.createdAt,
-        };
-
-        return resultWithoutMongoId;
-      } else {
-        return null;
-      }
+      return resultWithoutMongoId;
     } else {
       return null;
     }
+    // } else {
+    //   return null;
+    // }
   },
   async updatePostById(
-    post: PostInputType,
-    id: string
+    id: string,
+    post: PostInputType
   ): Promise<PostOutputType | null> {
     // const updatePost: PostOutputType | null =
     await postCollection.updateOne(

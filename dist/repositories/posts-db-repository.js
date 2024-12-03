@@ -10,8 +10,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepositories = void 0;
-const blogs_db_repository_1 = require("./blogs-db-repository");
 const db_1 = require("./db");
+// export type PostDbType = {
+//   id: string;
+//   title: string;
+//   shortDescription: string;
+//   content: string;
+//   blogId: string;
+//   blogName: string;
+//   createdAt: string;
+// };
 // export let posts: PostDbType[] = [];
 exports.postRepositories = {
     findAllPosts() {
@@ -36,7 +44,7 @@ exports.postRepositories = {
             }
         });
     },
-    findPost(id) {
+    findPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield db_1.postCollection.findOne({ id });
             if (post) {
@@ -78,45 +86,44 @@ exports.postRepositories = {
             }
         });
     },
-    addNewPost(post) {
+    addNewPost(newPost) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blogs_db_repository_1.blogsRepository.findBlog(post.blogId);
-            if (blog) {
-                const newPost = {
-                    id: Date.now().toString(),
-                    title: post.title,
-                    shortDescription: post.shortDescription,
-                    content: post.content,
-                    blogId: post.blogId,
-                    blogName: blog.name,
-                    createdAt: new Date().toISOString(),
+            // const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
+            // if (blog) {
+            //   const newPost: PostOutputType | null = {
+            //     id: Date.now().toString(),
+            //     title: post.title,
+            //     shortDescription: post.shortDescription,
+            //     content: post.content,
+            //     blogId: post.blogId,
+            //     blogName: blog.name,
+            //     createdAt: new Date().toISOString(),
+            //   };
+            yield db_1.postCollection.insertOne(newPost);
+            const result = yield db_1.postCollection.findOne({
+                id: newPost.id,
+            });
+            if (result) {
+                const resultWithoutMongoId = {
+                    id: result.id,
+                    title: result.title,
+                    shortDescription: result.shortDescription,
+                    content: result.content,
+                    blogId: result.blogId,
+                    blogName: result.blogName,
+                    createdAt: result.createdAt,
                 };
-                yield db_1.postCollection.insertOne(newPost);
-                const result = yield db_1.postCollection.findOne({
-                    id: newPost.id,
-                });
-                if (result) {
-                    const resultWithoutMongoId = {
-                        id: result.id,
-                        title: result.title,
-                        shortDescription: result.shortDescription,
-                        content: result.content,
-                        blogId: result.blogId,
-                        blogName: result.blogName,
-                        createdAt: result.createdAt,
-                    };
-                    return resultWithoutMongoId;
-                }
-                else {
-                    return null;
-                }
+                return resultWithoutMongoId;
             }
             else {
                 return null;
             }
+            // } else {
+            //   return null;
+            // }
         });
     },
-    updatePostById(post, id) {
+    updatePostById(id, post) {
         return __awaiter(this, void 0, void 0, function* () {
             // const updatePost: PostOutputType | null =
             yield db_1.postCollection.updateOne({

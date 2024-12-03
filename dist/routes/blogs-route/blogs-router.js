@@ -46,7 +46,7 @@ exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
 }));
 exports.blogsRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let blog = yield blogs_service_1.blogsService.findBlog(id);
+    let blog = yield blogs_service_1.blogsService.findBlogById(id);
     if (blog) {
         res.send(blog);
     }

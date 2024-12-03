@@ -19,13 +19,14 @@ const title_post_validation_1 = require("../../middlewares/title-post-validation
 const short_description_post_validation_1 = require("../../middlewares/short-description-post-validation");
 const content_post_validation_1 = require("../../middlewares/content-post-validation");
 const blogId_post_validation_1 = require("../../middlewares/blogId-post-validation");
+const posts_service_1 = require("../../domains/posts-service");
 exports.postsRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const allPosts = yield posts_db_repository_1.postRepositories.findAllPosts();
     res.status(200).send(allPosts);
 }));
 exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), (0, blogId_post_validation_1.blogIdPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const postCreateData = req.body;
-    const newPost = yield posts_db_repository_1.postRepositories.addNewPost(postCreateData);
+    const newPost = yield posts_service_1.postService.addNewPost(postCreateData);
     if (newPost) {
         res.status(201).send(newPost);
     }
@@ -35,7 +36,7 @@ exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
 }));
 exports.postsRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let post = yield posts_db_repository_1.postRepositories.findPost(id);
+    let post = yield posts_service_1.postService.findPostById(id);
     if (post) {
         res.send(post);
     }
@@ -44,7 +45,7 @@ exports.postsRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, 
 }));
 exports.postsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const answer = yield posts_db_repository_1.postRepositories.deletePostById(id);
+    const answer = yield posts_service_1.postService.deletePostById(id);
     if (answer === true) {
         res.sendStatus(204);
     }
@@ -55,7 +56,7 @@ exports.postsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthori
 exports.postsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), (0, blogId_post_validation_1.blogIdPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const postUpdateData = req.body;
-    const updatePost = yield posts_db_repository_1.postRepositories.updatePostById(postUpdateData, id);
+    const updatePost = yield posts_service_1.postService.updatePostById(id, postUpdateData);
     if (updatePost) {
         res.status(204).send(updatePost);
     }

@@ -10,6 +10,7 @@ import { titlePostValidation } from "../../middlewares/title-post-validation";
 import { shortDescriptionPostValidation } from "../../middlewares/short-description-post-validation";
 import { contentPostValidation } from "../../middlewares/content-post-validation";
 import { blogIdPostValidation } from "../../middlewares/blogId-post-validation";
+import { postService } from "../../domains/posts-service";
 
 postsRouter.get("/", async (req: Request, res: Response) => {
   const allPosts = await postRepositories.findAllPosts();
@@ -27,7 +28,7 @@ postsRouter.post(
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
     const postCreateData: PostInputType = req.body;
-    const newPost: PostOutputType | null = await postRepositories.addNewPost(
+    const newPost: PostOutputType | null = await postService.addNewPost(
       postCreateData
     );
 
@@ -41,7 +42,7 @@ postsRouter.post(
 
 postsRouter.get("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  let post = await postRepositories.findPost(id);
+  let post = await postService.findPostById(id);
   if (post) {
     res.send(post);
   } else res.send(404);
@@ -52,7 +53,7 @@ postsRouter.delete(
   basicAuthorizationMiddleware,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    const answer = await postRepositories.deletePostById(id);
+    const answer = await postService.deletePostById(id);
     if (answer === true) {
       res.sendStatus(204);
     } else {
@@ -72,10 +73,7 @@ postsRouter.put(
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const postUpdateData: PostInputType = req.body;
-    const updatePost = await postRepositories.updatePostById(
-      postUpdateData,
-      id
-    );
+    const updatePost = await postService.updatePostById(id, postUpdateData);
     if (updatePost) {
       res.status(204).send(updatePost);
     } else {

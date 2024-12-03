@@ -66,7 +66,7 @@ blogsRouter.put(
 
 blogsRouter.get("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  let blog = await blogsService.findBlog(id);
+  let blog = await blogsService.findBlogById(id);
   if (blog) {
     res.send(blog);
   } else res.send(404);

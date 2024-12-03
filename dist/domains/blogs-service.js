@@ -32,7 +32,7 @@ exports.blogsService = {
             }
         });
     },
-    findBlog(id) {
+    findBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield blogs_db_repository_1.blogsRepository.findBlog(id);
             if (blog) {
@@ -85,7 +85,7 @@ exports.blogsService = {
             };
             yield blogs_db_repository_1.blogsRepository.addNewBlog(newBlog);
             // return newBlog;
-            const result = yield exports.blogsService.findBlog(newBlog.id);
+            const result = yield exports.blogsService.findBlogById(newBlog.id);
             if (result) {
                 return result;
             }

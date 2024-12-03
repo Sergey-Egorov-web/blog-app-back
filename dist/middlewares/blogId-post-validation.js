@@ -20,7 +20,7 @@ function blogIdPostValidation() {
         .notEmpty()
         .withMessage("blogId can't be empty")
         .custom((id) => __awaiter(this, void 0, void 0, function* () {
-        const blog = yield blogs_service_1.blogsService.findBlog(id);
+        const blog = yield blogs_service_1.blogsService.findBlogById(id);
         if (!blog) {
             throw new Error("Blog not found");
         }

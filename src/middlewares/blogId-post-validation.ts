@@ -10,7 +10,7 @@ export function blogIdPostValidation() {
     .notEmpty()
     .withMessage("blogId can't be empty")
     .custom(async (id) => {
-      const blog = await blogsService.findBlog(id);
+      const blog = await blogsService.findBlogById(id);
       if (!blog) {
         throw new Error("Blog not found");
       }
