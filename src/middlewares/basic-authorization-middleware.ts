@@ -16,8 +16,7 @@ export const basicAuthorizationMiddleware = (
   // const data = `${username}:${password}`; // admin:qwerty
 
   // const data = `${"admin"}:${"qwerty"}`;
-  console.log(username);
-  console.log(password);
+
   const base64data = Buffer.from(`${username}:${password}`).toString("base64");
   // const base64data = Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64"); //кодируем data в String base64
   const validAuthorizationValue = `Basic ${base64data}`;

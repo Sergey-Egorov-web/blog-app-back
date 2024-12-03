@@ -9,8 +9,6 @@ const basicAuthorizationMiddleware = (req, res, next) => {
     //TODO вынести в переменные
     // const data = `${username}:${password}`; // admin:qwerty
     // const data = `${"admin"}:${"qwerty"}`;
-    console.log(configuration_1.username);
-    console.log(configuration_1.password);
     const base64data = Buffer.from(`${configuration_1.username}:${configuration_1.password}`).toString("base64");
     // const base64data = Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64"); //кодируем data в String base64
     const validAuthorizationValue = `Basic ${base64data}`;

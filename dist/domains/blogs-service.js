@@ -9,28 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsRepository = void 0;
-const db_1 = require("./db");
-exports.blogsRepository = {
+exports.blogsService = void 0;
+const blogs_db_repository_1 = require("../repositories/blogs-db-repository");
+exports.blogsService = {
     findAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
             // return blogs;
-            const result = yield db_1.blogCollection.find({}).toArray();
-            // const resultWithoutMongoId = result.map((model) => ({
-            //   id: model.id,
-            //   name: model.name,
-            //   description: model.description,
-            //   websiteUrl: model.websiteUrl,
-            //   createdAt: model.createdAt,
-            //   isMembership: model.isMembership,
-            // }));
-            // return resultWithoutMongoId;
-            return result;
+            const result = yield blogs_db_repository_1.blogsRepository.findAllBlogs();
+            if (result) {
+                const resultWithoutMongoId = result.map((model) => ({
+                    id: model.id,
+                    name: model.name,
+                    description: model.description,
+                    websiteUrl: model.websiteUrl,
+                    createdAt: model.createdAt,
+                    isMembership: model.isMembership,
+                }));
+                return resultWithoutMongoId;
+            }
+            else {
+                return null;
+            }
         });
     },
     findBlog(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield db_1.blogCollection.findOne({ id });
+            const blog = yield blogs_db_repository_1.blogsRepository.findBlog(id);
             if (blog) {
                 const resultWithoutMongoId = {
                     id: blog.id,
@@ -49,7 +53,7 @@ exports.blogsRepository = {
     },
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.blogCollection.deleteMany({});
+            const result = yield blogs_db_repository_1.blogsRepository.deleteAllBlogs();
             if (result.deletedCount > 0) {
                 return true;
             }
@@ -60,7 +64,7 @@ exports.blogsRepository = {
     },
     deleteBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.blogCollection.deleteOne({ id: id });
+            const result = yield blogs_db_repository_1.blogsRepository.deleteBlogById(id);
             if (result.deletedCount === 1) {
                 return true;
             }
@@ -79,9 +83,9 @@ exports.blogsRepository = {
                 createdAt: new Date().toISOString(),
                 isMembership: false,
             };
-            yield db_1.blogCollection.insertOne(newBlog);
+            yield blogs_db_repository_1.blogsRepository.addNewBlog(newBlog);
             // return newBlog;
-            const result = yield db_1.blogCollection.findOne({
+            const result = yield blogCollection.findOne({
                 id: newBlog.id,
             });
             if (result) {
@@ -102,14 +106,14 @@ exports.blogsRepository = {
     },
     updateBlogById(blog, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.blogCollection.updateOne({ id: id }, {
+            const result = yield blogCollection.updateOne({ id: id }, {
                 $set: {
                     name: blog.name,
                     description: blog.description,
                     websiteUrl: blog.websiteUrl,
                 },
             });
-            let updateBlog = yield db_1.blogCollection.findOne({ id });
+            let updateBlog = yield blogCollection.findOne({ id });
             if (updateBlog) {
                 return updateBlog;
             }

@@ -1,6 +1,5 @@
-import { Result } from "express-validator";
+import { blogsRepository } from "../repositories/blogs-db-repository";
 import { BlogInputType, BlogOutputType } from "../types";
-import { blogCollection } from "./db";
 
 export type BlogDbType = {
   id: string;
@@ -11,25 +10,28 @@ export type BlogDbType = {
   isMembership: boolean;
 };
 
-export const blogsRepository = {
+export const blogsService = {
   async findAllBlogs(): Promise<BlogDbType[] | null> {
     // return blogs;
-    const result = await blogCollection.find({}).toArray();
+    const result = await blogsRepository.findAllBlogs();
 
-    // const resultWithoutMongoId = result.map((model) => ({
-    //   id: model.id,
-    //   name: model.name,
-    //   description: model.description,
-    //   websiteUrl: model.websiteUrl,
-    //   createdAt: model.createdAt,
-    //   isMembership: model.isMembership,
-    // }));
+    if (result) {
+      const resultWithoutMongoId = result.map((model) => ({
+        id: model.id,
+        name: model.name,
+        description: model.description,
+        websiteUrl: model.websiteUrl,
+        createdAt: model.createdAt,
+        isMembership: model.isMembership,
+      }));
 
-    // return resultWithoutMongoId;
-    return result;
+      return resultWithoutMongoId;
+    } else {
+      return null;
+    }
   },
   async findBlog(id: string): Promise<BlogOutputType | null> {
-    const blog: BlogOutputType | null = await blogCollection.findOne({ id });
+    const blog: BlogOutputType | null = await blogsRepository.findBlog(id);
 
     if (blog) {
       const resultWithoutMongoId: BlogOutputType = {
@@ -47,7 +49,7 @@ export const blogsRepository = {
     }
   },
   async deleteAllBlogs(): Promise<boolean> {
-    const result = await blogCollection.deleteMany({});
+    const result = await blogsRepository.deleteAllBlogs();
 
     if (result.deletedCount > 0) {
       return true;
@@ -57,7 +59,7 @@ export const blogsRepository = {
   },
 
   async deleteBlogById(id: string): Promise<boolean> {
-    const result = await blogCollection.deleteOne({ id: id });
+    const result = await blogsRepository.deleteBlogById(id);
 
     if (result.deletedCount === 1) {
       return true;
@@ -76,7 +78,7 @@ export const blogsRepository = {
       isMembership: false,
     };
 
-    await blogCollection.insertOne(newBlog);
+    await blogsRepository.addNewBlog(newBlog);
 
     // return newBlog;
 
