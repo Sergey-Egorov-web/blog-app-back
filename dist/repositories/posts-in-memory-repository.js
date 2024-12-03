@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepositories = exports.posts = void 0;
 const blogs_db_repository_1 = require("./blogs-db-repository");
+// import { PostDbType } from "./posts-db-repository";
 // export type PostDbType = {
 //   id: string;
 //   title: string;

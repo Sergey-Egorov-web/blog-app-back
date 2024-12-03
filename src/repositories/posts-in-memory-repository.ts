@@ -1,6 +1,6 @@
-import { PostInputType, PostOutputType } from "../types";
+import { PostDbType, PostInputType, PostOutputType } from "../types";
 import { BlogDbType, blogsRepository } from "./blogs-db-repository";
-import { PostDbType } from "./posts-db-repository";
+// import { PostDbType } from "./posts-db-repository";
 
 // export type PostDbType = {
 //   id: string;
