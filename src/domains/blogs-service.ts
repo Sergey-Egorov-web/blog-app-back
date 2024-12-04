@@ -2,9 +2,41 @@ import { blogsRepository } from "../repositories/blogs-db-repository";
 import { BlogDbType, BlogInputType, BlogOutputType } from "../types";
 
 export const blogsService = {
-  async findAllBlogs(): Promise<BlogDbType[] | null> {
+  // async findAllBlogs(): Promise<BlogDbType[] | null> {
+  //   // return blogs;
+  //   const result = await blogsRepository.findAllBlogs();
+
+  //   if (result) {
+  //     const resultWithoutMongoId = result.map((model) => ({
+  //       id: model.id,
+  //       name: model.name,
+  //       description: model.description,
+  //       websiteUrl: model.websiteUrl,
+  //       createdAt: model.createdAt,
+  //       isMembership: model.isMembership,
+  //     }));
+
+  //     return resultWithoutMongoId;
+  //   } else {
+  //     return null;
+  //   }
+  // },
+
+  async findAllBlogs(
+    pageNumber: number,
+    pageSize: number,
+    sortBy: string,
+    sortDirection: "asc" | "desc",
+    searchNameTerm: string | null
+  ): Promise<BlogDbType[] | null> {
     // return blogs;
-    const result = await blogsRepository.findAllBlogs();
+    const result = await blogsRepository.findAllBlogs(
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection,
+      searchNameTerm
+    );
 
     if (result) {
       const resultWithoutMongoId = result.map((model) => ({

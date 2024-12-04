@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
-import { PostOutputType } from "../types";
-import { BlogDbType } from "./blogs-db-repository";
+import { BlogDbType, PostOutputType } from "../types";
+
 import "dotenv/config";
 
 const mongoUri = process.env.MONGO_URL;

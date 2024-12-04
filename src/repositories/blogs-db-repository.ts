@@ -1,30 +1,26 @@
-import { Result } from "express-validator";
-import { BlogInputType, BlogOutputType } from "../types";
+import { BlogDbType, BlogInputType, BlogOutputType } from "../types";
 import { blogCollection } from "./db";
 
-export type BlogDbType = {
-  id: string;
-  name: string;
-  description: string;
-  websiteUrl: string;
-  createdAt: string;
-  isMembership: boolean;
-};
-
 export const blogsRepository = {
-  async findAllBlogs(): Promise<BlogDbType[] | null> {
-    const result = await blogCollection.find({}).toArray();
+  async findAllBlogs(
+    pageNumber: number,
+    pageSize: number,
+    sortBy: string,
+    sortDirection: "asc" | "desc",
+    searchNameTerm: string | null
+  ): Promise<BlogDbType[] | null> {
+    const filter: any = {};
 
-    // const resultWithoutMongoId = result.map((model) => ({
-    //   id: model.id,
-    //   name: model.name,
-    //   description: model.description,
-    //   websiteUrl: model.websiteUrl,
-    //   createdAt: model.createdAt,
-    //   isMembership: model.isMembership,
-    // }));
+    if (searchNameTerm) {
+      filter.title = { $regex: searchNameTerm, $option: "i" };
+    }
+    const result = await blogCollection
+      .find({ filter })
+      .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .toArray();
 
-    // return resultWithoutMongoId;
     return result;
   },
   async findBlog(id: string): Promise<BlogOutputType | null> {

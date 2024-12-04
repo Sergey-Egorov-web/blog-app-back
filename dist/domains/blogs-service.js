@@ -12,10 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsService = void 0;
 const blogs_db_repository_1 = require("../repositories/blogs-db-repository");
 exports.blogsService = {
-    findAllBlogs() {
+    // async findAllBlogs(): Promise<BlogDbType[] | null> {
+    //   // return blogs;
+    //   const result = await blogsRepository.findAllBlogs();
+    //   if (result) {
+    //     const resultWithoutMongoId = result.map((model) => ({
+    //       id: model.id,
+    //       name: model.name,
+    //       description: model.description,
+    //       websiteUrl: model.websiteUrl,
+    //       createdAt: model.createdAt,
+    //       isMembership: model.isMembership,
+    //     }));
+    //     return resultWithoutMongoId;
+    //   } else {
+    //     return null;
+    //   }
+    // },
+    findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm) {
         return __awaiter(this, void 0, void 0, function* () {
             // return blogs;
-            const result = yield blogs_db_repository_1.blogsRepository.findAllBlogs();
+            const result = yield blogs_db_repository_1.blogsRepository.findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm);
             if (result) {
                 const resultWithoutMongoId = result.map((model) => ({
                     id: model.id,

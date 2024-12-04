@@ -1,7 +1,4 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { blogsRepository } from "../../repositories/blogs-db-repository";
-import { body, validationResult } from "express-validator";
-
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
 import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorization-middleware";
 
@@ -10,6 +7,7 @@ import { webSiteUrlValidation } from "../../middlewares/webSiteUrl-validation";
 import { BlogInputType, BlogOutputType } from "../../types";
 import { nameValidation } from "../../middlewares/name-validation";
 import { blogsService } from "../../domains/blogs-service";
+import { SortDirection } from "mongodb";
 
 export const blogsRouter = Router({});
 
@@ -22,11 +20,41 @@ const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
 
 blogsRouter.use(ITINCUBATOR);
 
-blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
-  const allBlogs = await blogsService.findAllBlogs();
+// blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
+//   const allBlogs = await blogsService.findAllBlogs();
 
-  res.status(200).send(allBlogs);
-});
+//   res.status(200).send(allBlogs);
+// });
+
+blogsRouter.get(
+  "/{blogId}/posts",
+  ITINCUBATOR,
+  async (req: Request, res: Response) => {
+    // const allBlogs = await blogsService.findAllBlogs();
+
+    let pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    let pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    let sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    let sortDirection: SortDirection =
+      req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+
+    let searchNameTerm = req.query.searchNameTerm
+      ? req.query.searchNameTerm.toString()
+      : null;
+
+    const allBlogs = await blogsService.findAllBlogs(
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection,
+      searchNameTerm
+    );
+
+    res.status(200).send(allBlogs);
+  }
+);
 
 blogsRouter.post(
   "/",

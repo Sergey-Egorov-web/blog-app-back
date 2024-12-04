@@ -1,18 +1,6 @@
 import { PostDbType, PostInputType, PostOutputType } from "../types";
-// import { BlogDbType, blogsRepository } from "./blogs-db-repository";
+
 import { postCollection } from "./db";
-
-// export type PostDbType = {
-//   id: string;
-//   title: string;
-//   shortDescription: string;
-//   content: string;
-//   blogId: string;
-//   blogName: string;
-//   createdAt: string;
-// };
-
-// export let posts: PostDbType[] = [];
 
 export const postRepositories = {
   async findAllPosts(): Promise<PostOutputType[] | null> {
@@ -72,18 +60,6 @@ export const postRepositories = {
     }
   },
   async addNewPost(newPost: PostDbType): Promise<PostOutputType | null> {
-    // const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
-
-    // if (blog) {
-    //   const newPost: PostOutputType | null = {
-    //     id: Date.now().toString(),
-    //     title: post.title,
-    //     shortDescription: post.shortDescription,
-    //     content: post.content,
-    //     blogId: post.blogId,
-    //     blogName: blog.name,
-    //     createdAt: new Date().toISOString(),
-    //   };
     await postCollection.insertOne(newPost);
 
     const result = await postCollection.findOne({

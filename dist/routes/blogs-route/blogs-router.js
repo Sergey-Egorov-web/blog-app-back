@@ -24,8 +24,22 @@ const ITINCUBATOR = (req, res, next) => {
     next();
 };
 exports.blogsRouter.use(ITINCUBATOR);
-exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const allBlogs = yield blogs_service_1.blogsService.findAllBlogs();
+// blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
+//   const allBlogs = await blogsService.findAllBlogs();
+//   res.status(200).send(allBlogs);
+// });
+exports.blogsRouter.get("/{blogId}/posts", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const allBlogs = await blogsService.findAllBlogs();
+    let pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    let pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    let sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    let sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+    let searchNameTerm = req.query.searchNameTerm
+        ? req.query.searchNameTerm.toString()
+        : null;
+    const allBlogs = yield blogs_service_1.blogsService.findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm);
     res.status(200).send(allBlogs);
 }));
 exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

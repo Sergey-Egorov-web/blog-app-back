@@ -1,15 +1,10 @@
-import { PostDbType, PostInputType, PostOutputType } from "../types";
-import { BlogDbType, blogsRepository } from "./blogs-db-repository";
-// import { PostDbType } from "./posts-db-repository";
-
-// export type PostDbType = {
-//   id: string;
-//   title: string;
-//   shortDescription: string;
-//   content: string;
-//   blogId: string;
-//   blogName: string;
-// };
+import {
+  BlogDbType,
+  PostDbType,
+  PostInputType,
+  PostOutputType,
+} from "../types";
+import { blogsRepository } from "./blogs-db-repository";
 
 export let posts: PostDbType[] = [
   // {

@@ -10,18 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepositories = void 0;
-// import { BlogDbType, blogsRepository } from "./blogs-db-repository";
 const db_1 = require("./db");
-// export type PostDbType = {
-//   id: string;
-//   title: string;
-//   shortDescription: string;
-//   content: string;
-//   blogId: string;
-//   blogName: string;
-//   createdAt: string;
-// };
-// export let posts: PostDbType[] = [];
 exports.postRepositories = {
     findAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -89,17 +78,6 @@ exports.postRepositories = {
     },
     addNewPost(newPost) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
-            // if (blog) {
-            //   const newPost: PostOutputType | null = {
-            //     id: Date.now().toString(),
-            //     title: post.title,
-            //     shortDescription: post.shortDescription,
-            //     content: post.content,
-            //     blogId: post.blogId,
-            //     blogName: blog.name,
-            //     createdAt: new Date().toISOString(),
-            //   };
             yield db_1.postCollection.insertOne(newPost);
             const result = yield db_1.postCollection.findOne({
                 id: newPost.id,
