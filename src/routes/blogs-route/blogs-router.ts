@@ -21,11 +21,29 @@ const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
 
 blogsRouter.use(ITINCUBATOR);
 
-// blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
-//   const allBlogs = await blogsService.findAllBlogs();
+blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
+  // const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+  const searchNameTerm = req.query.searchNameTerm
+    ? req.query.searchNameTerm.toString()
+    : null;
+  const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+  const sortDirection: SortDirection =
+    req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+      ? "asc"
+      : "desc";
+  const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+  const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
 
-//   res.status(200).send(allBlogs);
-// });
+  const allBlogs = await blogsQueryRepository.findAllBlogs(
+    searchNameTerm,
+    sortBy,
+    sortDirection,
+    pageNumber,
+    pageSize
+  );
+
+  res.status(200).send(allBlogs);
+});
 
 blogsRouter.get(
   //  "/:blogId/posts",

@@ -1,7 +1,56 @@
-import { BlogDbType, BlogOutputType, PostOutputType } from "../types";
+import {
+  BlogDbType,
+  BlogOutputType,
+  PaginatorBlogViewModel,
+  PostOutputType,
+} from "../types";
 import { blogCollection, postCollection } from "./db";
 
 export const blogsQueryRepository = {
+  async findAllBlogs(
+    searchNameTerm: string | null,
+    sortBy: string,
+    sortDirection: "asc" | "desc",
+    pageNumber: number,
+    pageSize: number
+  ): Promise<PaginatorBlogViewModel | null> {
+    // const result = await blogCollection.find({}).toArray();
+    const filter: any = {};
+    if (searchNameTerm) {
+      filter.title = { $regex: searchNameTerm, $options: "i" };
+    }
+    const foundBlogs = await blogCollection
+      .find({ filter })
+      .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .toArray();
+
+    const totalCount = foundBlogs.length;
+    const page = pageNumber;
+    const pageCount = Math.ceil(totalCount / pageSize);
+
+    const resultWithoutMongoId = foundBlogs.map((model) => ({
+      id: model.id,
+      name: model.name,
+      description: model.description,
+      websiteUrl: model.websiteUrl,
+      createdAt: model.createdAt,
+      isMembership: model.isMembership,
+    }));
+
+    const result: PaginatorBlogViewModel = {
+      pageCount: pageCount,
+      page: page,
+      pageSize: pageSize,
+      totalCount: totalCount,
+      items: resultWithoutMongoId,
+    };
+
+    return result;
+    // return result;
+  },
+
   async findBlog(id: string): Promise<BlogOutputType | null> {
     const blog: BlogOutputType | null = await blogCollection.findOne({ id });
 

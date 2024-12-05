@@ -12,6 +12,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsQueryRepository = void 0;
 const db_1 = require("./db");
 exports.blogsQueryRepository = {
+    findAllBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // const result = await blogCollection.find({}).toArray();
+            const filter = {};
+            if (searchNameTerm) {
+                filter.title = { $regex: searchNameTerm, $options: "i" };
+            }
+            const foundBlogs = yield db_1.blogCollection
+                .find({ filter })
+                .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
+                .skip((pageNumber - 1) * pageSize)
+                .limit(pageSize)
+                .toArray();
+            const totalCount = foundBlogs.length;
+            const page = pageNumber;
+            const pageCount = Math.ceil(totalCount / pageSize);
+            const resultWithoutMongoId = foundBlogs.map((model) => ({
+                id: model.id,
+                name: model.name,
+                description: model.description,
+                websiteUrl: model.websiteUrl,
+                createdAt: model.createdAt,
+                isMembership: model.isMembership,
+            }));
+            const result = {
+                pageCount: pageCount,
+                page: page,
+                pageSize: pageSize,
+                totalCount: totalCount,
+                items: resultWithoutMongoId,
+            };
+            return result;
+            // return result;
+        });
+    },
     findBlog(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield db_1.blogCollection.findOne({ id });

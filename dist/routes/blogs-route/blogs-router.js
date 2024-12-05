@@ -25,10 +25,20 @@ const ITINCUBATOR = (req, res, next) => {
     next();
 };
 exports.blogsRouter.use(ITINCUBATOR);
-// blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
-//   const allBlogs = await blogsService.findAllBlogs();
-//   res.status(200).send(allBlogs);
-// });
+exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+    const searchNameTerm = req.query.searchNameTerm
+        ? req.query.searchNameTerm.toString()
+        : null;
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    const sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+    const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    const allBlogs = yield blog_db_query_repository_1.blogsQueryRepository.findAllBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize);
+    res.status(200).send(allBlogs);
+}));
 exports.blogsRouter.get(
 //  "/:blogId/posts",
 "/:blogId", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
