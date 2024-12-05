@@ -8,6 +8,7 @@ import { BlogInputType, BlogOutputType } from "../../types";
 import { nameValidation } from "../../middlewares/name-validation";
 import { blogsService } from "../../domains/blogs-service";
 import { SortDirection } from "mongodb";
+import { blogsQueryRepository } from "../../repositories/blog-db-query-repository";
 
 export const blogsRouter = Router({});
 
@@ -27,7 +28,8 @@ blogsRouter.use(ITINCUBATOR);
 // });
 
 blogsRouter.get(
-  "/{blogId}/posts",
+  //  "/:blogId/posts",
+  "/:blogId",
   ITINCUBATOR,
   async (req: Request, res: Response) => {
     // const allBlogs = await blogsService.findAllBlogs();
@@ -55,6 +57,36 @@ blogsRouter.get(
     res.status(200).send(allBlogs);
   }
 );
+
+//__________________________________________________________________________________
+
+blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
+  // const allBlogs = await blogsService.findAllBlogs();
+
+  let pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+  let pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+  let sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+  let sortDirection: SortDirection =
+    req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+      ? "asc"
+      : "desc";
+
+  let searchNameTerm = req.query.searchNameTerm
+    ? req.query.searchNameTerm.toString()
+    : null;
+
+  const allPostFromBlogId = await blogsQueryRepository.findAllBlogs(
+    pageNumber,
+    pageSize,
+    sortBy,
+    sortDirection,
+    searchNameTerm
+  );
+
+  res.status(200).send(allPostFromBlogId);
+});
+
+//_______________________________________________________________
 
 blogsRouter.post(
   "/",

@@ -17,6 +17,7 @@ const description_validation_1 = require("../../middlewares/description-validati
 const webSiteUrl_validation_1 = require("../../middlewares/webSiteUrl-validation");
 const name_validation_1 = require("../../middlewares/name-validation");
 const blogs_service_1 = require("../../domains/blogs-service");
+const blog_db_query_repository_1 = require("../../repositories/blog-db-query-repository");
 exports.blogsRouter = (0, express_1.Router)({});
 // blogsRouter.use(express.json());
 const ITINCUBATOR = (req, res, next) => {
@@ -28,7 +29,9 @@ exports.blogsRouter.use(ITINCUBATOR);
 //   const allBlogs = await blogsService.findAllBlogs();
 //   res.status(200).send(allBlogs);
 // });
-exports.blogsRouter.get("/{blogId}/posts", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.get(
+//  "/:blogId/posts",
+"/:blogId", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const allBlogs = await blogsService.findAllBlogs();
     let pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     let pageSize = req.query.pageSize ? +req.query.pageSize : 10;
@@ -42,6 +45,22 @@ exports.blogsRouter.get("/{blogId}/posts", ITINCUBATOR, (req, res) => __awaiter(
     const allBlogs = yield blogs_service_1.blogsService.findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm);
     res.status(200).send(allBlogs);
 }));
+//__________________________________________________________________________________
+exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const allBlogs = await blogsService.findAllBlogs();
+    let pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    let pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    let sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    let sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+    let searchNameTerm = req.query.searchNameTerm
+        ? req.query.searchNameTerm.toString()
+        : null;
+    const allPostFromBlogId = yield blog_db_query_repository_1.blogsQueryRepository.findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm);
+    res.status(200).send(allPostFromBlogId);
+}));
+//_______________________________________________________________
 exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogCreateData = req.body;
     const newBlog = yield blogs_service_1.blogsService.addNewBlog(blogCreateData);

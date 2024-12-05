@@ -2,6 +2,22 @@ import { BlogDbType, BlogInputType, BlogOutputType } from "../types";
 import { blogCollection } from "./db";
 
 export const blogsRepository = {
+  // async findAllBlogs(): Promise<BlogDbType[] | null> {
+  //   const result = await blogCollection.find({}).toArray();
+
+  //   // const resultWithoutMongoId = result.map((model) => ({
+  //   //   id: model.id,
+  //   //   name: model.name,
+  //   //   description: model.description,
+  //   //   websiteUrl: model.websiteUrl,
+  //   //   createdAt: model.createdAt,
+  //   //   isMembership: model.isMembership,
+  //   // }));
+
+  //   // return resultWithoutMongoId;
+  //   return result;
+  // },
+
   async findAllBlogs(
     pageNumber: number,
     pageSize: number,
@@ -15,7 +31,8 @@ export const blogsRepository = {
       filter.title = { $regex: searchNameTerm, $option: "i" };
     }
     const result = await blogCollection
-      .find({ filter })
+      .find({})
+      //.find({ filter })
       .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
