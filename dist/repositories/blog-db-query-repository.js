@@ -12,20 +12,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsQueryRepository = void 0;
 const db_1 = require("./db");
 exports.blogsQueryRepository = {
-    findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm) {
+    findBlog(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield db_1.blogCollection.findOne({ id });
+            if (blog) {
+                const resultWithoutMongoId = {
+                    id: blog.id,
+                    name: blog.name,
+                    description: blog.description,
+                    websiteUrl: blog.websiteUrl,
+                    createdAt: blog.createdAt,
+                    isMembership: blog.isMembership,
+                };
+                return resultWithoutMongoId;
+            }
+            else {
+                return null;
+            }
+        });
+    },
+    findAllPostsByBlogId(blogId, pageNumber, pageSize, sortBy, sortDirection, searchNameTerm) {
         return __awaiter(this, void 0, void 0, function* () {
             const filter = {};
+            // console.log(`BlogId ${blogId}`);
+            const result = [];
             if (searchNameTerm) {
-                filter.title = { $regex: searchNameTerm, $option: "i" };
+                filter.title = { $regex: searchNameTerm, $options: "i" };
             }
-            const result = yield db_1.postCollection
-                .find({})
-                //.find({ filter })
+            const foundPosts = yield db_1.postCollection
+                // .find({})
+                .find({ blogId })
                 .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
-            return result;
+            // console.log(`foundPosts: ${JSON.stringify(foundPosts)}`);
+            if (foundPosts) {
+                return foundPosts;
+            }
+            else {
+                return null;
+            }
         });
     },
 };

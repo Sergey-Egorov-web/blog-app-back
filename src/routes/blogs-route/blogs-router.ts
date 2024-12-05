@@ -62,20 +62,21 @@ blogsRouter.get(
 
 blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
   // const allBlogs = await blogsService.findAllBlogs();
-
-  let pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
-  let pageSize = req.query.pageSize ? +req.query.pageSize : 10;
-  let sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
-  let sortDirection: SortDirection =
+  const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+  const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+  const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+  const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+  const sortDirection: SortDirection =
     req.query.sortDirection && req.query.sortDirection.toString() === "asc"
       ? "asc"
       : "desc";
 
-  let searchNameTerm = req.query.searchNameTerm
+  const searchNameTerm = req.query.searchNameTerm
     ? req.query.searchNameTerm.toString()
     : null;
 
-  const allPostFromBlogId = await blogsQueryRepository.findAllBlogs(
+  const allPostFromBlogId = await blogsQueryRepository.findAllPostsByBlogId(
+    blogId,
     pageNumber,
     pageSize,
     sortBy,
