@@ -27,7 +27,8 @@ exports.blogsQueryRepository = {
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
-            const totalCount = foundBlogs.length;
+            // const totalCount = foundBlogs.length;
+            const totalCount = (yield db_1.blogCollection.find(filter).toArray()).length;
             const page = pageNumber;
             const pageCount = Math.ceil(totalCount / pageSize);
             const resultWithoutMongoId = foundBlogs.map((model) => ({
@@ -70,16 +71,12 @@ exports.blogsQueryRepository = {
             }
         });
     },
-    findAllPostsByBlogId(blogId, pageNumber, pageSize, sortBy, sortDirection, searchNameTerm) {
+    findAllPostsByBlogId(pageNumber, pageSize, sortBy, sortDirection, blogId) {
         return __awaiter(this, void 0, void 0, function* () {
             const filter = {};
-            // console.log(`BlogId ${blogId}`);
             const result = [];
-            if (searchNameTerm) {
-                filter.title = { $regex: searchNameTerm, $options: "i" };
-            }
+            console.log(filter);
             const foundPosts = yield db_1.postCollection
-                // .find({})
                 .find({ blogId })
                 .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
                 .skip((pageNumber - 1) * pageSize)

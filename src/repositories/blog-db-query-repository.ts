@@ -29,7 +29,8 @@ export const blogsQueryRepository = {
       .limit(pageSize)
       .toArray();
 
-    const totalCount = foundBlogs.length;
+    // const totalCount = foundBlogs.length;
+    const totalCount = (await blogCollection.find(filter).toArray()).length;
     const page = pageNumber;
     const pageCount = Math.ceil(totalCount / pageSize);
 
@@ -77,22 +78,19 @@ export const blogsQueryRepository = {
   },
 
   async findAllPostsByBlogId(
-    blogId: string,
     pageNumber: number,
     pageSize: number,
     sortBy: string,
     sortDirection: "asc" | "desc",
-    searchNameTerm: string | null
+    blogId: string
   ): Promise<PostOutputType[] | null> {
     const filter: any = {};
-    // console.log(`BlogId ${blogId}`);
+
     const result: PostOutputType[] = [];
 
-    if (searchNameTerm) {
-      filter.title = { $regex: searchNameTerm, $options: "i" };
-    }
+    console.log(filter);
     const foundPosts = await postCollection
-      // .find({})
+
       .find({ blogId })
       .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
       .skip((pageNumber - 1) * pageSize)

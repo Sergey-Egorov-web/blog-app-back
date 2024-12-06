@@ -39,21 +39,10 @@ exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0
     const allBlogs = yield blog_db_query_repository_1.blogsQueryRepository.findAllBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize);
     res.status(200).send(allBlogs);
 }));
-exports.blogsRouter.get(
-//  "/:blogId/posts",
-"/:blogId", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const allBlogs = await blogsService.findAllBlogs();
-    let pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
-    let pageSize = req.query.pageSize ? +req.query.pageSize : 10;
-    let sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
-    let sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
-        ? "asc"
-        : "desc";
-    let searchNameTerm = req.query.searchNameTerm
-        ? req.query.searchNameTerm.toString()
-        : null;
-    const allBlogs = yield blogs_service_1.blogsService.findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm);
-    res.status(200).send(allBlogs);
+exports.blogsRouter.get("/:blogId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+    const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlog(blogId);
+    res.status(200).send(blog);
 }));
 //__________________________________________________________________________________
 exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -65,10 +54,10 @@ exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0
     const sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
         ? "asc"
         : "desc";
-    const searchNameTerm = req.query.searchNameTerm
-        ? req.query.searchNameTerm.toString()
-        : null;
-    const allPostFromBlogId = yield blog_db_query_repository_1.blogsQueryRepository.findAllPostsByBlogId(blogId, pageNumber, pageSize, sortBy, sortDirection, searchNameTerm);
+    // const searchNameTerm = req.query.searchNameTerm
+    //   ? req.query.searchNameTerm.toString()
+    //   : null;
+    const allPostFromBlogId = yield blog_db_query_repository_1.blogsQueryRepository.findAllPostsByBlogId(pageNumber, pageSize, sortBy, sortDirection, blogId);
     res.status(200).send(allPostFromBlogId);
 }));
 //_______________________________________________________________
