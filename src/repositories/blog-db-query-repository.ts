@@ -1,7 +1,9 @@
+import { title } from "process";
 import {
   BlogDbType,
   BlogOutputType,
   PaginatorBlogViewModel,
+  PaginatorPostViewModel,
   PostOutputType,
 } from "../types";
 import { blogCollection, postCollection } from "./db";
@@ -22,14 +24,13 @@ export const blogsQueryRepository = {
 
     console.log(filter);
     const foundBlogs = await blogCollection
-      // .find({ name: { $regex: searchNameTerm, $options: "i" } })
+
       .find(filter)
       .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .toArray();
 
-    // const totalCount = foundBlogs.length;
     const totalCount = (await blogCollection.find(filter).toArray()).length;
     const page = pageNumber;
     const pageCount = Math.ceil(totalCount / pageSize);
@@ -58,7 +59,7 @@ export const blogsQueryRepository = {
     // return result;
   },
 
-  async findBlog(id: string): Promise<BlogOutputType | null> {
+  async findBlogById(id: string): Promise<BlogOutputType | null> {
     const blog: BlogOutputType | null = await blogCollection.findOne({ id });
 
     if (blog) {
@@ -78,28 +79,52 @@ export const blogsQueryRepository = {
   },
 
   async findAllPostsByBlogId(
+    blogId: string,
     pageNumber: number,
     pageSize: number,
     sortBy: string,
-    sortDirection: "asc" | "desc",
-    blogId: string
-  ): Promise<PostOutputType[] | null> {
+    sortDirection: "asc" | "desc"
+  ): Promise<PaginatorPostViewModel | null> {
     const filter: any = {};
 
-    const result: PostOutputType[] = [];
+    // const result: PostOutputType[] = [];
 
     console.log(filter);
     const foundPosts = await postCollection
 
       .find({ blogId })
-      .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
+      .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .toArray();
     // console.log(`foundPosts: ${JSON.stringify(foundPosts)}`);
 
-    if (foundPosts) {
-      return foundPosts;
+    const resultWithoutMongoId: PostOutputType[] | null = foundPosts.map(
+      (model) => ({
+        id: model.id,
+        title: model.title,
+        shortDescription: model.shortDescription,
+        content: model.content,
+        blogId: model.blogId,
+        blogName: model.blogName,
+        createdAt: model.createdAt,
+      })
+    );
+    // console.log(resultWithoutMongoId);
+    const totalCount = (await postCollection.find(filter).toArray()).length;
+    const page = pageNumber;
+    const pageCount = Math.ceil(totalCount / pageSize);
+
+    const result: PaginatorPostViewModel = {
+      pageCount: pageCount,
+      page: page,
+      pageSize: pageSize,
+      totalCount: totalCount,
+      items: resultWithoutMongoId,
+    };
+    console.log(result);
+    if (result) {
+      return result;
     } else {
       return null;
     }

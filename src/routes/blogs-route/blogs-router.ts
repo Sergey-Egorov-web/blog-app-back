@@ -47,7 +47,7 @@ blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
 
 blogsRouter.get("/:blogId", async (req: Request, res: Response) => {
   const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
-  const blog = await blogsQueryRepository.findBlog(blogId);
+  const blog = await blogsQueryRepository.findBlogById(blogId);
 
   res.status(200).send(blog);
 });
@@ -70,11 +70,11 @@ blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
   //   : null;
 
   const allPostFromBlogId = await blogsQueryRepository.findAllPostsByBlogId(
+    blogId,
     pageNumber,
     pageSize,
     sortBy,
-    sortDirection,
-    blogId
+    sortDirection
   );
 
   res.status(200).send(allPostFromBlogId);

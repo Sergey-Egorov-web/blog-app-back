@@ -21,13 +21,11 @@ exports.blogsQueryRepository = {
             }
             console.log(filter);
             const foundBlogs = yield db_1.blogCollection
-                // .find({ name: { $regex: searchNameTerm, $options: "i" } })
                 .find(filter)
                 .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
-            // const totalCount = foundBlogs.length;
             const totalCount = (yield db_1.blogCollection.find(filter).toArray()).length;
             const page = pageNumber;
             const pageCount = Math.ceil(totalCount / pageSize);
@@ -52,7 +50,7 @@ exports.blogsQueryRepository = {
             // return result;
         });
     },
-    findBlog(id) {
+    findBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield db_1.blogCollection.findOne({ id });
             if (blog) {
@@ -71,20 +69,41 @@ exports.blogsQueryRepository = {
             }
         });
     },
-    findAllPostsByBlogId(pageNumber, pageSize, sortBy, sortDirection, blogId) {
+    findAllPostsByBlogId(blogId, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             const filter = {};
-            const result = [];
+            // const result: PostOutputType[] = [];
             console.log(filter);
             const foundPosts = yield db_1.postCollection
                 .find({ blogId })
-                .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
+                .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
             // console.log(`foundPosts: ${JSON.stringify(foundPosts)}`);
-            if (foundPosts) {
-                return foundPosts;
+            const resultWithoutMongoId = foundPosts.map((model) => ({
+                id: model.id,
+                title: model.title,
+                shortDescription: model.shortDescription,
+                content: model.content,
+                blogId: model.blogId,
+                blogName: model.blogName,
+                createdAt: model.createdAt,
+            }));
+            // console.log(resultWithoutMongoId);
+            const totalCount = (yield db_1.postCollection.find(filter).toArray()).length;
+            const page = pageNumber;
+            const pageCount = Math.ceil(totalCount / pageSize);
+            const result = {
+                pageCount: pageCount,
+                page: page,
+                pageSize: pageSize,
+                totalCount: totalCount,
+                items: resultWithoutMongoId,
+            };
+            console.log(result);
+            if (result) {
+                return result;
             }
             else {
                 return null;

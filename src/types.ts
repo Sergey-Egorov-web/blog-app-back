@@ -6,6 +6,14 @@ export type PaginatorBlogViewModel = {
   items: BlogOutputType[];
 };
 
+export type PaginatorPostViewModel = {
+  pageCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  items: PostOutputType[];
+};
+
 export type BlogDbType = {
   id: string;
   name: string;

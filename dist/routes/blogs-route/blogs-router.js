@@ -41,7 +41,7 @@ exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0
 }));
 exports.blogsRouter.get("/:blogId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
-    const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlog(blogId);
+    const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(blogId);
     res.status(200).send(blog);
 }));
 //__________________________________________________________________________________
@@ -57,7 +57,7 @@ exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0
     // const searchNameTerm = req.query.searchNameTerm
     //   ? req.query.searchNameTerm.toString()
     //   : null;
-    const allPostFromBlogId = yield blog_db_query_repository_1.blogsQueryRepository.findAllPostsByBlogId(pageNumber, pageSize, sortBy, sortDirection, blogId);
+    const allPostFromBlogId = yield blog_db_query_repository_1.blogsQueryRepository.findAllPostsByBlogId(blogId, pageNumber, pageSize, sortBy, sortDirection);
     res.status(200).send(allPostFromBlogId);
 }));
 //_______________________________________________________________
