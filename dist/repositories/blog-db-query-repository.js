@@ -91,7 +91,7 @@ exports.blogsQueryRepository = {
                 createdAt: model.createdAt,
             }));
             // console.log(resultWithoutMongoId);
-            const totalCount = (yield db_1.postCollection.find(filter).toArray()).length;
+            const totalCount = (yield db_1.postCollection.find({ blogId }).toArray()).length;
             const page = pageNumber;
             const pageCount = Math.ceil(totalCount / pageSize);
             const result = {

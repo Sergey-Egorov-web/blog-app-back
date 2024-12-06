@@ -111,7 +111,7 @@ export const blogsQueryRepository = {
       })
     );
     // console.log(resultWithoutMongoId);
-    const totalCount = (await postCollection.find(filter).toArray()).length;
+    const totalCount = (await postCollection.find({ blogId }).toArray()).length;
     const page = pageNumber;
     const pageCount = Math.ceil(totalCount / pageSize);
 
