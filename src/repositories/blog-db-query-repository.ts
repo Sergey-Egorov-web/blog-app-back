@@ -17,10 +17,13 @@ export const blogsQueryRepository = {
     // const result = await blogCollection.find({}).toArray();
     const filter: any = {};
     if (searchNameTerm) {
-      filter.title = { $regex: searchNameTerm, $options: "i" };
+      filter.name = { $regex: searchNameTerm, $options: "i" };
     }
+
+    console.log(filter);
     const foundBlogs = await blogCollection
-      .find({ filter })
+      // .find({ name: { $regex: searchNameTerm, $options: "i" } })
+      .find(filter)
       .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
@@ -39,6 +42,8 @@ export const blogsQueryRepository = {
       isMembership: model.isMembership,
     }));
 
+    // console.log(resultWithoutMongoId);
+
     const result: PaginatorBlogViewModel = {
       pageCount: pageCount,
       page: page,
@@ -46,6 +51,7 @@ export const blogsQueryRepository = {
       totalCount: totalCount,
       items: resultWithoutMongoId,
     };
+    // console.log(resultWithoutMongoId);
 
     return result;
     // return result;

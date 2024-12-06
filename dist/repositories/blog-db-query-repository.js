@@ -17,10 +17,12 @@ exports.blogsQueryRepository = {
             // const result = await blogCollection.find({}).toArray();
             const filter = {};
             if (searchNameTerm) {
-                filter.title = { $regex: searchNameTerm, $options: "i" };
+                filter.name = { $regex: searchNameTerm, $options: "i" };
             }
+            console.log(filter);
             const foundBlogs = yield db_1.blogCollection
-                .find({ filter })
+                // .find({ name: { $regex: searchNameTerm, $options: "i" } })
+                .find(filter)
                 .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
@@ -36,6 +38,7 @@ exports.blogsQueryRepository = {
                 createdAt: model.createdAt,
                 isMembership: model.isMembership,
             }));
+            // console.log(resultWithoutMongoId);
             const result = {
                 pageCount: pageCount,
                 page: page,
@@ -43,6 +46,7 @@ exports.blogsQueryRepository = {
                 totalCount: totalCount,
                 items: resultWithoutMongoId,
             };
+            // console.log(resultWithoutMongoId);
             return result;
             // return result;
         });
