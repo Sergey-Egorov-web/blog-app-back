@@ -61,7 +61,7 @@ export const postRepository = {
   },
   async addNewPost(newPost: PostDbType): Promise<PostOutputType | null> {
     await postCollection.insertOne(newPost);
-
+    console.log(newPost.id);
     const result = await postCollection.findOne({
       id: newPost.id,
     });

@@ -75,6 +75,7 @@ exports.postRepository = {
     addNewPost(newPost) {
         return __awaiter(this, void 0, void 0, function* () {
             yield db_1.postCollection.insertOne(newPost);
+            console.log(newPost.id);
             const result = yield db_1.postCollection.findOne({
                 id: newPost.id,
             });

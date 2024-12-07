@@ -14,12 +14,15 @@ const db_1 = require("./db");
 exports.postQueryRepository = {
     findAllPosts(pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
+            const filter = {};
             const foundPosts = yield db_1.postCollection
-                .find({})
+                .find(filter)
                 .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
+            console.log(foundPosts);
+            // console.log()
             const totalCount = (yield db_1.postCollection.find().toArray()).length;
             const page = pageNumber;
             const pagesCount = Math.ceil(totalCount / pageSize);

@@ -8,13 +8,15 @@ export const postQueryRepository = {
     sortBy: string,
     sortDirection: "asc" | "desc"
   ): Promise<PaginatorPostViewModel | null> {
-    const foundPosts: PostOutputType[] | null = await postCollection
-      .find({})
+    const filter: any = {};
+    const foundPosts = await postCollection
+      .find(filter)
       .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .toArray();
-
+    console.log(foundPosts);
+    // console.log()
     const totalCount = (await postCollection.find().toArray()).length;
     const page = pageNumber;
     const pagesCount = Math.ceil(totalCount / pageSize);

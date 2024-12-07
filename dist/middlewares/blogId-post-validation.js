@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogIdPostValidation = blogIdPostValidation;
 const express_validator_1 = require("express-validator");
-const blogs_service_1 = require("../domains/blogs-service");
+const blog_db_query_repository_1 = require("../repositories/blog-db-query-repository");
 function blogIdPostValidation() {
     return (0, express_validator_1.body)("blogId")
         .trim()
@@ -20,7 +20,7 @@ function blogIdPostValidation() {
         .notEmpty()
         .withMessage("blogId can't be empty")
         .custom((id) => __awaiter(this, void 0, void 0, function* () {
-        const blog = yield blogs_service_1.blogsService.findBlogById(id);
+        const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(id);
         if (!blog) {
             throw new Error("Blog not found");
         }
