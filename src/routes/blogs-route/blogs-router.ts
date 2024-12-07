@@ -4,11 +4,21 @@ import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorizat
 
 import { descriptionValidation } from "../../middlewares/description-validation";
 import { webSiteUrlValidation } from "../../middlewares/webSiteUrl-validation";
-import { BlogInputType, BlogOutputType } from "../../types";
+import {
+  BlogInputType,
+  BlogOutputType,
+  BlogPostInputModel,
+  PostInputType,
+  PostOutputType,
+} from "../../types";
 import { nameValidation } from "../../middlewares/name-validation";
 import { blogsService } from "../../domains/blogs-service";
 import { SortDirection } from "mongodb";
 import { blogsQueryRepository } from "../../repositories/blog-db-query-repository";
+import { postService } from "../../domains/posts-service";
+import { titlePostValidation } from "../../middlewares/title-post-validation";
+import { shortDescriptionPostValidation } from "../../middlewares/short-description-post-validation";
+import { contentPostValidation } from "../../middlewares/content-post-validation";
 
 export const blogsRouter = Router({});
 
@@ -75,6 +85,30 @@ blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
 });
 
 //_______________________________________________________________
+
+blogsRouter.post(
+  "/:blogId/posts",
+  basicAuthorizationMiddleware,
+  titlePostValidation(),
+  shortDescriptionPostValidation(),
+  contentPostValidation(),
+  inputValidationMiddleware,
+  async (req: Request, res: Response) => {
+    const postCreateData: BlogPostInputModel = req.body;
+    const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+
+    const post: PostInputType | null = {
+      title: postCreateData.title,
+      shortDescription: postCreateData.shortDescription,
+      content: postCreateData.content,
+      blogId: blogId,
+    };
+
+    const newPost: PostOutputType | null = await postService.addNewPost(post);
+
+    res.status(201).send(newPost);
+  }
+);
 
 blogsRouter.post(
   "/",

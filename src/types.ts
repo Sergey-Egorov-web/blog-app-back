@@ -1,3 +1,9 @@
+export type BlogPostInputModel = {
+  title: string;
+  shortDescription: string;
+  content: string;
+};
+
 export type PaginatorBlogViewModel = {
   pagesCount: number;
   page: number;

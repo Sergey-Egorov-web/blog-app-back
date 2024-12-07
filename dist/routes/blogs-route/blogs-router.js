@@ -18,6 +18,10 @@ const webSiteUrl_validation_1 = require("../../middlewares/webSiteUrl-validation
 const name_validation_1 = require("../../middlewares/name-validation");
 const blogs_service_1 = require("../../domains/blogs-service");
 const blog_db_query_repository_1 = require("../../repositories/blog-db-query-repository");
+const posts_service_1 = require("../../domains/posts-service");
+const title_post_validation_1 = require("../../middlewares/title-post-validation");
+const short_description_post_validation_1 = require("../../middlewares/short-description-post-validation");
+const content_post_validation_1 = require("../../middlewares/content-post-validation");
 exports.blogsRouter = (0, express_1.Router)({});
 // blogsRouter.use(express.json());
 const ITINCUBATOR = (req, res, next) => {
@@ -56,6 +60,18 @@ exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0
     res.status(200).send(allPostFromBlogId);
 }));
 //_______________________________________________________________
+exports.blogsRouter.post("/:blogId/posts", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const postCreateData = req.body;
+    const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+    const post = {
+        title: postCreateData.title,
+        shortDescription: postCreateData.shortDescription,
+        content: postCreateData.content,
+        blogId: blogId,
+    };
+    const newPost = yield posts_service_1.postService.addNewPost(post);
+    res.status(201).send(newPost);
+}));
 exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogCreateData = req.body;
     const newBlog = yield blogs_service_1.blogsService.addNewBlog(blogCreateData);
