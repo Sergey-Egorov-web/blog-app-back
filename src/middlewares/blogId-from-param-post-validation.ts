@@ -1,8 +1,8 @@
-import { body } from "express-validator";
+import { param } from "express-validator";
 import { blogsQueryRepository } from "../repositories/blog-db-query-repository";
 
-export function blogIdPostValidation() {
-  return body("blogId")
+export function blogIdUriParamPostValidation() {
+  return param("blogId")
     .trim()
     .isString()
     .withMessage("blogId must be string")

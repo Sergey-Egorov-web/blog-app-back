@@ -22,6 +22,7 @@ const posts_service_1 = require("../../domains/posts-service");
 const title_post_validation_1 = require("../../middlewares/title-post-validation");
 const short_description_post_validation_1 = require("../../middlewares/short-description-post-validation");
 const content_post_validation_1 = require("../../middlewares/content-post-validation");
+const blogId_from_param_post_validation_1 = require("../../middlewares/blogId-from-param-post-validation");
 exports.blogsRouter = (0, express_1.Router)({});
 // blogsRouter.use(express.json());
 const ITINCUBATOR = (req, res, next) => {
@@ -60,7 +61,7 @@ exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0
     res.status(200).send(allPostFromBlogId);
 }));
 //_______________________________________________________________
-exports.blogsRouter.post("/:blogId/posts", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.post("/:blogId/posts", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, blogId_from_param_post_validation_1.blogIdUriParamPostValidation)(), (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const postCreateData = req.body;
     const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
     const post = {

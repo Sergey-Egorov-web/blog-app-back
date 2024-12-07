@@ -19,6 +19,7 @@ import { postService } from "../../domains/posts-service";
 import { titlePostValidation } from "../../middlewares/title-post-validation";
 import { shortDescriptionPostValidation } from "../../middlewares/short-description-post-validation";
 import { contentPostValidation } from "../../middlewares/content-post-validation";
+import { blogIdUriParamPostValidation } from "../../middlewares/blogId-from-param-post-validation";
 
 export const blogsRouter = Router({});
 
@@ -89,6 +90,7 @@ blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
 blogsRouter.post(
   "/:blogId/posts",
   basicAuthorizationMiddleware,
+  blogIdUriParamPostValidation(),
   titlePostValidation(),
   shortDescriptionPostValidation(),
   contentPostValidation(),
