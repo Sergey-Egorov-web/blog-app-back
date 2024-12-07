@@ -2,47 +2,47 @@ import { PostDbType, PostInputType, PostOutputType } from "../types";
 
 import { postCollection } from "./db";
 
-export const postRepositories = {
-  async findAllPosts(): Promise<PostOutputType[] | null> {
-    const result: PostOutputType[] | null = await postCollection
-      .find({})
-      .toArray();
+export const postRepository = {
+  // async findAllPosts(): Promise<PostOutputType[] | null> {
+  //   const result: PostOutputType[] | null = await postCollection
+  //     .find({})
+  //     .toArray();
 
-    if (result) {
-      const resultWithoutMongoId: PostOutputType[] | null = result.map(
-        (post) => ({
-          id: post.id,
-          title: post.title,
-          shortDescription: post.shortDescription,
-          content: post.content,
-          blogId: post.blogId,
-          blogName: post.blogName,
-          createdAt: post.createdAt,
-        })
-      );
+  //   if (result) {
+  //     const resultWithoutMongoId: PostOutputType[] | null = result.map(
+  //       (post) => ({
+  //         id: post.id,
+  //         title: post.title,
+  //         shortDescription: post.shortDescription,
+  //         content: post.content,
+  //         blogId: post.blogId,
+  //         blogName: post.blogName,
+  //         createdAt: post.createdAt,
+  //       })
+  //     );
 
-      return resultWithoutMongoId;
-    } else {
-      return null;
-    }
-  },
-  async findPostById(id: string): Promise<PostOutputType | null> {
-    const post: PostOutputType | null = await postCollection.findOne({ id });
-    if (post) {
-      const resultWithoutMongoId: PostOutputType = {
-        id: post.id,
-        title: post.title,
-        shortDescription: post.shortDescription,
-        content: post.content,
-        blogId: post.blogId,
-        blogName: post.blogName,
-        createdAt: post.createdAt,
-      };
-      return resultWithoutMongoId;
-    } else {
-      return null;
-    }
-  },
+  //     return resultWithoutMongoId;
+  //   } else {
+  //     return null;
+  //   }
+  // },
+  // async findPostById(id: string): Promise<PostOutputType | null> {
+  //   const post: PostOutputType | null = await postCollection.findOne({ id });
+  //   if (post) {
+  //     const resultWithoutMongoId: PostOutputType = {
+  //       id: post.id,
+  //       title: post.title,
+  //       shortDescription: post.shortDescription,
+  //       content: post.content,
+  //       blogId: post.blogId,
+  //       blogName: post.blogName,
+  //       createdAt: post.createdAt,
+  //     };
+  //     return resultWithoutMongoId;
+  //   } else {
+  //     return null;
+  //   }
+  // },
   async deleteAllPosts(): Promise<boolean> {
     const result = await postCollection.deleteMany({});
     if (result.deletedCount > 0) {
@@ -99,7 +99,6 @@ export const postRepositories = {
           title: post.title,
           shortDescription: post.shortDescription,
           content: post.content,
-          // blogId: post.blogId,
         },
       }
     );

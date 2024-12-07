@@ -10,37 +10,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postService = void 0;
+const blog_db_query_repository_1 = require("../repositories/blog-db-query-repository");
 const posts_db_repository_1 = require("../repositories/posts-db-repository");
-// import { BlogDbType, blogsRepository } from "./blogs-db-repository";
-const blogs_service_1 = require("./blogs-service");
 // import { postCollection } from "./db";
 // export let posts: PostDbType[] = [];
 exports.postService = {
-    findAllPosts() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield posts_db_repository_1.postRepositories.findAllPosts();
-            if (result) {
-                return result;
-            }
-            else {
-                return null;
-            }
-        });
-    },
-    findPostById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const post = yield posts_db_repository_1.postRepositories.findPostById(id);
-            if (post) {
-                return post;
-            }
-            else {
-                return null;
-            }
-        });
-    },
+    // async findAllPosts(): Promise<PostOutputType[] | null> {
+    //   const result: PostOutputType[] | null = await postRepository.findAllPosts();
+    //   if (result) {
+    //     return result;
+    //   } else {
+    //     return null;
+    //   }
+    // },
+    // async findPostById(id: string): Promise<PostOutputType | null> {
+    //   const post: PostOutputType | null = await postRepository.findPostById(id);
+    //   if (post) {
+    //     return post;
+    //   } else {
+    //     return null;
+    //   }
+    // },
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield posts_db_repository_1.postRepositories.deleteAllPosts();
+            const result = yield posts_db_repository_1.postRepository.deleteAllPosts();
             if (result === true) {
                 return true;
             }
@@ -51,7 +44,7 @@ exports.postService = {
     },
     deletePostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield posts_db_repository_1.postRepositories.deletePostById(id);
+            const result = yield posts_db_repository_1.postRepository.deletePostById(id);
             if (result === true) {
                 return true;
             }
@@ -62,7 +55,7 @@ exports.postService = {
     },
     addNewPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blogs_service_1.blogsService.findBlogById(post.blogId);
+            const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(post.blogId);
             if (blog) {
                 const newPost = {
                     id: Date.now().toString(),
@@ -73,18 +66,8 @@ exports.postService = {
                     blogName: blog.name,
                     createdAt: new Date().toISOString(),
                 };
-                const result = yield posts_db_repository_1.postRepositories.addNewPost(newPost);
-                //   const result = await postService.findPostById(newPost.id);
+                const result = yield posts_db_repository_1.postRepository.addNewPost(newPost);
                 if (result) {
-                    //     const resultWithoutMongoId: PostOutputType = {
-                    //       id: result.id,
-                    //       title: result.title,
-                    //       shortDescription: result.shortDescription,
-                    //       content: result.content,
-                    //       blogId: result.blogId,
-                    //       blogName: result.blogName,
-                    //       createdAt: result.createdAt,
-                    //     };
                     return result;
                 }
                 else {
@@ -99,7 +82,7 @@ exports.postService = {
     updatePostById(id, post) {
         return __awaiter(this, void 0, void 0, function* () {
             // const updatePost: PostOutputType | null =
-            const result = yield posts_db_repository_1.postRepositories.updatePostById(id, post);
+            const result = yield posts_db_repository_1.postRepository.updatePostById(id, post);
             // const result = await postCollection.findOne({
             //   id,
             // });

@@ -2,8 +2,12 @@ import express, { NextFunction, Request, Response, Router } from "express";
 
 export const postsRouter = Router({});
 
-import { PostInputType, PostOutputType } from "../../types";
-import { postRepositories } from "../../repositories/posts-db-repository";
+import {
+  PaginatorPostViewModel,
+  PostInputType,
+  PostOutputType,
+} from "../../types";
+import { postRepository as postRepository } from "../../repositories/posts-db-repository";
 import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorization-middleware";
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
 import { titlePostValidation } from "../../middlewares/title-post-validation";
@@ -11,9 +15,24 @@ import { shortDescriptionPostValidation } from "../../middlewares/short-descript
 import { contentPostValidation } from "../../middlewares/content-post-validation";
 import { blogIdPostValidation } from "../../middlewares/blogId-post-validation";
 import { postService } from "../../domains/posts-service";
+import { postQueryRepository } from "../../repositories/post-db-query-repository";
+import { SortDirection } from "mongodb";
 
 postsRouter.get("/", async (req: Request, res: Response) => {
-  const allPosts = await postRepositories.findAllPosts();
+  const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+  const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+  const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+  const sortDirection: SortDirection =
+    req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+      ? "asc"
+      : "desc";
+
+  const allPosts = await postQueryRepository.findAllPosts(
+    pageNumber,
+    pageSize,
+    sortBy,
+    sortDirection
+  );
 
   res.status(200).send(allPosts);
 });
@@ -42,10 +61,10 @@ postsRouter.post(
 
 postsRouter.get("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  let post = await postService.findPostById(id);
+  let post = await postQueryRepository.findPostById(id);
   if (post) {
     res.send(post);
-  } else res.send(404);
+  } else res.sendStatus(404);
 });
 
 postsRouter.delete(

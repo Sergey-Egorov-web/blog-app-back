@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { postRepositories } from "../repositories/posts-db-repository";
+import { postRepository } from "../repositories/posts-db-repository";
 import { blogsService } from "../domains/blogs-service";
 import { postService } from "../domains/posts-service";
 

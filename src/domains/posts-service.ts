@@ -1,4 +1,5 @@
-import { postRepositories } from "../repositories/posts-db-repository";
+import { blogsQueryRepository } from "../repositories/blog-db-query-repository";
+import { postRepository } from "../repositories/posts-db-repository";
 import { BlogDbType, PostInputType, PostOutputType } from "../types";
 // import { BlogDbType, blogsRepository } from "./blogs-db-repository";
 import { blogsService } from "./blogs-service";
@@ -7,26 +8,25 @@ import { blogsService } from "./blogs-service";
 // export let posts: PostDbType[] = [];
 
 export const postService = {
-  async findAllPosts(): Promise<PostOutputType[] | null> {
-    const result: PostOutputType[] | null =
-      await postRepositories.findAllPosts();
+  // async findAllPosts(): Promise<PostOutputType[] | null> {
+  //   const result: PostOutputType[] | null = await postRepository.findAllPosts();
 
-    if (result) {
-      return result;
-    } else {
-      return null;
-    }
-  },
-  async findPostById(id: string): Promise<PostOutputType | null> {
-    const post: PostOutputType | null = await postRepositories.findPostById(id);
-    if (post) {
-      return post;
-    } else {
-      return null;
-    }
-  },
+  //   if (result) {
+  //     return result;
+  //   } else {
+  //     return null;
+  //   }
+  // },
+  // async findPostById(id: string): Promise<PostOutputType | null> {
+  //   const post: PostOutputType | null = await postRepository.findPostById(id);
+  //   if (post) {
+  //     return post;
+  //   } else {
+  //     return null;
+  //   }
+  // },
   async deleteAllPosts(): Promise<boolean> {
-    const result = await postRepositories.deleteAllPosts();
+    const result = await postRepository.deleteAllPosts();
     if (result === true) {
       return true;
     } else {
@@ -34,7 +34,7 @@ export const postService = {
     }
   },
   async deletePostById(id: string): Promise<boolean> {
-    const result = await postRepositories.deletePostById(id);
+    const result = await postRepository.deletePostById(id);
     if (result === true) {
       return true;
     } else {
@@ -42,7 +42,7 @@ export const postService = {
     }
   },
   async addNewPost(post: PostInputType): Promise<PostOutputType | null> {
-    const blog: BlogDbType | null = await blogsService.findBlogById(
+    const blog: BlogDbType | null = await blogsQueryRepository.findBlogById(
       post.blogId
     );
 
@@ -56,21 +56,9 @@ export const postService = {
         blogName: blog.name,
         createdAt: new Date().toISOString(),
       };
-      const result = await postRepositories.addNewPost(newPost);
-
-      //   const result = await postService.findPostById(newPost.id);
+      const result = await postRepository.addNewPost(newPost);
 
       if (result) {
-        //     const resultWithoutMongoId: PostOutputType = {
-        //       id: result.id,
-        //       title: result.title,
-        //       shortDescription: result.shortDescription,
-        //       content: result.content,
-        //       blogId: result.blogId,
-        //       blogName: result.blogName,
-        //       createdAt: result.createdAt,
-        //     };
-
         return result;
       } else {
         return null;
@@ -84,7 +72,7 @@ export const postService = {
     post: PostInputType
   ): Promise<PostOutputType | null> {
     // const updatePost: PostOutputType | null =
-    const result = await postRepositories.updatePostById(id, post);
+    const result = await postRepository.updatePostById(id, post);
 
     // const result = await postCollection.findOne({
     //   id,

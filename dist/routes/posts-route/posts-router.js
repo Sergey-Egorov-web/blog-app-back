@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRouter = void 0;
 const express_1 = require("express");
 exports.postsRouter = (0, express_1.Router)({});
-const posts_db_repository_1 = require("../../repositories/posts-db-repository");
 const basic_authorization_middleware_1 = require("../../middlewares/basic-authorization-middleware");
 const input_validation_middleware_1 = require("../../middlewares/input-validation-middleware");
 const title_post_validation_1 = require("../../middlewares/title-post-validation");
@@ -20,8 +19,15 @@ const short_description_post_validation_1 = require("../../middlewares/short-des
 const content_post_validation_1 = require("../../middlewares/content-post-validation");
 const blogId_post_validation_1 = require("../../middlewares/blogId-post-validation");
 const posts_service_1 = require("../../domains/posts-service");
+const post_db_query_repository_1 = require("../../repositories/post-db-query-repository");
 exports.postsRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const allPosts = yield posts_db_repository_1.postRepositories.findAllPosts();
+    const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    const sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+    const allPosts = yield post_db_query_repository_1.postQueryRepository.findAllPosts(pageNumber, pageSize, sortBy, sortDirection);
     res.status(200).send(allPosts);
 }));
 exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), (0, blogId_post_validation_1.blogIdPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -36,12 +42,12 @@ exports.postsRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
 }));
 exports.postsRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let post = yield posts_service_1.postService.findPostById(id);
+    let post = yield post_db_query_repository_1.postQueryRepository.findPostById(id);
     if (post) {
         res.send(post);
     }
     else
-        res.send(404);
+        res.sendStatus(404);
 }));
 exports.postsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;

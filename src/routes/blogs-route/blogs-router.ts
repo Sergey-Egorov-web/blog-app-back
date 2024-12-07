@@ -22,7 +22,6 @@ const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
 blogsRouter.use(ITINCUBATOR);
 
 blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
-  // const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
   const searchNameTerm = req.query.searchNameTerm
     ? req.query.searchNameTerm.toString()
     : null;
@@ -55,7 +54,6 @@ blogsRouter.get("/:blogId", async (req: Request, res: Response) => {
 //__________________________________________________________________________________
 
 blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
-  // const allBlogs = await blogsService.findAllBlogs();
   const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
   const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
   const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
@@ -64,10 +62,6 @@ blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
     req.query.sortDirection && req.query.sortDirection.toString() === "asc"
       ? "asc"
       : "desc";
-
-  // const searchNameTerm = req.query.searchNameTerm
-  //   ? req.query.searchNameTerm.toString()
-  //   : null;
 
   const allPostFromBlogId = await blogsQueryRepository.findAllPostsByBlogId(
     blogId,
@@ -120,7 +114,7 @@ blogsRouter.put(
 
 blogsRouter.get("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  let blog = await blogsService.findBlogById(id);
+  let blog = await blogsQueryRepository.findBlogById(id);
   if (blog) {
     res.send(blog);
   } else res.send(404);

@@ -9,51 +9,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postRepositories = void 0;
+exports.postRepository = void 0;
 const db_1 = require("./db");
-exports.postRepositories = {
-    findAllPosts() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.postCollection
-                .find({})
-                .toArray();
-            if (result) {
-                const resultWithoutMongoId = result.map((post) => ({
-                    id: post.id,
-                    title: post.title,
-                    shortDescription: post.shortDescription,
-                    content: post.content,
-                    blogId: post.blogId,
-                    blogName: post.blogName,
-                    createdAt: post.createdAt,
-                }));
-                return resultWithoutMongoId;
-            }
-            else {
-                return null;
-            }
-        });
-    },
-    findPostById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const post = yield db_1.postCollection.findOne({ id });
-            if (post) {
-                const resultWithoutMongoId = {
-                    id: post.id,
-                    title: post.title,
-                    shortDescription: post.shortDescription,
-                    content: post.content,
-                    blogId: post.blogId,
-                    blogName: post.blogName,
-                    createdAt: post.createdAt,
-                };
-                return resultWithoutMongoId;
-            }
-            else {
-                return null;
-            }
-        });
-    },
+exports.postRepository = {
+    // async findAllPosts(): Promise<PostOutputType[] | null> {
+    //   const result: PostOutputType[] | null = await postCollection
+    //     .find({})
+    //     .toArray();
+    //   if (result) {
+    //     const resultWithoutMongoId: PostOutputType[] | null = result.map(
+    //       (post) => ({
+    //         id: post.id,
+    //         title: post.title,
+    //         shortDescription: post.shortDescription,
+    //         content: post.content,
+    //         blogId: post.blogId,
+    //         blogName: post.blogName,
+    //         createdAt: post.createdAt,
+    //       })
+    //     );
+    //     return resultWithoutMongoId;
+    //   } else {
+    //     return null;
+    //   }
+    // },
+    // async findPostById(id: string): Promise<PostOutputType | null> {
+    //   const post: PostOutputType | null = await postCollection.findOne({ id });
+    //   if (post) {
+    //     const resultWithoutMongoId: PostOutputType = {
+    //       id: post.id,
+    //       title: post.title,
+    //       shortDescription: post.shortDescription,
+    //       content: post.content,
+    //       blogId: post.blogId,
+    //       blogName: post.blogName,
+    //       createdAt: post.createdAt,
+    //     };
+    //     return resultWithoutMongoId;
+    //   } else {
+    //     return null;
+    //   }
+    // },
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield db_1.postCollection.deleteMany({});
@@ -112,7 +108,6 @@ exports.postRepositories = {
                     title: post.title,
                     shortDescription: post.shortDescription,
                     content: post.content,
-                    // blogId: post.blogId,
                 },
             });
             const result = yield db_1.postCollection.findOne({

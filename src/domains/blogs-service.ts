@@ -1,3 +1,4 @@
+import { blogsQueryRepository } from "../repositories/blog-db-query-repository";
 import { blogsRepository } from "../repositories/blogs-db-repository";
 import { BlogDbType, BlogInputType, BlogOutputType } from "../types";
 
@@ -22,55 +23,57 @@ export const blogsService = {
   //   }
   // },
 
-  async findAllBlogs(
-    pageNumber: number,
-    pageSize: number,
-    sortBy: string,
-    sortDirection: "asc" | "desc",
-    searchNameTerm: string | null
-  ): Promise<BlogDbType[] | null> {
-    // return blogs;
-    const result = await blogsRepository.findAllBlogs(
-      pageNumber,
-      pageSize,
-      sortBy,
-      sortDirection,
-      searchNameTerm
-    );
+  // async findAllBlogs(
+  //   pageNumber: number,
+  //   pageSize: number,
+  //   sortBy: string,
+  //   sortDirection: "asc" | "desc",
+  //   searchNameTerm: string | null
+  // ): Promise<BlogDbType[] | null> {
+  //   // return blogs;
+  //   const result = await blogsQueryRepository.findAllBlogs(
+  //     searchNameTerm,
+  //     sortBy,
+  //     sortDirection,
+  //     pageNumber,
+  //     pageSize
+  //   );
 
-    if (result) {
-      const resultWithoutMongoId = result.map((model) => ({
-        id: model.id,
-        name: model.name,
-        description: model.description,
-        websiteUrl: model.websiteUrl,
-        createdAt: model.createdAt,
-        isMembership: model.isMembership,
-      }));
+  //   if (result) {
+  //     const resultWithoutMongoId = result.map((model) => ({
+  //       id: model.id,
+  //       name: model.name,
+  //       description: model.description,
+  //       websiteUrl: model.websiteUrl,
+  //       createdAt: model.createdAt,
+  //       isMembership: model.isMembership,
+  //     }));
 
-      return resultWithoutMongoId;
-    } else {
-      return null;
-    }
-  },
-  async findBlogById(id: string): Promise<BlogOutputType | null> {
-    const blog: BlogOutputType | null = await blogsRepository.findBlog(id);
+  //     return resultWithoutMongoId;
+  //   } else {
+  //     return null;
+  //   }
+  // },
+  // async findBlogById(id: string): Promise<BlogOutputType | null> {
+  //   const blog: BlogOutputType | null = await blogsQueryRepository.findBlogById(
+  //     id
+  //   );
 
-    if (blog) {
-      const resultWithoutMongoId: BlogOutputType = {
-        id: blog.id,
-        name: blog.name,
-        description: blog.description,
-        websiteUrl: blog.websiteUrl,
-        createdAt: blog.createdAt,
-        isMembership: blog.isMembership,
-      };
+  //   if (blog) {
+  //     const resultWithoutMongoId: BlogOutputType = {
+  //       id: blog.id,
+  //       name: blog.name,
+  //       description: blog.description,
+  //       websiteUrl: blog.websiteUrl,
+  //       createdAt: blog.createdAt,
+  //       isMembership: blog.isMembership,
+  //     };
 
-      return resultWithoutMongoId;
-    } else {
-      return null;
-    }
-  },
+  //     return resultWithoutMongoId;
+  //   } else {
+  //     return null;
+  //   }
+  // },
   async deleteAllBlogs(): Promise<boolean> {
     const result = await blogsRepository.deleteAllBlogs();
 
@@ -105,7 +108,7 @@ export const blogsService = {
 
     // return newBlog;
 
-    const result = await blogsService.findBlogById(newBlog.id);
+    const result = await blogsQueryRepository.findBlogById(newBlog.id);
 
     if (result) {
       return result;
@@ -130,7 +133,7 @@ export const blogsService = {
       // }
     );
 
-    let updateBlog = await blogsRepository.findBlog(id);
+    let updateBlog = await blogsQueryRepository.findBlogById(id);
     if (updateBlog) {
       return updateBlog;
     } else {

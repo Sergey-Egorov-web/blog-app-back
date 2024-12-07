@@ -1,5 +1,5 @@
 export type PaginatorBlogViewModel = {
-  pageCount: number;
+  pagesCount: number;
   page: number;
   pageSize: number;
   totalCount: number;
@@ -7,7 +7,7 @@ export type PaginatorBlogViewModel = {
 };
 
 export type PaginatorPostViewModel = {
-  pageCount: number;
+  pagesCount: number;
   page: number;
   pageSize: number;
   totalCount: number;

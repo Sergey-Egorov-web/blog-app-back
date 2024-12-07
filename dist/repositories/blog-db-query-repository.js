@@ -22,24 +22,24 @@ exports.blogsQueryRepository = {
             console.log(filter);
             const foundBlogs = yield db_1.blogCollection
                 .find(filter)
-                .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
+                .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
             const totalCount = (yield db_1.blogCollection.find(filter).toArray()).length;
             const page = pageNumber;
-            const pageCount = Math.ceil(totalCount / pageSize);
-            const resultWithoutMongoId = foundBlogs.map((model) => ({
-                id: model.id,
-                name: model.name,
-                description: model.description,
-                websiteUrl: model.websiteUrl,
-                createdAt: model.createdAt,
-                isMembership: model.isMembership,
+            const pagesCount = Math.ceil(totalCount / pageSize);
+            const resultWithoutMongoId = foundBlogs.map((blog) => ({
+                id: blog.id,
+                name: blog.name,
+                description: blog.description,
+                websiteUrl: blog.websiteUrl,
+                createdAt: blog.createdAt,
+                isMembership: blog.isMembership,
             }));
             // console.log(resultWithoutMongoId);
             const result = {
-                pageCount: pageCount,
+                pagesCount: pagesCount,
                 page: page,
                 pageSize: pageSize,
                 totalCount: totalCount,
@@ -93,9 +93,9 @@ exports.blogsQueryRepository = {
             // console.log(resultWithoutMongoId);
             const totalCount = (yield db_1.postCollection.find({ blogId }).toArray()).length;
             const page = pageNumber;
-            const pageCount = Math.ceil(totalCount / pageSize);
+            const pagesCount = Math.ceil(totalCount / pageSize);
             const result = {
-                pageCount: pageCount,
+                pagesCount: pagesCount,
                 page: page,
                 pageSize: pageSize,
                 totalCount: totalCount,

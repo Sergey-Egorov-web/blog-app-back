@@ -1,4 +1,3 @@
-import { title } from "process";
 import {
   BlogDbType,
   BlogOutputType,
@@ -26,28 +25,28 @@ export const blogsQueryRepository = {
     const foundBlogs = await blogCollection
 
       .find(filter)
-      .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
+      .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .toArray();
 
     const totalCount = (await blogCollection.find(filter).toArray()).length;
     const page = pageNumber;
-    const pageCount = Math.ceil(totalCount / pageSize);
+    const pagesCount = Math.ceil(totalCount / pageSize);
 
-    const resultWithoutMongoId = foundBlogs.map((model) => ({
-      id: model.id,
-      name: model.name,
-      description: model.description,
-      websiteUrl: model.websiteUrl,
-      createdAt: model.createdAt,
-      isMembership: model.isMembership,
+    const resultWithoutMongoId = foundBlogs.map((blog) => ({
+      id: blog.id,
+      name: blog.name,
+      description: blog.description,
+      websiteUrl: blog.websiteUrl,
+      createdAt: blog.createdAt,
+      isMembership: blog.isMembership,
     }));
 
     // console.log(resultWithoutMongoId);
 
     const result: PaginatorBlogViewModel = {
-      pageCount: pageCount,
+      pagesCount: pagesCount,
       page: page,
       pageSize: pageSize,
       totalCount: totalCount,
@@ -113,10 +112,10 @@ export const blogsQueryRepository = {
     // console.log(resultWithoutMongoId);
     const totalCount = (await postCollection.find({ blogId }).toArray()).length;
     const page = pageNumber;
-    const pageCount = Math.ceil(totalCount / pageSize);
+    const pagesCount = Math.ceil(totalCount / pageSize);
 
     const result: PaginatorPostViewModel = {
-      pageCount: pageCount,
+      pagesCount: pagesCount,
       page: page,
       pageSize: pageSize,
       totalCount: totalCount,

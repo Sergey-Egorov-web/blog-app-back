@@ -26,7 +26,6 @@ const ITINCUBATOR = (req, res, next) => {
 };
 exports.blogsRouter.use(ITINCUBATOR);
 exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
     const searchNameTerm = req.query.searchNameTerm
         ? req.query.searchNameTerm.toString()
         : null;
@@ -46,7 +45,6 @@ exports.blogsRouter.get("/:blogId", (req, res) => __awaiter(void 0, void 0, void
 }));
 //__________________________________________________________________________________
 exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const allBlogs = await blogsService.findAllBlogs();
     const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
@@ -54,9 +52,6 @@ exports.blogsRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0
     const sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
         ? "asc"
         : "desc";
-    // const searchNameTerm = req.query.searchNameTerm
-    //   ? req.query.searchNameTerm.toString()
-    //   : null;
     const allPostFromBlogId = yield blog_db_query_repository_1.blogsQueryRepository.findAllPostsByBlogId(blogId, pageNumber, pageSize, sortBy, sortDirection);
     res.status(200).send(allPostFromBlogId);
 }));
@@ -79,7 +74,7 @@ exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
 }));
 exports.blogsRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let blog = yield blogs_service_1.blogsService.findBlogById(id);
+    let blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(id);
     if (blog) {
         res.send(blog);
     }

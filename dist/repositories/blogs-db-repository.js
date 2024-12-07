@@ -12,54 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepository = void 0;
 const db_1 = require("./db");
 exports.blogsRepository = {
-    // async findAllBlogs(): Promise<BlogDbType[] | null> {
-    //   const result = await blogCollection.find({}).toArray();
-    //   // const resultWithoutMongoId = result.map((model) => ({
-    //   //   id: model.id,
-    //   //   name: model.name,
-    //   //   description: model.description,
-    //   //   websiteUrl: model.websiteUrl,
-    //   //   createdAt: model.createdAt,
-    //   //   isMembership: model.isMembership,
-    //   // }));
-    //   // return resultWithoutMongoId;
-    //   return result;
-    // },
-    findAllBlogs(pageNumber, pageSize, sortBy, sortDirection, searchNameTerm) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const filter = {};
-            if (searchNameTerm) {
-                filter.title = { $regex: searchNameTerm, $option: "i" };
-            }
-            const result = yield db_1.blogCollection
-                .find({})
-                //.find({ filter })
-                .sort({ [sortBy]: sortDirection === "asc" ? "desc" : -1 })
-                .skip((pageNumber - 1) * pageSize)
-                .limit(pageSize)
-                .toArray();
-            return result;
-        });
-    },
-    findBlog(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield db_1.blogCollection.findOne({ id });
-            if (blog) {
-                const resultWithoutMongoId = {
-                    id: blog.id,
-                    name: blog.name,
-                    description: blog.description,
-                    websiteUrl: blog.websiteUrl,
-                    createdAt: blog.createdAt,
-                    isMembership: blog.isMembership,
-                };
-                return resultWithoutMongoId;
-            }
-            else {
-                return null;
-            }
-        });
-    },
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield db_1.blogCollection.deleteMany({});
