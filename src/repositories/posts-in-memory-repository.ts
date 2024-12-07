@@ -4,6 +4,7 @@ import {
   PostInputType,
   PostOutputType,
 } from "../types";
+import { blogsQueryRepository } from "./blog-db-query-repository";
 import { blogsRepository } from "./blogs-db-repository";
 
 export let posts: PostDbType[] = [
@@ -51,7 +52,9 @@ export const postRepositories = {
     return false;
   },
   async addNewPost(post: PostInputType): Promise<PostOutputType | null> {
-    const blog: BlogDbType | null = await blogsRepository.findBlog(post.blogId);
+    const blog: BlogDbType | null = await blogsQueryRepository.findBlogById(
+      post.blogId
+    );
 
     if (blog) {
       const newPost: PostOutputType | null = {
@@ -83,7 +86,7 @@ export const postRepositories = {
       updatePost.content = post.content;
       updatePost.blogId = post.blogId;
 
-      const blog: BlogDbType | null = await blogsRepository.findBlog(
+      const blog: BlogDbType | null = await blogsQueryRepository.findBlogById(
         post.blogId
       );
       if (blog) {

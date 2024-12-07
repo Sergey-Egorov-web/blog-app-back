@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepositories = exports.posts = void 0;
-const blogs_db_repository_1 = require("./blogs-db-repository");
+const blog_db_query_repository_1 = require("./blog-db-query-repository");
 exports.posts = [
 // {
 //   id: "1",
@@ -65,7 +65,7 @@ exports.postRepositories = {
     },
     addNewPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blogs_db_repository_1.blogsRepository.findBlog(post.blogId);
+            const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(post.blogId);
             if (blog) {
                 const newPost = {
                     id: Date.now().toString(),
@@ -94,7 +94,7 @@ exports.postRepositories = {
                 updatePost.shortDescription = post.shortDescription;
                 updatePost.content = post.content;
                 updatePost.blogId = post.blogId;
-                const blog = yield blogs_db_repository_1.blogsRepository.findBlog(post.blogId);
+                const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(post.blogId);
                 if (blog) {
                     updatePost.blogName = blog.name;
                     return updatePost;
