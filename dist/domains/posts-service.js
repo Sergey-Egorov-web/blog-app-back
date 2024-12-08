@@ -15,22 +15,6 @@ const posts_db_repository_1 = require("../repositories/posts-db-repository");
 // import { postCollection } from "./db";
 // export let posts: PostDbType[] = [];
 exports.postService = {
-    // async findAllPosts(): Promise<PostOutputType[] | null> {
-    //   const result: PostOutputType[] | null = await postRepository.findAllPosts();
-    //   if (result) {
-    //     return result;
-    //   } else {
-    //     return null;
-    //   }
-    // },
-    // async findPostById(id: string): Promise<PostOutputType | null> {
-    //   const post: PostOutputType | null = await postRepository.findPostById(id);
-    //   if (post) {
-    //     return post;
-    //   } else {
-    //     return null;
-    //   }
-    // },
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield posts_db_repository_1.postRepository.deleteAllPosts();

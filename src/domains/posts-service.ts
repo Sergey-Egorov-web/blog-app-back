@@ -8,23 +8,6 @@ import { blogsService } from "./blogs-service";
 // export let posts: PostDbType[] = [];
 
 export const postService = {
-  // async findAllPosts(): Promise<PostOutputType[] | null> {
-  //   const result: PostOutputType[] | null = await postRepository.findAllPosts();
-
-  //   if (result) {
-  //     return result;
-  //   } else {
-  //     return null;
-  //   }
-  // },
-  // async findPostById(id: string): Promise<PostOutputType | null> {
-  //   const post: PostOutputType | null = await postRepository.findPostById(id);
-  //   if (post) {
-  //     return post;
-  //   } else {
-  //     return null;
-  //   }
-  // },
   async deleteAllPosts(): Promise<boolean> {
     const result = await postRepository.deleteAllPosts();
     if (result === true) {

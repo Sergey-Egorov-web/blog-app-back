@@ -68,3 +68,23 @@ export type PostInputType = {
   content: string;
   blogId: string;
 };
+
+export type UserInputModel = {
+  login: string;
+  password: string;
+  email: string;
+};
+
+export type UserDbType = {
+  id: string;
+  login: string;
+  password: string;
+  email: string;
+  createdAt: string;
+};
+
+export type UserOutputModel = {
+  id: string;
+  login: string;
+  email: string;
+};
