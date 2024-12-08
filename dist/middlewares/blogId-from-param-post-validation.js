@@ -9,22 +9,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogIdUriParamPostValidation = blogIdUriParamPostValidation;
+exports.blogIdUriParamPostValidation = void 0;
 const express_validator_1 = require("express-validator");
 const blog_db_query_repository_1 = require("../repositories/blog-db-query-repository");
-function blogIdUriParamPostValidation() {
+const blogIdUriParamPostValidation = (
+// export function blogIdUriParamPostValidation(
+req, res, next) => {
     return (0, express_validator_1.param)("blogId")
         .trim()
         .isString()
         .withMessage("blogId must be string")
         .notEmpty()
         .withMessage("blogId can't be empty")
-        .custom((id) => __awaiter(this, void 0, void 0, function* () {
+        .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
         const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(id);
         if (!blog) {
-            throw new Error("Blog not found");
+            // throw new Error("Blog not found");
+            res.status(404).send("Not Found");
         }
-        return true;
-    }))
-        .withMessage("Blog not found");
-}
+        else {
+            next();
+        }
+    }));
+    //   return true;
+    // })
+    // .withMessage("Blog not found");
+};
+exports.blogIdUriParamPostValidation = blogIdUriParamPostValidation;

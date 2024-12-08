@@ -12,13 +12,8 @@ export const basicAuthorizationMiddleware = (
 ) => {
   //' Basic xxxx'
 
-  //TODO вынести в переменные
-  // const data = `${username}:${password}`; // admin:qwerty
-
-  // const data = `${"admin"}:${"qwerty"}`;
-
   const base64data = Buffer.from(`${username}:${password}`).toString("base64");
-  // const base64data = Buffer.from(`${"admin"}:${"qwerty"}`).toString("base64"); //кодируем data в String base64
+
   const validAuthorizationValue = `Basic ${base64data}`;
   let authorizationHeader = req.headers.authorization;
 
