@@ -56,12 +56,16 @@ blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
   res.status(200).send(allBlogs);
 });
 
-blogsRouter.get("/:blogId", async (req: Request, res: Response) => {
-  const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
-  const blog = await blogsQueryRepository.findBlogById(blogId);
+blogsRouter.get(
+  "/:blogId",
+  checkBlogExistsMiddleware,
+  async (req: Request, res: Response) => {
+    const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+    const blog = await blogsQueryRepository.findBlogById(blogId);
 
-  res.status(200).send(blog);
-});
+    res.status(200).send(blog);
+  }
+);
 
 //__________________________________________________________________________________
 
@@ -138,7 +142,7 @@ blogsRouter.post(
 blogsRouter.put(
   "/:id",
   basicAuthorizationMiddleware,
-  checkBlogExistsMiddleware,
+  // checkBlogExistsMiddleware,
   nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),
@@ -170,10 +174,11 @@ blogsRouter.get(
 blogsRouter.delete(
   "/:id",
   basicAuthorizationMiddleware,
-  checkBlogExistsMiddleware,
+  // checkBlogExistsMiddleware,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const answer = await blogsService.deleteBlogById(id);
+    // console.log(answer);
     if (answer === true) {
       res.sendStatus(204);
     } else {

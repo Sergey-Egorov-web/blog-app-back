@@ -43,7 +43,7 @@ exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0
     const allBlogs = yield blog_db_query_repository_1.blogsQueryRepository.findAllBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize);
     res.status(200).send(allBlogs);
 }));
-exports.blogsRouter.get("/:blogId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.get("/:blogId", check_blog_exist_middlware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
     const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(blogId);
     res.status(200).send(blog);
@@ -80,7 +80,9 @@ exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
     const newBlog = yield blogs_service_1.blogsService.addNewBlog(blogCreateData);
     res.status(201).send(newBlog);
 }));
-exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, check_blog_exist_middlware_1.checkBlogExistsMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, 
+// checkBlogExistsMiddleware,
+(0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const blogUpdateData = req.body;
     const updateBlog = yield blogs_service_1.blogsService.updateBlogById(blogUpdateData, id);
@@ -100,9 +102,12 @@ exports.blogsRouter.get("/:id", check_blog_exist_middlware_1.checkBlogExistsMidd
     else
         res.send(404);
 }));
-exports.blogsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, check_blog_exist_middlware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, 
+// checkBlogExistsMiddleware,
+(req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const answer = yield blogs_service_1.blogsService.deleteBlogById(id);
+    // console.log(answer);
     if (answer === true) {
         res.sendStatus(204);
     }
