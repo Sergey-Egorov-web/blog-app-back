@@ -65,26 +65,30 @@ blogsRouter.get("/:blogId", async (req: Request, res: Response) => {
 
 //__________________________________________________________________________________
 
-blogsRouter.get("/:blogId/posts", async (req: Request, res: Response) => {
-  const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
-  const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
-  const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
-  const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
-  const sortDirection: SortDirection =
-    req.query.sortDirection && req.query.sortDirection.toString() === "asc"
-      ? "asc"
-      : "desc";
+blogsRouter.get(
+  "/:blogId/posts",
+  checkBlogExistsMiddleware,
+  async (req: Request, res: Response) => {
+    const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
+    const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    const sortDirection: SortDirection =
+      req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
 
-  const allPostFromBlogId = await blogsQueryRepository.findAllPostsByBlogId(
-    blogId,
-    pageNumber,
-    pageSize,
-    sortBy,
-    sortDirection
-  );
+    const allPostFromBlogId = await blogsQueryRepository.findAllPostsByBlogId(
+      blogId,
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection
+    );
 
-  res.status(200).send(allPostFromBlogId);
-});
+    res.status(200).send(allPostFromBlogId);
+  }
+);
 
 //_______________________________________________________________
 
@@ -134,6 +138,7 @@ blogsRouter.post(
 blogsRouter.put(
   "/:id",
   basicAuthorizationMiddleware,
+  checkBlogExistsMiddleware,
   nameValidation(),
   descriptionValidation(),
   webSiteUrlValidation(),
@@ -150,17 +155,22 @@ blogsRouter.put(
   }
 );
 
-blogsRouter.get("/:id", async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-  let blog = await blogsQueryRepository.findBlogById(id);
-  if (blog) {
-    res.send(blog);
-  } else res.send(404);
-});
+blogsRouter.get(
+  "/:id",
+  checkBlogExistsMiddleware,
+  async (req: Request, res: Response) => {
+    const id: string = req.params.id;
+    let blog = await blogsQueryRepository.findBlogById(id);
+    if (blog) {
+      res.send(blog);
+    } else res.send(404);
+  }
+);
 
 blogsRouter.delete(
   "/:id",
   basicAuthorizationMiddleware,
+  checkBlogExistsMiddleware,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const answer = await blogsService.deleteBlogById(id);
