@@ -19,15 +19,13 @@ exports.usersRepository = {
                 id: newUser.id,
             });
             if (result) {
-                //     const resultWithoutMongoId: BlogOutputType = {
-                //       id: result.id,
-                //       name: result.name,
-                //       description: result.description,
-                //       websiteUrl: result.websiteUrl,
-                //       createdAt: result.createdAt,
-                //       isMembership: result.isMembership,
-                //     };
-                return result.id;
+                const resultWithoutMongoId = {
+                    id: result.id,
+                    login: result.login,
+                    email: result.email,
+                    createdAt: result.createdAt,
+                };
+                return resultWithoutMongoId;
             }
             else {
                 return null;

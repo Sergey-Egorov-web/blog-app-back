@@ -16,6 +16,7 @@ const user_login_validation_1 = require("../../middlewares/user-validation/user-
 const user_email_validation_1 = require("../../middlewares/user-validation/user-email-validation");
 const input_validation_middleware_1 = require("../../middlewares/input-validation-middleware");
 const users_service_1 = require("../../domains/users-service");
+const user_db_query_repositiory_1 = require("../../repositories/user-repository/user-db-query-repositiory");
 exports.usersRouter = (0, express_1.Router)({});
 exports.usersRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, user_login_validation_1.userLoginValidation)(), (0, user_login_validation_1.userLoginValidation)(), (0, user_email_validation_1.userEmailValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userCreateData = req.body;
@@ -26,4 +27,20 @@ exports.usersRouter.post("/", basic_authorization_middleware_1.basicAuthorizatio
     // else {
     //   res.status(404).send("Blog not found");
     // }
+}));
+exports.usersRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchLoginTerm = req.query.searchLoginTerm
+        ? req.query.searchLoginTerm.toString()
+        : null;
+    const searchEmailTerm = req.query.searchEmailTerm
+        ? req.query.searchEmailTerm.toString()
+        : null;
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    const sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+    const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    const allUsers = yield user_db_query_repositiory_1.usersQueryRepository.findAllUsers(sortBy, sortDirection, pageNumber, pageSize, searchLoginTerm, searchEmailTerm);
+    res.status(200).send(allUsers);
 }));

@@ -6,5 +6,5 @@ export function userPasswordValidation() {
     .notEmpty()
     .withMessage("password can't be empty")
     .isLength({ min: 6, max: 20 })
-    .withMessage("password length must be between 3 and 10 characters");
+    .withMessage("password length must be between 6 and 10 characters");
 }

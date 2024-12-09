@@ -1,8 +1,8 @@
-import { UserDbType, UserOutputModel } from "../../types";
+import { UserDbType, UserViewModel } from "../../types";
 import { userCollection } from "../db";
 
 export const usersRepository = {
-  async addNewUser(newUser: UserDbType): Promise<string | null> {
+  async addNewUser(newUser: UserDbType): Promise<UserViewModel | null> {
     await userCollection.insertOne(newUser);
 
     const result = await userCollection.findOne({
@@ -10,16 +10,14 @@ export const usersRepository = {
     });
 
     if (result) {
-      //     const resultWithoutMongoId: BlogOutputType = {
-      //       id: result.id,
-      //       name: result.name,
-      //       description: result.description,
-      //       websiteUrl: result.websiteUrl,
-      //       createdAt: result.createdAt,
-      //       isMembership: result.isMembership,
-      //     };
+      const resultWithoutMongoId: UserViewModel = {
+        id: result.id,
+        login: result.login,
+        email: result.email,
+        createdAt: result.createdAt,
+      };
 
-      return result.id;
+      return resultWithoutMongoId;
     } else {
       return null;
     }

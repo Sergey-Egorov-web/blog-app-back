@@ -20,7 +20,7 @@ exports.usersService = {
                 const newUser = {
                     id: Date.now().toString(),
                     login: user.login,
-                    password: user.password,
+                    password: user.password.toString(),
                     email: user.email,
                     createdAt: new Date().toISOString(),
                 };
@@ -28,9 +28,9 @@ exports.usersService = {
                 if (result) {
                     return result;
                 }
-                //   else {
-                //     return null;
-                //   }
+                else {
+                    return null;
+                }
             }
             return null;
         });
