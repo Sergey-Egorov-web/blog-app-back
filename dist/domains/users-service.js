@@ -8,22 +8,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersService = void 0;
-// import { password } from "../configuration";
 const user_db_repository_1 = require("../repositories/user-repository/user-db-repository");
+const bcrypt_1 = __importDefault(require("bcrypt"));
+//  const bcrypt = require('bcrypt');
 exports.usersService = {
     addNewUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             // const user: UserDbType | null = await {
+            // const passwordSalt = await bcrypt.genSalt(10);
+            // const passwordHash = await this.generateHash(password, passwordSalt);
+            const salt = bcrypt_1.default.genSaltSync(10);
+            const hash = bcrypt_1.default.hashSync(user.password.toString(), salt);
             if (user) {
                 const newUser = {
                     id: Date.now().toString(),
                     login: user.login,
-                    password: user.password.toString(),
+                    password: hash,
                     email: user.email,
                     createdAt: new Date().toISOString(),
                 };
+                console.log(newUser.password);
                 const result = yield user_db_repository_1.usersRepository.addNewUser(newUser);
                 if (result) {
                     return result;
