@@ -1,21 +1,41 @@
 import { usersRepository } from "../repositories/user-repository/user-db-repository";
-import { UserDbType, UserInputModel, UserViewModel } from "../types";
+import {
+  APIError,
+  FieldError,
+  UserDbType,
+  UserInputModel,
+  UserViewModel,
+} from "../types";
 import bcrypt from "bcrypt";
 
-//  const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 export const usersService = {
-  async addNewUser(user: UserInputModel): Promise<UserViewModel | null> {
-    // const user: UserDbType | null = await {
+  async addNewUser(user: UserInputModel): Promise<UserViewModel | APIError> {
+    const errorsMessages: { field: string; message: string }[] = [];
+    let errorCount: number = 0;
 
-    // const passwordSalt = await bcrypt.genSalt(10);
-    // const passwordHash = await this.generateHash(password, passwordSalt);
+    if (user.email === "") {
+      errorsMessages.push({ field: "email", message: "email cant be empty" });
+      errorCount++;
+    }
+    if (user.login === "") {
+      errorsMessages.push({ field: "login", message: "login cant be empty" });
+      errorCount++;
+    }
+    if (user.password === "") {
+      errorsMessages.push({
+        field: "password",
+        message: "password cant be empty",
+      });
+      errorCount++;
+    }
 
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(user.password.toString(), salt);
-
-    if (user) {
-      const newUser: UserDbType | null = {
+    if (errorsMessages.length) {
+      return { errorsMessages };
+    } else {
+      const hash: string = await getHash(user.password);
+      const newUser: UserDbType = {
         id: Date.now().toString(),
         login: user.login,
         password: hash,
@@ -25,14 +45,22 @@ export const usersService = {
 
       console.log(newUser.password);
 
-      const result = await usersRepository.addNewUser(newUser);
+      const result: UserViewModel | null = await usersRepository.addNewUser(
+        newUser
+      );
 
       if (result) {
         return result;
       } else {
-        return null;
+        return {
+          errorsMessages: [{ field: "server", message: "Failed to add user" }],
+        };
       }
     }
-    return null;
   },
 };
+
+async function getHash(password: string): Promise<string> {
+  const hashedPassword: string = await bcrypt.hash(password, 10);
+  return hashedPassword;
+}

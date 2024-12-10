@@ -6,7 +6,7 @@ import { inputValidationMiddleware } from "../../middlewares/input-validation-mi
 import { UserDbType, UserInputModel, UserViewModel } from "../../types";
 import { usersService } from "../../domains/users-service";
 import { SortDirection } from "mongodb";
-import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repositiory";
+import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
 
 export const usersRouter = Router({});
 

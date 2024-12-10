@@ -97,3 +97,12 @@ export type PaginatorUserViewModel = {
   totalCount: number;
   items: UserViewModel[];
 };
+
+export type FieldError = {
+  message: string | null;
+  field: string | null;
+};
+
+export type APIError = {
+  errorsMessages: FieldError[];
+};

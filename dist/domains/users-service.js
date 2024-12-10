@@ -15,16 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersService = void 0;
 const user_db_repository_1 = require("../repositories/user-repository/user-db-repository");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-//  const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 exports.usersService = {
     addNewUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const user: UserDbType | null = await {
-            // const passwordSalt = await bcrypt.genSalt(10);
-            // const passwordHash = await this.generateHash(password, passwordSalt);
-            const salt = bcrypt_1.default.genSaltSync(10);
-            const hash = bcrypt_1.default.hashSync(user.password.toString(), salt);
-            if (user) {
+            const errorsMessages = [];
+            let errorCount = 0;
+            if (user.email === "") {
+                errorsMessages.push({ field: "email", message: "email cant be empty" });
+                errorCount++;
+            }
+            if (user.login === "") {
+                errorsMessages.push({ field: "login", message: "login cant be empty" });
+                errorCount++;
+            }
+            if (user.password === "") {
+                errorsMessages.push({
+                    field: "password",
+                    message: "password cant be empty",
+                });
+                errorCount++;
+            }
+            if (errorsMessages.length) {
+                return { errorsMessages };
+            }
+            else {
+                const hash = yield getHash(user.password);
                 const newUser = {
                     id: Date.now().toString(),
                     login: user.login,
@@ -38,10 +54,17 @@ exports.usersService = {
                     return result;
                 }
                 else {
-                    return null;
+                    return {
+                        errorsMessages: [{ field: "server", message: "Failed to add user" }],
+                    };
                 }
             }
-            return null;
         });
     },
 };
+function getHash(password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        return hashedPassword;
+    });
+}
