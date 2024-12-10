@@ -32,4 +32,16 @@ exports.usersRepository = {
             }
         });
     },
+    findAllUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const foundUsers = yield db_1.userCollection.find().toArray();
+            const resultWithoutMongoId = foundUsers.map((user) => ({
+                id: user.id,
+                login: user.login,
+                email: user.email,
+                createdAt: user.createdAt,
+            }));
+            return resultWithoutMongoId;
+        });
+    },
 };

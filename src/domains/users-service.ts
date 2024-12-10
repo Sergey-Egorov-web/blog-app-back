@@ -31,6 +31,25 @@ export const usersService = {
       errorCount++;
     }
 
+    const userLogins = await getUsersLogins();
+
+    async function checkUniqueLogin(
+      login: string,
+      userLogins: string[]
+    ): Promise<boolean> {
+      userLogins.forEach((element) => {
+        if ((login = element)) {
+          return true;
+        }
+      });
+      return false;
+    }
+
+    let checkLogin: boolean = await checkUniqueLogin(user.login, userLogins);
+
+    if ((checkLogin = true)) {
+      errorsMessages.push({ field: "login", message: "login must be unique" });
+    }
     if (errorsMessages.length) {
       return { errorsMessages };
     } else {
@@ -63,4 +82,15 @@ export const usersService = {
 async function getHash(password: string): Promise<string> {
   const hashedPassword: string = await bcrypt.hash(password, 10);
   return hashedPassword;
+}
+
+async function getUsersLogins(): Promise<string[]> {
+  let users: UserViewModel[] | null = await usersRepository.findAllUsers();
+
+  if (users) {
+    const usersLogin = users.map((user) => user.login);
+    return usersLogin;
+  } else {
+    return [];
+  }
 }

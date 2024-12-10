@@ -17,16 +17,17 @@ const user_email_validation_1 = require("../../middlewares/user-validation/user-
 const input_validation_middleware_1 = require("../../middlewares/input-validation-middleware");
 const users_service_1 = require("../../domains/users-service");
 const user_db_query_repository_1 = require("../../repositories/user-repository/user-db-query-repository");
+const user_password_validation_1 = require("../../middlewares/user-validation/user-password-validation");
 exports.usersRouter = (0, express_1.Router)({});
-exports.usersRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, user_login_validation_1.userLoginValidation)(), (0, user_login_validation_1.userLoginValidation)(), (0, user_email_validation_1.userEmailValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.usersRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, user_login_validation_1.userLoginValidation)(), (0, user_password_validation_1.userPasswordValidation)(), (0, user_email_validation_1.userEmailValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userCreateData = req.body;
     const newUser = yield users_service_1.usersService.addNewUser(userCreateData);
     if (newUser) {
         res.status(201).send(newUser);
     }
-    // else {
-    //   res.status(404).send("Blog not found");
-    // }
+    else {
+        res.status(400).send(newUser);
+    }
 }));
 exports.usersRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const searchLoginTerm = req.query.searchLoginTerm

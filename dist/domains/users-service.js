@@ -36,6 +36,21 @@ exports.usersService = {
                 });
                 errorCount++;
             }
+            const userLogins = yield getUsersLogins();
+            function checkUniqueLogin(login, userLogins) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    userLogins.forEach((element) => {
+                        if ((login = element)) {
+                            return true;
+                        }
+                    });
+                    return false;
+                });
+            }
+            let checkLogin = yield checkUniqueLogin(user.login, userLogins);
+            if ((checkLogin = true)) {
+                errorsMessages.push({ field: "login", message: "login must be unique" });
+            }
             if (errorsMessages.length) {
                 return { errorsMessages };
             }
@@ -66,5 +81,17 @@ function getHash(password) {
     return __awaiter(this, void 0, void 0, function* () {
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         return hashedPassword;
+    });
+}
+function getUsersLogins() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let users = yield user_db_repository_1.usersRepository.findAllUsers();
+        if (users) {
+            const usersLogin = users.map((user) => user.login);
+            return usersLogin;
+        }
+        else {
+            return [];
+        }
     });
 }

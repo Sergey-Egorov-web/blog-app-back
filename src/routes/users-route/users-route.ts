@@ -3,10 +3,16 @@ import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorizat
 import { userLoginValidation } from "../../middlewares/user-validation/user-login-validation";
 import { userEmailValidation } from "../../middlewares/user-validation/user-email-validation";
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
-import { UserDbType, UserInputModel, UserViewModel } from "../../types";
+import {
+  APIError,
+  UserDbType,
+  UserInputModel,
+  UserViewModel,
+} from "../../types";
 import { usersService } from "../../domains/users-service";
 import { SortDirection } from "mongodb";
 import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
+import { userPasswordValidation } from "../../middlewares/user-validation/user-password-validation";
 
 export const usersRouter = Router({});
 
@@ -14,22 +20,21 @@ usersRouter.post(
   "/",
   basicAuthorizationMiddleware,
   userLoginValidation(),
-  userLoginValidation(),
+  userPasswordValidation(),
   userEmailValidation(),
   inputValidationMiddleware,
 
   async (req: Request, res: Response) => {
     const userCreateData: UserInputModel = req.body;
-    const newUser: UserViewModel | null = await usersService.addNewUser(
+    const newUser: UserViewModel | APIError = await usersService.addNewUser(
       userCreateData
     );
 
     if (newUser) {
       res.status(201).send(newUser);
+    } else {
+      res.status(400).send(newUser);
     }
-    // else {
-    //   res.status(404).send("Blog not found");
-    // }
   }
 );
 

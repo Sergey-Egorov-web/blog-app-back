@@ -22,4 +22,16 @@ export const usersRepository = {
       return null;
     }
   },
+  async findAllUsers(): Promise<UserViewModel[] | null> {
+    const foundUsers = await userCollection.find().toArray();
+
+    const resultWithoutMongoId = foundUsers.map((user) => ({
+      id: user.id,
+      login: user.login,
+      email: user.email,
+      createdAt: user.createdAt,
+    }));
+
+    return resultWithoutMongoId;
+  },
 };
