@@ -34,4 +34,23 @@ export const usersRepository = {
 
     return resultWithoutMongoId;
   },
+  async deleteUserById(id: string): Promise<boolean> {
+    const result = await userCollection.deleteOne({ id });
+    console.log(result.deletedCount);
+    if (result.deletedCount === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  async deleteAllUsers(): Promise<boolean> {
+    const result = await userCollection.deleteMany({});
+
+    if (result.deletedCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };

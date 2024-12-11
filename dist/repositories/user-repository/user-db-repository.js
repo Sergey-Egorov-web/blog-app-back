@@ -44,4 +44,27 @@ exports.usersRepository = {
             return resultWithoutMongoId;
         });
     },
+    deleteUserById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.userCollection.deleteOne({ id });
+            console.log(result.deletedCount);
+            if (result.deletedCount === 1) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+    },
+    deleteAllUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.userCollection.deleteMany({});
+            if (result.deletedCount > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+    },
 };

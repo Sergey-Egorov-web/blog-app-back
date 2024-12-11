@@ -43,6 +43,25 @@ export const usersService = {
       }
     }
   },
+
+  async deleteUserById(id: string): Promise<boolean> {
+    const result: boolean = await usersRepository.deleteUserById(id);
+    console.log(result);
+    if (result === true) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  async deleteAllUsers(): Promise<boolean> {
+    const result = await usersRepository.deleteAllUsers();
+
+    if (result === true) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };
 
 async function getHash(password: string): Promise<string> {

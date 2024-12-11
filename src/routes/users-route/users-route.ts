@@ -64,3 +64,19 @@ usersRouter.get("/", async (req: Request, res: Response) => {
 
   res.status(200).send(allUsers);
 });
+
+usersRouter.delete(
+  "/:id",
+  basicAuthorizationMiddleware,
+  // checkBlogExistsMiddleware,
+  async (req: Request, res: Response) => {
+    const id: string = req.params.id;
+    const answer = await usersService.deleteUserById(id);
+    // console.log(answer);
+    if (answer === true) {
+      res.sendStatus(204);
+    } else {
+      res.sendStatus(404);
+    }
+  }
+);
