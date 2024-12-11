@@ -9,7 +9,7 @@ import {
   UserInputModel,
   UserViewModel,
 } from "../../types";
-import { usersService } from "../../domains/users-service";
+import { usersService } from "../../domains/users-services/users-service";
 import { SortDirection } from "mongodb";
 import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
 import { userPasswordValidation } from "../../middlewares/user-validation/user-password-validation";
