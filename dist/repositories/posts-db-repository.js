@@ -12,44 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepository = void 0;
 const db_1 = require("./db");
 exports.postRepository = {
-    // async findAllPosts(): Promise<PostOutputType[] | null> {
-    //   const result: PostOutputType[] | null = await postCollection
-    //     .find({})
-    //     .toArray();
-    //   if (result) {
-    //     const resultWithoutMongoId: PostOutputType[] | null = result.map(
-    //       (post) => ({
-    //         id: post.id,
-    //         title: post.title,
-    //         shortDescription: post.shortDescription,
-    //         content: post.content,
-    //         blogId: post.blogId,
-    //         blogName: post.blogName,
-    //         createdAt: post.createdAt,
-    //       })
-    //     );
-    //     return resultWithoutMongoId;
-    //   } else {
-    //     return null;
-    //   }
-    // },
-    // async findPostById(id: string): Promise<PostOutputType | null> {
-    //   const post: PostOutputType | null = await postCollection.findOne({ id });
-    //   if (post) {
-    //     const resultWithoutMongoId: PostOutputType = {
-    //       id: post.id,
-    //       title: post.title,
-    //       shortDescription: post.shortDescription,
-    //       content: post.content,
-    //       blogId: post.blogId,
-    //       blogName: post.blogName,
-    //       createdAt: post.createdAt,
-    //     };
-    //     return resultWithoutMongoId;
-    //   } else {
-    //     return null;
-    //   }
-    // },
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield db_1.postCollection.deleteMany({});
@@ -118,20 +80,7 @@ exports.postRepository = {
                 return null;
             }
             else {
-                // updatePost.title = post.title;
-                // updatePost.shortDescription = post.shortDescription;
-                // updatePost.content = post.content;
-                // updatePost.blogId = post.blogId;
                 return result;
-                // const blog: BlogDbType | null = await blogsRepository.findBlog(
-                //   post.blogId
-                // );
-                // if (blog) {
-                //   updatePost.blogName = blog.name;
-                //   return updatePost;
-                // } else {
-                //   return null;
-                // }
             }
         });
     },

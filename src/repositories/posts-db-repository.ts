@@ -3,46 +3,6 @@ import { PostDbType, PostInputType, PostOutputType } from "../types";
 import { postCollection } from "./db";
 
 export const postRepository = {
-  // async findAllPosts(): Promise<PostOutputType[] | null> {
-  //   const result: PostOutputType[] | null = await postCollection
-  //     .find({})
-  //     .toArray();
-
-  //   if (result) {
-  //     const resultWithoutMongoId: PostOutputType[] | null = result.map(
-  //       (post) => ({
-  //         id: post.id,
-  //         title: post.title,
-  //         shortDescription: post.shortDescription,
-  //         content: post.content,
-  //         blogId: post.blogId,
-  //         blogName: post.blogName,
-  //         createdAt: post.createdAt,
-  //       })
-  //     );
-
-  //     return resultWithoutMongoId;
-  //   } else {
-  //     return null;
-  //   }
-  // },
-  // async findPostById(id: string): Promise<PostOutputType | null> {
-  //   const post: PostOutputType | null = await postCollection.findOne({ id });
-  //   if (post) {
-  //     const resultWithoutMongoId: PostOutputType = {
-  //       id: post.id,
-  //       title: post.title,
-  //       shortDescription: post.shortDescription,
-  //       content: post.content,
-  //       blogId: post.blogId,
-  //       blogName: post.blogName,
-  //       createdAt: post.createdAt,
-  //     };
-  //     return resultWithoutMongoId;
-  //   } else {
-  //     return null;
-  //   }
-  // },
   async deleteAllPosts(): Promise<boolean> {
     const result = await postCollection.deleteMany({});
     if (result.deletedCount > 0) {
@@ -109,21 +69,7 @@ export const postRepository = {
     if (!result) {
       return null;
     } else {
-      // updatePost.title = post.title;
-      // updatePost.shortDescription = post.shortDescription;
-      // updatePost.content = post.content;
-      // updatePost.blogId = post.blogId;
       return result;
-
-      // const blog: BlogDbType | null = await blogsRepository.findBlog(
-      //   post.blogId
-      // );
-      // if (blog) {
-      //   updatePost.blogName = blog.name;
-      //   return updatePost;
-      // } else {
-      //   return null;
-      // }
     }
   },
 };

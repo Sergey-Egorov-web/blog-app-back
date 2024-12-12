@@ -53,6 +53,8 @@ usersRouter.get("/", async (req: Request, res: Response) => {
   const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
   const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
 
+  console.log(searchEmailTerm, searchLoginTerm);
+
   const allUsers = await usersQueryRepository.findAllUsers(
     sortBy,
     sortDirection,

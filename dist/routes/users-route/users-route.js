@@ -42,6 +42,7 @@ exports.usersRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, fun
         : "desc";
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    console.log(searchEmailTerm, searchLoginTerm);
     const allUsers = yield user_db_query_repository_1.usersQueryRepository.findAllUsers(sortBy, sortDirection, pageNumber, pageSize, searchLoginTerm, searchEmailTerm);
     res.status(200).send(allUsers);
 }));

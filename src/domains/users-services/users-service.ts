@@ -1,6 +1,7 @@
 import { usersRepository } from "../../repositories/user-repository/user-db-repository";
 import {
   APIError,
+  LoginInputModel,
   UserDbType,
   UserInputModel,
   UserViewModel,
@@ -61,6 +62,9 @@ export const usersService = {
     } else {
       return false;
     }
+  },
+  async checkUser(user: LoginInputModel): Promise<boolean> {
+    return true;
   },
 };
 

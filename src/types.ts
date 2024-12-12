@@ -106,3 +106,8 @@ export type FieldError = {
 export type APIError = {
   errorsMessages: FieldError[];
 };
+
+export type LoginInputModel = {
+  loginOrEmail: string;
+  password: string;
+};
