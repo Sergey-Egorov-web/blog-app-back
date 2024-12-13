@@ -1,6 +1,6 @@
 import { PaginatorUserViewModel, UserDbType, UserViewModel } from "../../types";
 import { userCollection } from "../db";
-
+import bcrypt from "bcrypt";
 export const usersQueryRepository = {
   async findAllUsers(
     sortBy: string,
@@ -69,11 +69,18 @@ export const usersQueryRepository = {
       ],
     });
 
-    console.log(user);
-    if (user) {
-      return user;
-    } else {
+    if (!user) {
       return null;
     }
+    // const hash: string = await getHash(password);
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      console.log("password is incorrect");
+      return null;
+    }
+    console.log(user);
+    return user;
   },
 };

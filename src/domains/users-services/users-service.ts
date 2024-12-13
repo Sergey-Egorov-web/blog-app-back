@@ -64,7 +64,7 @@ export const usersService = {
       return false;
     }
   },
-  async checkUser(user: LoginInputModel): Promise<boolean> {
+  async checkUser(user: LoginInputModel): Promise<boolean | APIError> {
     let checkUser: UserViewModel | null =
       await usersQueryRepository.findUserByLoginOrPassword(
         user.loginOrEmail,
@@ -73,15 +73,19 @@ export const usersService = {
 
     console.log(user.loginOrEmail);
 
-    if (checkUser) {
+    if (checkUser !== null) {
       return true;
     } else {
-      return false;
+      return {
+        errorsMessages: [
+          { field: "server", message: "Login or password is incorrect" },
+        ],
+      };
     }
   },
 };
 
-async function getHash(password: string): Promise<string> {
+export async function getHash(password: string): Promise<string> {
   const hashedPassword: string = await bcrypt.hash(password, 10);
   return hashedPassword;
 }

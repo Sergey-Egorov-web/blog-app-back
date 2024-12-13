@@ -20,10 +20,10 @@ exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/:login", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, user_login_or_email_validation_1.userLoginOrEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginInputData = req.body;
     const check = yield users_service_1.usersService.checkUser(loginInputData);
-    if (check) {
+    if (check === true) {
         res.sendStatus(204);
     }
     else {
-        res.status(400).send(check);
+        res.status(400).json(check);
     }
 }));
