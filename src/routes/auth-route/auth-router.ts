@@ -10,7 +10,7 @@ export const authRouter = Router({});
 
 authRouter.post(
   "/:login",
-  basicAuthorizationMiddleware,
+  // basicAuthorizationMiddleware,
   userLoginOrEmailValidation(),
   userPasswordValidation(),
   inputValidationMiddleware,
@@ -20,6 +20,7 @@ authRouter.post(
       loginInputData
     );
     if (check === true) {
+      console.log("Success");
       res.sendStatus(204);
     } else {
       res.status(400).json(check);
