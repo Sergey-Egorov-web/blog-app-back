@@ -59,29 +59,21 @@ export const usersQueryRepository = {
   },
 
   async findUserByLoginOrPassword(
-    login: string,
+    loginOrEmail: string,
     password: string
   ): Promise<UserViewModel | null> {
     const user: UserDbType | null = await userCollection.findOne({
-      login: login,
-      email: login,
+      $or: [
+        { login: loginOrEmail }, // Ищем по логину
+        { email: loginOrEmail }, // Ищем по email
+      ],
     });
 
     console.log(user);
-    // if (user) {
-    //   const resultWithoutMongoId: PostOutputType = {
-    //     id: post.id,
-    //     title: post.title,
-    //     shortDescription: post.shortDescription,
-    //     content: post.content,
-    //     blogId: post.blogId,
-    //     blogName: post.blogName,
-    //     createdAt: post.createdAt,
-    //   };
-    //   return resultWithoutMongoId;
-    // } else {
-    //   return null;
-    // }
-    return user;
+    if (user) {
+      return user;
+    } else {
+      return null;
+    }
   },
 };

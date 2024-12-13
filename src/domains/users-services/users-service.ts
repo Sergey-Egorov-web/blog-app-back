@@ -8,6 +8,7 @@ import {
 } from "../../types";
 import bcrypt from "bcrypt";
 import { validateUserService } from "./validate-user-service";
+import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
 
 // const bcrypt = require('bcrypt');
 
@@ -64,7 +65,19 @@ export const usersService = {
     }
   },
   async checkUser(user: LoginInputModel): Promise<boolean> {
-    return true;
+    let checkUser: UserViewModel | null =
+      await usersQueryRepository.findUserByLoginOrPassword(
+        user.loginOrEmail,
+        user.password
+      );
+
+    console.log(user.loginOrEmail);
+
+    if (checkUser) {
+      return true;
+    } else {
+      return false;
+    }
   },
 };
 
