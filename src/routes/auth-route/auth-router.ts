@@ -23,7 +23,7 @@ authRouter.post(
       console.log("Success");
       res.sendStatus(204);
     } else {
-      res.status(400).json(check);
+      res.status(401).json(check);
     }
   }
 );
