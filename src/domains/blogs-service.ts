@@ -6,11 +6,12 @@ export const blogsService = {
   async deleteAllBlogs(): Promise<boolean> {
     const result = await blogsRepository.deleteAllBlogs();
 
-    if (result === true) {
-      return true;
-    } else {
-      return false;
-    }
+    return result;
+    // if (result === true) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   },
 
   async deleteBlogById(id: string): Promise<boolean> {

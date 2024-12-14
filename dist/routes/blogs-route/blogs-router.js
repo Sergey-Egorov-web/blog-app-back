@@ -25,12 +25,12 @@ const content_post_validation_1 = require("../../middlewares/content-post-valida
 const check_blog_exist_middlware_1 = require("../../middlewares/check-blog-exist-middlware");
 exports.blogsRouter = (0, express_1.Router)({});
 // blogsRouter.use(express.json());
-const ITINCUBATOR = (req, res, next) => {
-    console.log("IT-INCUBATOR");
-    next();
-};
-exports.blogsRouter.use(ITINCUBATOR);
-exports.blogsRouter.get("/", ITINCUBATOR, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
+//   console.log("IT-INCUBATOR");
+//   next();
+// };
+// blogsRouter.use(ITINCUBATOR);
+exports.blogsRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const searchNameTerm = req.query.searchNameTerm
         ? req.query.searchNameTerm.toString()
         : null;

@@ -26,14 +26,14 @@ export const blogsRouter = Router({});
 
 // blogsRouter.use(express.json());
 
-const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
-  console.log("IT-INCUBATOR");
-  next();
-};
+// const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
+//   console.log("IT-INCUBATOR");
+//   next();
+// };
 
-blogsRouter.use(ITINCUBATOR);
+// blogsRouter.use(ITINCUBATOR);
 
-blogsRouter.get("/", ITINCUBATOR, async (req: Request, res: Response) => {
+blogsRouter.get("/", async (req: Request, res: Response) => {
   const searchNameTerm = req.query.searchNameTerm
     ? req.query.searchNameTerm.toString()
     : null;

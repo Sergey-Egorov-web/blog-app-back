@@ -16,12 +16,12 @@ exports.blogsService = {
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield blogs_db_repository_1.blogsRepository.deleteAllBlogs();
-            if (result === true) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return result;
+            // if (result === true) {
+            //   return true;
+            // } else {
+            //   return false;
+            // }
         });
     },
     deleteBlogById(id) {
