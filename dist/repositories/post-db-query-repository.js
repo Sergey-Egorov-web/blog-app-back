@@ -16,7 +16,7 @@ exports.postQueryRepository = {
         return __awaiter(this, void 0, void 0, function* () {
             const filter = {};
             const foundPosts = yield db_1.postCollection
-                .find(filter)
+                .find()
                 .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)

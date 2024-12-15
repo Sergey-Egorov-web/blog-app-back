@@ -15,13 +15,12 @@ export const blogsQueryRepository = {
     pageNumber: number,
     pageSize: number
   ): Promise<PaginatorBlogViewModel | null> {
-    // const result = await blogCollection.find({}).toArray();
     const filter: any = {};
     if (searchNameTerm) {
       filter.name = { $regex: searchNameTerm, $options: "i" };
     }
 
-    console.log(filter);
+    // console.log(filter);
     const foundBlogs = await blogCollection
 
       .find(filter)

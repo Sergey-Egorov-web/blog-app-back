@@ -8,7 +8,7 @@
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon --inspect dist/index.js",
-    "test": "jest --forceExit",
+    "test": "jest --forceExit --runInBand",
     "start": "node dist/index.js"
   },
   "dependencies": {

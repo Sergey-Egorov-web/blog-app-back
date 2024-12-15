@@ -10,7 +10,7 @@ export const postQueryRepository = {
   ): Promise<PaginatorPostViewModel | null> {
     const filter: any = {};
     const foundPosts: PostOutputType[] | null = await postCollection
-      .find(filter)
+      .find()
       .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)

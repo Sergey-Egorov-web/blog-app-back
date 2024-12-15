@@ -21,11 +21,10 @@ export const helperCreateBlog = async (): Promise<BlogDbType> => {
   return responseBlog.body;
 };
 
-export const helperCreatePost = async (
-  blog: BlogDbType
-): Promise<PostDbType> => {
+export const helperCreatePost = async (): // blog: BlogDbType
+Promise<PostDbType> => {
   //   const responseBlog = await helperCreateBlog();
-
+  const blog = await helperCreateBlog();
   const responsePost: Response = await request(app)
     .post("/posts")
     .set(
@@ -38,6 +37,6 @@ export const helperCreatePost = async (
       content: "There are a lot of content must be here",
       blogId: blog.id,
     });
-
+  console.log(responsePost.body);
   return responsePost.body;
 };

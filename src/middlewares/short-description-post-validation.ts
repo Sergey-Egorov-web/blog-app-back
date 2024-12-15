@@ -6,7 +6,7 @@ export function shortDescriptionPostValidation() {
     .isString()
     .notEmpty()
     .withMessage("shortDescription can't be empty")
-    .isLength({ min: 5, max: 30 })
+    .isLength({ min: 5, max: 100 })
     .withMessage(
       "shortDescription length must be between 5 and 100 characters"
     );

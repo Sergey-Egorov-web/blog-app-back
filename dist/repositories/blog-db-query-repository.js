@@ -14,12 +14,11 @@ const db_1 = require("./db");
 exports.blogsQueryRepository = {
     findAllBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const result = await blogCollection.find({}).toArray();
             const filter = {};
             if (searchNameTerm) {
                 filter.name = { $regex: searchNameTerm, $options: "i" };
             }
-            console.log(filter);
+            // console.log(filter);
             const foundBlogs = yield db_1.blogCollection
                 .find(filter)
                 .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
