@@ -12,7 +12,7 @@ describe("/", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
   });
-  it("should return 201 and newly created post", async () => {
+  it("POST should return 201 and newly created post", async () => {
     // create new post
     const blog = await helperCreateBlog();
 
@@ -44,7 +44,7 @@ describe("/", () => {
     });
   });
   //__________________________________________________________________________
-  it("should return 200 and object with array of items", async () => {
+  it("GET should return 200 and object with array of items", async () => {
     // тест на получение всех постов
     const response = await request(app).get("/posts").expect(200);
     expect(response.body).toEqual({
@@ -71,7 +71,7 @@ describe("/", () => {
   });
   //_____________________________________________________________________________
 
-  it("should return 200 and post", async () => {
+  it("GET should return 200 and post", async () => {
     // return post by id
     // const blog = await helperCreateBlog();
     const post = await helperCreatePost();
@@ -92,15 +92,15 @@ describe("/", () => {
     });
   });
   //_____________________________________________________________________________
-  it("should return 404 not found", async () => {
+  it("GET should return 404 not found", async () => {
     // тест на получение ошибки при поиске поста по несущетсвующему id
 
     const responsePost = await request(app).get(`/posts/${12345}`).expect(404);
   });
   //_____________________________________________________________________________
-  it("should return 200 and post", async () => {
+  it("PUT should return 204 no content", async () => {
     // Update existing post by id with InputModel
-    const blog = await helperCreateBlog();
+
     const post = await helperCreatePost();
     console.log("post for update", post);
     const updatePost = await request(app)
@@ -116,8 +116,117 @@ describe("/", () => {
         blogId: post.blogId,
       })
       .expect(204);
-    console.log(updatePost.body);
-    console.log(updatePost.status);
   });
   //_____________________________________________________________________________
+  it("PUT should return 400 inputModel has incorrect values", async () => {
+    // Update existing post by id with InputModel
+
+    const post = await helperCreatePost();
+    console.log("post for update", post);
+    const updatePost = await request(app)
+      .put(`/posts/${post.id}`)
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+      )
+      .send({
+        title: "updateTitleOfNewPost",
+        shortDescription: "",
+        content: "There are a lot of update content must be here",
+        blogId: post.blogId,
+      })
+      .expect(400);
+    expect(updatePost.body).toEqual({
+      errorsMessages: [
+        {
+          message: "shortDescription can't be empty",
+          field: "shortDescription",
+        },
+      ],
+    });
+  });
+  //_____________________________________________________________________________
+  it("PUT should return 401 Unauthorized", async () => {
+    // Update existing post by id with InputModel
+
+    const post = await helperCreatePost();
+
+    const updatePost = await request(app)
+      .put(`/posts/${post.id}`)
+      .send({
+        title: "updateTitleOfNewPost",
+        shortDescription: "updateDescription for TitleOfNewP",
+        content: "There are a lot of update content must be here",
+        blogId: post.blogId,
+      })
+      .expect(401);
+  });
+  //_____________________________________________________________________________
+  it("PUT should return 404 Not Found", async () => {
+    // Update existing post by id with InputModel
+
+    const post = await helperCreatePost();
+
+    const updatePost = await request(app)
+      .put(`/posts/${12345}`)
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+      )
+      .send({
+        title: "updateTitleOfNewPost",
+        shortDescription: "updateDescription for TitleOfNewP",
+        content: "There are a lot of update content must be here",
+        blogId: post.blogId,
+      })
+      .expect(404);
+  });
+  //_____________________________________________________________________________
+  it("DELETE should return 204 no content", async () => {
+    // delete post specified by id
+    // const blog = await helperCreateBlog();
+    const post = await helperCreatePost();
+    const responsePost = await request(app)
+      .delete(`/posts/${post.id}`)
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+      )
+      .expect(204);
+
+    // expect(responsePost.body).toEqual({
+    //   id: expect.any(String), // любое число в качестве id
+    //   title: "titleOfNewPost",
+    //   shortDescription: "description of the new post",
+    //   content: "There are a lot of content must be here",
+    //   blogId: post.blogId,
+    //   blogName: post.blogName,
+    //   createdAt: expect.stringMatching(
+    //     /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/
+    //   ),
+    // });
+  });
+  //_____________________________________________________________________________
+  it("DELETE should return 401 no Unauthorized", async () => {
+    // delete post specified by id
+    // const blog = await helperCreateBlog();
+    const post = await helperCreatePost();
+    const responsePost = await request(app)
+      .delete(`/posts/${post.id}`)
+      .expect(401);
+  });
+  //_____________________________________________________________________________
+  it("DELETE should return 404 not found", async () => {
+    // delete post specified by id
+
+    const post = await helperCreatePost();
+    console.log("post for update", post);
+    const updatePost = await request(app)
+      .delete(`/posts/${12345}`)
+      .set(
+        "Authorization",
+        "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+      )
+      .expect(404);
+  });
 });
