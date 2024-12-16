@@ -78,7 +78,7 @@ describe("/", () => {
     const responsePost = await request(app)
       .get(`/posts/${post.id}`)
       .expect(200);
-    console.log(`post by id${post.id} ${responsePost.body} `);
+    // console.log(`post by id${post.id} ${responsePost.body} `);
     expect(responsePost.body).toEqual({
       id: expect.any(String), // любое число в качестве id
       title: "titleOfNewPost",
@@ -102,7 +102,7 @@ describe("/", () => {
     // Update existing post by id with InputModel
 
     const post = await helperCreatePost();
-    console.log("post for update", post);
+    // console.log("post for update", post);
     const updatePost = await request(app)
       .put(`/posts/${post.id}`)
       .set(
@@ -122,7 +122,7 @@ describe("/", () => {
     // Update existing post by id with InputModel
 
     const post = await helperCreatePost();
-    console.log("post for update", post);
+    // console.log("post for update", post);
     const updatePost = await request(app)
       .put(`/posts/${post.id}`)
       .set(
@@ -193,18 +193,6 @@ describe("/", () => {
         "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
       )
       .expect(204);
-
-    // expect(responsePost.body).toEqual({
-    //   id: expect.any(String), // любое число в качестве id
-    //   title: "titleOfNewPost",
-    //   shortDescription: "description of the new post",
-    //   content: "There are a lot of content must be here",
-    //   blogId: post.blogId,
-    //   blogName: post.blogName,
-    //   createdAt: expect.stringMatching(
-    //     /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/
-    //   ),
-    // });
   });
   //_____________________________________________________________________________
   it("DELETE should return 401 no Unauthorized", async () => {
@@ -220,7 +208,7 @@ describe("/", () => {
     // delete post specified by id
 
     const post = await helperCreatePost();
-    console.log("post for update", post);
+    // console.log("post for update", post);
     const updatePost = await request(app)
       .delete(`/posts/${12345}`)
       .set(

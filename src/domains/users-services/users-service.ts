@@ -35,7 +35,7 @@ export const usersService = {
       const result: UserViewModel | null = await usersRepository.addNewUser(
         newUser
       );
-
+      console.log(result);
       if (result) {
         return result;
       } else {

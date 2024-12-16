@@ -30,7 +30,7 @@ export const validateUserService = {
 
     let checkEmail: boolean = await checkUniqueEmail(user.email, userEmails);
 
-    if (checkEmail == true) {
+    if (checkEmail === true) {
       errorsMessages.push({ field: "email", message: "email must be unique" });
     }
 
@@ -43,7 +43,7 @@ async function getUsersLogins(): Promise<string[]> {
 
   if (users) {
     const usersLogin = users.map((user) => user.login);
-    console.log(usersLogin);
+    // console.log(usersLogin);
     return usersLogin;
   } else {
     return [];

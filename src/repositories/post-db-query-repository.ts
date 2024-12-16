@@ -10,12 +10,12 @@ export const postQueryRepository = {
   ): Promise<PaginatorPostViewModel | null> {
     const filter: any = {};
     const foundPosts: PostOutputType[] | null = await postCollection
-      .find()
+      .find(filter)
       .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .toArray();
-    console.log(foundPosts);
+    // console.log(foundPosts);
     // console.log()
     const totalCount = (await postCollection.find().toArray()).length;
     const page = pageNumber;
