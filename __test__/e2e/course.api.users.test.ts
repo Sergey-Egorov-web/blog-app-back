@@ -3,11 +3,7 @@ import "dotenv/config";
 
 import { app } from "../../src/settings";
 import { password, username } from "../../src/configuration";
-import {
-  helperCreateBlog,
-  helperCreatePost,
-  helperCreateUser,
-} from "../helper/helper-create-blog";
+import { helperCreateUser } from "../helper/helper-create-blog";
 
 describe("/", () => {
   beforeAll(async () => {
@@ -87,6 +83,20 @@ describe("/", () => {
         },
       ],
     });
+  });
+  //_____________________________________________________________________________
+  it("POST should return 401 Unauthorized", async () => {
+    // 	RETURN 401 If the no authorization.
+    const user = await helperCreateUser();
+    console.log(user.email);
+    const responseUser: Response = await request(app)
+      .post("/users")
+      .send({
+        login: "QmWgxPy1",
+        password: "string123",
+        email: user.email,
+      })
+      .expect(401);
   });
   //_____________________________________________________________________________
 });
