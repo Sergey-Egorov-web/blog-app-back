@@ -64,17 +64,18 @@ export const usersService = {
       return false;
     }
   },
-  async checkUser(user: LoginInputModel): Promise<boolean | APIError> {
+  async checkUser(user: LoginInputModel): Promise<UserViewModel | APIError> {
     let checkUser: UserViewModel | null =
       await usersQueryRepository.findUserByLoginOrPassword(
         user.loginOrEmail,
         user.password
       );
 
-    console.log(user.loginOrEmail);
+    // console.log(user.loginOrEmail);
 
     if (checkUser !== null) {
-      return true;
+      // return true;
+      return checkUser;
     } else {
       return {
         errorsMessages: [

@@ -33,10 +33,11 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.password = exports.username = exports.port = void 0;
+exports.JWT_SECRET = exports.password = exports.username = exports.port = void 0;
 //import "dotenv/config"; // Загрузка переменных окружения из файла .env
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 exports.port = process.env.PORT || 5000;
 exports.username = process.env.USERNAME_BASIC;
 exports.password = process.env.PASSWORD;
+exports.JWT_SECRET = process.env.JWT_SECRET || "111";

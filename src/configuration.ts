@@ -5,3 +5,4 @@ dotenv.config();
 export const port = process.env.PORT || 5000;
 export const username = process.env.USERNAME_BASIC;
 export const password = process.env.PASSWORD;
+export const JWT_SECRET = process.env.JWT_SECRET || "111";

@@ -15,17 +15,19 @@ const users_service_1 = require("../../domains/users-services/users-service");
 const user_password_validation_1 = require("../../middlewares/user-validation/user-password-validation");
 const user_login_or_email_validation_1 = require("../../middlewares/user-validation/user-login-or-email-validation");
 const input_validation_middleware_1 = require("../../middlewares/input-validation-middleware");
+const jwtService_1 = require("../../application/jwtService");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/:login", 
 // basicAuthorizationMiddleware,
 (0, user_login_or_email_validation_1.userLoginOrEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginInputData = req.body;
-    const check = yield users_service_1.usersService.checkUser(loginInputData);
-    if (check === true) {
-        console.log("Success");
-        res.sendStatus(204);
+    const user = yield users_service_1.usersService.checkUser(loginInputData);
+    if ("id" in user) {
+        // console.log("Success");
+        const token = yield jwtService_1.jwtService.createJWT(user);
+        res.status(200).send(token);
     }
     else {
-        res.status(401).json(check);
+        res.status(401).json(user);
     }
 }));
