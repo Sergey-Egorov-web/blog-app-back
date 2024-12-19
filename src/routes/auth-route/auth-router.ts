@@ -7,6 +7,7 @@ import { userLoginOrEmailValidation } from "../../middlewares/user-validation/us
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
 import { jwtService } from "../../application/jwtService";
 import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
+import { jwtAuthorizationMiddleware } from "../../middlewares/jwt-authorization-middleware";
 
 export const authRouter = Router({});
 
@@ -31,36 +32,14 @@ authRouter.post(
   }
 );
 
-authRouter.get("/:me", async (req: Request, res: Response) => {
-  // const loginInputData: LoginInputModel = req.body;
-
-  // Middleware для проверки токена
-
-  // const authHeader = req.headers['authorization'];
-  const authHeader = req.headers.authorization;
-
-  if (authHeader) {
-    const token: string | null = authHeader.split(" ")[1];
-    try {
-      if (token) {
-        const userId = await jwtService.getUserIdByToken(token);
-        console.log('authRouter.get("/:me"', userId);
-        const user = await usersQueryRepository.findUserById(userId);
-        // console.log(user);
-        res.status(200).send(user);
-      } else {
-        res.sendStatus(401);
-      }
-    } catch (error) {
-      console.error("Error while processing token:", error);
+authRouter.get(
+  "/:me",
+  jwtAuthorizationMiddleware,
+  async (req: Request, res: Response) => {
+    if (req.userId) {
+      const user = await usersQueryRepository.findUserById(req.userId);
+      console.log("auth-router", user);
+      res.status(200).send(user);
     }
   }
-
-  // if ("id" in user) {
-  //   // console.log("Success");
-  //   const token = await jwtService.createJWT(user);
-  //   res.status(200).send(token);
-  // } else {
-  //   res.status(401).json(user);
-  // }
-});
+);

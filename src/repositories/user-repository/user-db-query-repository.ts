@@ -90,11 +90,11 @@ export const usersQueryRepository = {
   },
 
   async findUserById(userId: string): Promise<meViewModel | null> {
-    console.log("queryRepo", userId);
+    // console.log("queryRepo", userId);
     const user: UserDbType | null = await userCollection.findOne({
       id: userId.toString,
     }); // Ищем по id
-    console.log(user);
+    // console.log("queryRepo", user);
     if (!user) {
       return null;
     }
