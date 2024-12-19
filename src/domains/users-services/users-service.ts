@@ -79,7 +79,7 @@ export const usersService = {
     } else {
       return {
         errorsMessages: [
-          { field: "server", message: "Login or password is incorrect" },
+          { field: "server", message: "Login or email or password is wrong" },
         ],
       };
     }

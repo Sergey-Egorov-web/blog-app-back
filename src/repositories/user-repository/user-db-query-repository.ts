@@ -1,4 +1,9 @@
-import { PaginatorUserViewModel, UserDbType, UserViewModel } from "../../types";
+import {
+  meViewModel,
+  PaginatorUserViewModel,
+  UserDbType,
+  UserViewModel,
+} from "../../types";
 import { userCollection } from "../db";
 import bcrypt from "bcrypt";
 export const usersQueryRepository = {
@@ -80,7 +85,28 @@ export const usersQueryRepository = {
       console.log("password is incorrect");
       return null;
     }
-    console.log(user);
+    // console.log(user);
     return user;
+  },
+
+  async findUserById(userId: string): Promise<meViewModel | null> {
+    console.log("queryRepo", userId);
+    const user: UserDbType | null = await userCollection.findOne({
+      id: userId.toString,
+    }); // Ищем по id
+    console.log(user);
+    if (!user) {
+      return null;
+    }
+
+    // if (user) {
+    const resultWithoutMongoId: meViewModel = {
+      email: user.email,
+      login: user.login,
+      userId: user.id,
+    };
+
+    return resultWithoutMongoId;
+    // }
   },
 };

@@ -111,3 +111,9 @@ export type LoginInputModel = {
   loginOrEmail: string;
   password: string;
 };
+
+export type meViewModel = {
+  email: string;
+  login: string;
+  userId: string;
+};
