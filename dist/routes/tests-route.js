@@ -14,10 +14,12 @@ const express_1 = require("express");
 const blogs_service_1 = require("../domains/blogs-service");
 const posts_service_1 = require("../domains/posts-service");
 const users_service_1 = require("../domains/users-services/users-service");
+const comments_service_1 = require("../domains/comments-service");
 exports.testingRouter = (0, express_1.Router)({});
 exports.testingRouter.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield blogs_service_1.blogsService.deleteAllBlogs();
     yield posts_service_1.postService.deleteAllPosts();
     yield users_service_1.usersService.deleteAllUsers();
+    yield comments_service_1.commentsService.deleteAllComments();
     res.sendStatus(204);
 }));

@@ -23,6 +23,17 @@ exports.postRepository = {
             }
         });
     },
+    deleteAllComments() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.commentCollection.deleteMany({});
+            if (result.deletedCount > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+    },
     deletePostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield db_1.postCollection.deleteOne({ id: id });
@@ -87,7 +98,6 @@ exports.postRepository = {
     addNewComment(newComment, postId) {
         return __awaiter(this, void 0, void 0, function* () {
             yield db_1.commentCollection.insertOne(newComment);
-            // console.log(newPost.id);
             const result = yield db_1.commentCollection.findOne({
                 id: newComment.id,
             });
