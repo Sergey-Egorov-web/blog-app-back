@@ -10,7 +10,7 @@ import {
   BlogPostInputModel,
   PostInputType,
   PostOutputType,
-} from "../../types";
+} from "../../types/types";
 import { nameValidation } from "../../middlewares/name-validation";
 import { blogsService } from "../../domains/blogs-service";
 import { SortDirection } from "mongodb";

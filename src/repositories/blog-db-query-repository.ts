@@ -4,7 +4,7 @@ import {
   PaginatorBlogViewModel,
   PaginatorPostViewModel,
   PostOutputType,
-} from "../types";
+} from "../types/types";
 import { blogCollection, postCollection } from "./db";
 
 export const blogsQueryRepository = {

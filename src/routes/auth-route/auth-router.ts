@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorization-middleware";
-import { APIError, LoginInputModel, UserViewModel } from "../../types";
+import { APIError, LoginInputModel, UserViewModel } from "../../types/types";
 import { usersService } from "../../domains/users-services/users-service";
 import { userPasswordValidation } from "../../middlewares/user-validation/user-password-validation";
 import { userLoginOrEmailValidation } from "../../middlewares/user-validation/user-login-or-email-validation";

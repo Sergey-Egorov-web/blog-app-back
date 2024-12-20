@@ -1,5 +1,5 @@
 import { usersRepository } from "../../repositories/user-repository/user-db-repository";
-import { UserInputModel, UserViewModel } from "../../types";
+import { UserInputModel, UserViewModel } from "../../types/types";
 // import { getUsersLogins } from "./users-service";
 
 export const validateUserService = {

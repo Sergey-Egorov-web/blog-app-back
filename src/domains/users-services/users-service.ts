@@ -5,7 +5,7 @@ import {
   UserDbType,
   UserInputModel,
   UserViewModel,
-} from "../../types";
+} from "../../types/types";
 import bcrypt from "bcrypt";
 import { validateUserService } from "./validate-user-service";
 import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";

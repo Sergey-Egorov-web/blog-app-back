@@ -1,4 +1,4 @@
-import { UserDbType, UserViewModel } from "../../types";
+import { UserDbType, UserViewModel } from "../../types/types";
 import { userCollection } from "../db";
 
 export const usersRepository = {

@@ -1,6 +1,7 @@
-import { PostDbType, PostInputType, PostOutputType } from "../types";
+import { CommentViewModel } from "../types/comment-types";
+import { PostDbType, PostInputType, PostOutputType } from "../types/types";
 
-import { postCollection } from "./db";
+import { commentCollection, postCollection } from "./db";
 
 export const postRepository = {
   async deleteAllPosts(): Promise<boolean> {
@@ -71,5 +72,32 @@ export const postRepository = {
     } else {
       return result;
     }
+  },
+
+  async addNewComment(
+    newComment: CommentViewModel,
+    postId: string
+  ): Promise<CommentViewModel | null> {
+    await commentCollection.insertOne(newComment);
+    // console.log(newPost.id);
+    const result = await commentCollection.findOne({
+      id: newComment.id,
+    });
+
+    if (result) {
+      const resultWithoutMongoId: CommentViewModel = {
+        id: result.id,
+        content: result.content,
+        commentatorInfo: result.commentatorInfo,
+        createdAt: result.createdAt,
+      };
+      console.log("post-db-repository", resultWithoutMongoId);
+      return resultWithoutMongoId;
+    } else {
+      return null;
+    }
+    // } else {
+    //   return null;
+    // }
   },
 };

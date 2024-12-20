@@ -20,6 +20,10 @@ const content_post_validation_1 = require("../../middlewares/content-post-valida
 const blogId_post_validation_1 = require("../../middlewares/blogId-post-validation");
 const posts_service_1 = require("../../domains/posts-service");
 const post_db_query_repository_1 = require("../../repositories/post-db-query-repository");
+const jwt_authorization_middleware_1 = require("../../middlewares/jwt-authorization-middleware");
+const content_comment_validation_1 = require("../../middlewares/content-comment-validation");
+const check_post_exist_middlware_1 = require("../../middlewares/check-post-exist-middlware");
+const user_db_query_repository_1 = require("../../repositories/user-repository/user-db-query-repository");
 exports.postsRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
@@ -68,5 +72,27 @@ exports.postsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
     }
     else {
         res.sendStatus(404);
+    }
+}));
+exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (0, content_comment_validation_1.contentCommentValidation)(), check_post_exist_middlware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("post-router hello");
+    if (req.userId) {
+        const user = yield user_db_query_repository_1.usersQueryRepository.findUserById(req.userId);
+        if (user) {
+            const userCommentator = {
+                userId: user.userId,
+                userLogin: user.login,
+            };
+            const commentCreateData = req.body.content;
+            console.log("post-router", commentCreateData);
+            const postId = req.params.id;
+            const newComment = yield posts_service_1.postService.addNewComment(commentCreateData, postId, userCommentator);
+            if (newComment) {
+                res.status(201).send(newComment);
+            }
+            else {
+                res.status(404).send("Post with this id not found");
+            }
+        }
     }
 }));

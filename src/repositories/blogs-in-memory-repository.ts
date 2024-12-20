@@ -1,4 +1,4 @@
-import { BlogInputType, BlogOutputType } from "../types";
+import { BlogInputType, BlogOutputType } from "../types/types";
 
 export type BlogDbType = {
   id: string;

@@ -1,6 +1,6 @@
 import { blogsQueryRepository } from "../repositories/blog-db-query-repository";
 import { blogsRepository } from "../repositories/blogs-db-repository";
-import { BlogDbType, BlogInputType, BlogOutputType } from "../types";
+import { BlogDbType, BlogInputType, BlogOutputType } from "../types/types";
 
 export const blogsService = {
   async deleteAllBlogs(): Promise<boolean> {

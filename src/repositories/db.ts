@@ -1,7 +1,8 @@
 import { MongoClient } from "mongodb";
-import { BlogDbType, PostOutputType, UserDbType } from "../types";
+import { BlogDbType, PostOutputType, UserDbType } from "../types/types";
 
 import "dotenv/config";
+import { CommentViewModel } from "../types/comment-types";
 
 const mongoUri = process.env.MONGO_URL;
 // || "mongodb://0.0.0.0:27017/BloggerPlatform";
@@ -23,6 +24,10 @@ export const blogCollection = client
 export const userCollection = client
   .db("BloggerPlatform")
   .collection<UserDbType>("users");
+
+export const commentCollection = client
+  .db("BloggerPlatform")
+  .collection<CommentViewModel>("comments");
 
 export async function runDB() {
   try {

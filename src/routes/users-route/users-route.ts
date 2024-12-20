@@ -8,7 +8,7 @@ import {
   UserDbType,
   UserInputModel,
   UserViewModel,
-} from "../../types";
+} from "../../types/types";
 import { usersService } from "../../domains/users-services/users-service";
 import { SortDirection } from "mongodb";
 import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postService = void 0;
 const blog_db_query_repository_1 = require("../repositories/blog-db-query-repository");
+const post_db_query_repository_1 = require("../repositories/post-db-query-repository");
 const posts_db_repository_1 = require("../repositories/posts-db-repository");
 // import { postCollection } from "./db";
 // export let posts: PostDbType[] = [];
@@ -65,29 +66,39 @@ exports.postService = {
     },
     updatePostById(id, post) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const updatePost: PostOutputType | null =
             const result = yield posts_db_repository_1.postRepository.updatePostById(id, post);
-            // const result = await postCollection.findOne({
-            //   id,
-            // });
             if (!result) {
                 return null;
             }
             else {
-                // updatePost.title = post.title;
-                // updatePost.shortDescription = post.shortDescription;
-                // updatePost.content = post.content;
-                // updatePost.blogId = post.blogId;
                 return result;
-                // const blog: BlogDbType | null = await blogsRepository.findBlog(
-                //   post.blogId
-                // );
-                // if (blog) {
-                //   updatePost.blogName = blog.name;
-                //   return updatePost;
-                // } else {
-                //   return null;
-                // }
+            }
+        });
+    },
+    addNewComment(comment, postId, commentator) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const post = yield post_db_query_repository_1.postQueryRepository.findPostById(postId);
+            if (post) {
+                const newComment = {
+                    id: Date.now().toString(),
+                    content: comment,
+                    commentatorInfo: {
+                        userId: commentator.userId,
+                        userLogin: commentator.userLogin,
+                    },
+                    createdAt: new Date().toISOString(),
+                };
+                console.log("post-service", newComment);
+                const result = yield posts_db_repository_1.postRepository.addNewComment(newComment, postId);
+                if (result) {
+                    return result;
+                }
+                else {
+                    return null;
+                }
+            }
+            else {
+                return null;
             }
         });
     },

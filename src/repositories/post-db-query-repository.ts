@@ -1,4 +1,4 @@
-import { PaginatorPostViewModel, PostOutputType } from "../types";
+import { PaginatorPostViewModel, PostOutputType } from "../types/types";
 import { postCollection } from "./db";
 
 export const postQueryRepository = {

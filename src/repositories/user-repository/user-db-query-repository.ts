@@ -3,7 +3,7 @@ import {
   PaginatorUserViewModel,
   UserDbType,
   UserViewModel,
-} from "../../types";
+} from "../../types/types";
 import { userCollection } from "../db";
 import bcrypt from "bcrypt";
 export const usersQueryRepository = {

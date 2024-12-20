@@ -3,10 +3,11 @@ import express, { NextFunction, Request, Response, Router } from "express";
 export const postsRouter = Router({});
 
 import {
+  meViewModel,
   PaginatorPostViewModel,
   PostInputType,
   PostOutputType,
-} from "../../types";
+} from "../../types/types";
 import { postRepository as postRepository } from "../../repositories/posts-db-repository";
 import { basicAuthorizationMiddleware } from "../../middlewares/basic-authorization-middleware";
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
@@ -17,6 +18,15 @@ import { blogIdPostValidation } from "../../middlewares/blogId-post-validation";
 import { postService } from "../../domains/posts-service";
 import { postQueryRepository } from "../../repositories/post-db-query-repository";
 import { SortDirection } from "mongodb";
+import { jwtAuthorizationMiddleware } from "../../middlewares/jwt-authorization-middleware";
+import { contentCommentValidation } from "../../middlewares/content-comment-validation";
+import { checkPostExistsMiddleware } from "../../middlewares/check-post-exist-middlware";
+import {
+  CommentatorInfo,
+  CommentInputModel,
+  CommentViewModel,
+} from "../../types/comment-types";
+import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
 
 postsRouter.get("/", async (req: Request, res: Response) => {
   const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
@@ -97,6 +107,43 @@ postsRouter.put(
       res.status(204).send(updatePost);
     } else {
       res.sendStatus(404);
+    }
+  }
+);
+
+postsRouter.post(
+  "/:id/comments",
+  jwtAuthorizationMiddleware,
+  contentCommentValidation(),
+  checkPostExistsMiddleware,
+  inputValidationMiddleware,
+  async (req: Request, res: Response) => {
+    console.log("post-router hello");
+    if (req.userId) {
+      const user: meViewModel | null = await usersQueryRepository.findUserById(
+        req.userId
+      );
+      if (user) {
+        const userCommentator: CommentatorInfo = {
+          userId: user.userId,
+          userLogin: user.login,
+        };
+        const commentCreateData: string = req.body.content;
+        console.log("post-router", commentCreateData);
+        const postId: string = req.params.id;
+        const newComment: CommentViewModel | null =
+          await postService.addNewComment(
+            commentCreateData,
+            postId,
+            userCommentator
+          );
+
+        if (newComment) {
+          res.status(201).send(newComment);
+        } else {
+          res.status(404).send("Post with this id not found");
+        }
+      }
     }
   }
 );

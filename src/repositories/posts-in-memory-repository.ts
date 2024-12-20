@@ -3,7 +3,7 @@ import {
   PostDbType,
   PostInputType,
   PostOutputType,
-} from "../types";
+} from "../types/types";
 import { blogsQueryRepository } from "./blog-db-query-repository";
 import { blogsRepository } from "./blogs-db-repository";
 
