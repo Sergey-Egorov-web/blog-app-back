@@ -9,7 +9,7 @@ import {
   UserDbType,
   UserInputModel,
 } from "../../src/types/types";
-
+import { faker } from "@faker-js/faker";
 export const helperCreateBlog = async (): Promise<BlogDbType> => {
   const responseBlog: Response = await request(app)
     .post("/blogs")
@@ -44,13 +44,20 @@ export const helperCreatePost = async (): Promise<PostDbType> => {
   return responsePost.body;
 };
 
-export const helperCreateUser = async (): Promise<UserDbType> => {
+export const helperCreateUser = async (
+  userLogin: string,
+  userPassword: string,
+  userEmail: string
+): Promise<UserDbType> => {
   const user: UserInputModel = {
-    login: "gxPy1H8t9",
-    password: "string123",
-    email: "exa@exam.com",
+    // login: "gxPy1H8t9",
+    // password: "string123",
+    // email: "exa@exam.com",
+    login: userLogin,
+    password: userPassword,
+    email: userEmail,
   };
-  // const blog = await helperCreateBlog();
+
   const responseUser: Response = await request(app)
     .post("/users")
     .set(
@@ -58,27 +65,6 @@ export const helperCreateUser = async (): Promise<UserDbType> => {
       "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
     )
     .send(user);
-  // .send({
-  //   login: "gxPy1H8t9",
-  //   password: "string123",
-  //   email: "exa@exam.com",
-  // });
-  console.log("helperCreateUser", user.login);
+
   return responseUser.body;
-};
-
-export const helperCreateToken = async (
-  login: string,
-  password: string
-): Promise<string> => {
-  console.log("helperCreateToken", password);
-  const responseToken: Response = await request(app)
-    .post("/:login")
-
-    .send({
-      login,
-      password,
-    });
-  // console.log(responseToken.body);
-  return responseToken.body;
 };

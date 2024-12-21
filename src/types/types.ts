@@ -117,3 +117,7 @@ export type meViewModel = {
   login: string;
   userId: string;
 };
+
+export interface CustomRequest extends Request {
+  userId?: string; // Добавляем свойство userId
+}

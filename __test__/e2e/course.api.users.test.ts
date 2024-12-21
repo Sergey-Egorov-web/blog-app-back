@@ -60,7 +60,11 @@ describe("/", () => {
   //_____________________________________________________________________________
   it("POST should return 400 inputModel has incorrect values", async () => {
     // 	RETURN 400 If the inputModel has incorrect values (email isn't unique).
-    const user = await helperCreateUser();
+    const user = await helperCreateUser(
+      "gxPy1H8t9",
+      "string123",
+      "exa@exam.com"
+    );
     console.log(user.email);
     const responseUser: Response = await request(app)
       .post("/users")
@@ -87,8 +91,12 @@ describe("/", () => {
   //_____________________________________________________________________________
   it("POST should return 401 Unauthorized", async () => {
     // 	RETURN 401 If the no authorization.
-    const user = await helperCreateUser();
-    console.log(user.email);
+    const user = await helperCreateUser(
+      "gxPy1H8t9",
+      "string123",
+      "exa@exam.com"
+    );
+    // console.log(user.email);
     const responseUser: Response = await request(app)
       .post("/users")
       .send({

@@ -21,6 +21,7 @@
     "mongodb": "^6.11.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
