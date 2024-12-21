@@ -75,7 +75,7 @@ exports.postsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
     }
 }));
 exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (0, content_comment_validation_1.contentCommentValidation)(), check_post_exist_middlware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("post-router hello");
+    // console.log("post-router hello");
     if (req.userId) {
         const user = yield user_db_query_repository_1.usersQueryRepository.findUserById(req.userId);
         if (user) {
@@ -84,7 +84,7 @@ exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuth
                 userLogin: user.login,
             };
             const commentCreateData = req.body.content;
-            console.log("post-router", commentCreateData);
+            // console.log("post-router", commentCreateData);
             const postId = req.params.id;
             const newComment = yield posts_service_1.postService.addNewComment(commentCreateData, postId, userCommentator);
             if (newComment) {

@@ -10,7 +10,7 @@ export const checkPostExistsMiddleware = async (
   next: NextFunction
 ) => {
   const postId = req.params.id;
-  console.log("checkPostExistsMiddleware hello", postId);
+  // console.log("checkPostExistsMiddleware hello", postId);
   const post = await postQueryRepository.findPostById(postId);
 
   if (!post) {

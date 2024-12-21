@@ -118,7 +118,7 @@ postsRouter.post(
   checkPostExistsMiddleware,
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
-    console.log("post-router hello");
+    // console.log("post-router hello");
     if (req.userId) {
       const user: meViewModel | null = await usersQueryRepository.findUserById(
         req.userId
@@ -129,7 +129,7 @@ postsRouter.post(
           userLogin: user.login,
         };
         const commentCreateData: string = req.body.content;
-        console.log("post-router", commentCreateData);
+        // console.log("post-router", commentCreateData);
         const postId: string = req.params.id;
         const newComment: CommentViewModel | null =
           await postService.addNewComment(
