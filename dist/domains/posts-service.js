@@ -86,10 +86,11 @@ exports.postService = {
                         userId: commentator.userId,
                         userLogin: commentator.userLogin,
                     },
+                    postId: postId,
                     createdAt: new Date().toISOString(),
                 };
                 console.log("post-service", newComment);
-                const result = yield posts_db_repository_1.postRepository.addNewComment(newComment, postId);
+                const result = yield posts_db_repository_1.postRepository.addNewComment(newComment);
                 if (result) {
                     return result;
                 }

@@ -3,6 +3,7 @@ import { postQueryRepository } from "../repositories/post-db-query-repository";
 import { postRepository } from "../repositories/posts-db-repository";
 import {
   CommentatorInfo,
+  CommentDbType,
   CommentInputModel,
   CommentViewModel,
 } from "../types/comment-types";
@@ -83,17 +84,18 @@ export const postService = {
     );
 
     if (post) {
-      const newComment: CommentViewModel | null = {
+      const newComment: CommentDbType | null = {
         id: Date.now().toString(),
         content: comment,
         commentatorInfo: {
           userId: commentator.userId,
           userLogin: commentator.userLogin,
         },
+        postId: postId,
         createdAt: new Date().toISOString(),
       };
       console.log("post-service", newComment);
-      const result = await postRepository.addNewComment(newComment, postId);
+      const result = await postRepository.addNewComment(newComment);
 
       if (result) {
         return result;

@@ -25,8 +25,10 @@ import {
   CommentatorInfo,
   CommentInputModel,
   CommentViewModel,
+  PaginatorCommentViewModel,
 } from "../../types/comment-types";
 import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
+import { commentQueryRepository } from "../../repositories/comment-db-query-repository";
 
 postsRouter.get("/", async (req: Request, res: Response) => {
   const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
@@ -110,7 +112,7 @@ postsRouter.put(
     }
   }
 );
-
+//Create new comment for specified post
 postsRouter.post(
   "/:id/comments",
   jwtAuthorizationMiddleware,
@@ -144,6 +146,36 @@ postsRouter.post(
           res.status(404).send("Post with this id not found");
         }
       }
+    }
+  }
+);
+//Return comments for specified post
+postsRouter.get(
+  "/:id/comments",
+  // jwtAuthorizationMiddleware,
+  // contentCommentValidation(),
+  checkPostExistsMiddleware,
+  inputValidationMiddleware,
+  async (req: Request, res: Response) => {
+    // console.log("post-router hello");
+    const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    const sortDirection: SortDirection =
+      req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+    const postId: string = req.params.id;
+    let comments: PaginatorCommentViewModel | null =
+      await commentQueryRepository.findAllCommentsForSpecifiedPost(
+        pageNumber,
+        pageSize,
+        sortBy,
+        sortDirection,
+        postId
+      );
+    if (!comments) {
+      res.sendStatus(404);
     }
   }
 );

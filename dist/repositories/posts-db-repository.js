@@ -95,7 +95,9 @@ exports.postRepository = {
             }
         });
     },
-    addNewComment(newComment, postId) {
+    addNewComment(newComment
+    // postId: string
+    ) {
         return __awaiter(this, void 0, void 0, function* () {
             yield db_1.commentCollection.insertOne(newComment);
             const result = yield db_1.commentCollection.findOne({

@@ -24,6 +24,7 @@ const jwt_authorization_middleware_1 = require("../../middlewares/jwt-authorizat
 const content_comment_validation_1 = require("../../middlewares/content-comment-validation");
 const check_post_exist_middlware_1 = require("../../middlewares/check-post-exist-middlware");
 const user_db_query_repository_1 = require("../../repositories/user-repository/user-db-query-repository");
+const comment_db_query_repository_1 = require("../../repositories/comment-db-query-repository");
 exports.postsRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
@@ -74,6 +75,7 @@ exports.postsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
         res.sendStatus(404);
     }
 }));
+//Create new comment for specified post
 exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (0, content_comment_validation_1.contentCommentValidation)(), check_post_exist_middlware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("post-router hello");
     if (req.userId) {
@@ -94,5 +96,23 @@ exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuth
                 res.status(404).send("Post with this id not found");
             }
         }
+    }
+}));
+//Return comments for specified post
+exports.postsRouter.get("/:id/comments", 
+// jwtAuthorizationMiddleware,
+// contentCommentValidation(),
+check_post_exist_middlware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log("post-router hello");
+    const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
+    const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
+    const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";
+    const sortDirection = req.query.sortDirection && req.query.sortDirection.toString() === "asc"
+        ? "asc"
+        : "desc";
+    const postId = req.params.id;
+    let comments = yield comment_db_query_repository_1.commentQueryRepository.findAllCommentsForSpecifiedPost(pageNumber, pageSize, sortBy, sortDirection, postId);
+    if (!comments) {
+        res.sendStatus(404);
     }
 }));

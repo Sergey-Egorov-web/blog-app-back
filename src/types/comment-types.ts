@@ -21,3 +21,10 @@ export type CommentDbType = {
   postId: string;
   createdAt: string;
 };
+export type PaginatorCommentViewModel = {
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  items: CommentViewModel[];
+};

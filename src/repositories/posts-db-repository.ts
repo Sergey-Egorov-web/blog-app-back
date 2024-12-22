@@ -1,4 +1,4 @@
-import { CommentViewModel } from "../types/comment-types";
+import { CommentDbType, CommentViewModel } from "../types/comment-types";
 import { PostDbType, PostInputType, PostOutputType } from "../types/types";
 
 import { commentCollection, postCollection } from "./db";
@@ -85,8 +85,8 @@ export const postRepository = {
   },
 
   async addNewComment(
-    newComment: CommentViewModel,
-    postId: string
+    newComment: CommentDbType
+    // postId: string
   ): Promise<CommentViewModel | null> {
     await commentCollection.insertOne(newComment);
 
