@@ -115,4 +115,5 @@ check_post_exist_middlware_1.checkPostExistsMiddleware, input_validation_middlew
     if (!comments) {
         res.sendStatus(404);
     }
+    res.status(200).json(comments);
 }));

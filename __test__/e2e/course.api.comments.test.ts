@@ -2,10 +2,16 @@ import request, { Response } from "supertest";
 import "dotenv/config";
 import { app } from "../../src/settings";
 import {
+  helperCreateComment,
   helperCreatePost,
   helperCreateUser,
 } from "../helper/helper-create-blog";
-import { CommentatorInfo } from "../../src/types/comment-types";
+import {
+  CommentatorInfo,
+  CommentDbType,
+  CommentViewModel,
+  PaginatorCommentViewModel,
+} from "../../src/types/comment-types";
 import { jwtService } from "../../src/application/jwtService";
 import { faker } from "@faker-js/faker";
 describe("/", () => {
@@ -134,4 +140,44 @@ describe("/", () => {
     }
   });
   //___________________________________________________________________________
+  it("GET should return 200 and comments", async () => {
+    // return post by id
+    // const blog = await helperCreateBlog();
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "gxPy1H8t7",
+      "string1234",
+      "exa@exam2.com"
+    );
+    const comment1: CommentDbType = await helperCreateComment(user, post.id);
+    const comment2: CommentDbType = await helperCreateComment(user, post.id);
+    const comment3: CommentDbType = await helperCreateComment(user, post.id);
+
+    const response = await request(app)
+      .get(`/posts/${post.id}/comments`)
+      .expect(200);
+    expect(response.body).toEqual({
+      pagesCount: expect.any(Number), // любое число в качестве количества страниц
+      page: expect.any(Number), // любое число в качестве номера страницы
+      pageSize: expect.any(Number), // любое число в качестве размера страницы
+      totalCount: expect.any(Number), // любое число в качестве количества блогов
+      items: expect.any(Array), // пустой массив объектов
+    });
+
+    response.body.items.forEach((item: CommentViewModel) => {
+      expect(item).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          content: expect.any(String),
+          commentatorInfo: expect.objectContaining({
+            // Исправлено: ожидаем объект
+            userId: expect.any(String),
+            userLogin: expect.any(String),
+          }),
+          createdAt: expect.any(String),
+        })
+      );
+    });
+  });
+  //_____________________________________________________________________________
 });

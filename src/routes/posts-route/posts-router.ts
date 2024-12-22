@@ -177,5 +177,6 @@ postsRouter.get(
     if (!comments) {
       res.sendStatus(404);
     }
+    res.status(200).json(comments);
   }
 );

@@ -9,7 +9,9 @@ import {
   UserDbType,
   UserInputModel,
 } from "../../src/types/types";
-import { faker } from "@faker-js/faker";
+
+import { CommentatorInfo, CommentDbType } from "../../src/types/comment-types";
+import { jwtService } from "../../src/application/jwtService";
 export const helperCreateBlog = async (): Promise<BlogDbType> => {
   const responseBlog: Response = await request(app)
     .post("/blogs")
@@ -67,4 +69,26 @@ export const helperCreateUser = async (
     .send(user);
 
   return responseUser.body;
+};
+
+export const helperCreateComment = async (
+  // content: string,
+  user: UserDbType,
+  postId: string
+): Promise<CommentDbType> => {
+  const accessToken = await jwtService.createJWT(user);
+  const userCommentator: CommentatorInfo = {
+    userId: user.id,
+    userLogin: user.login,
+  };
+  const responseComment: Response = await request(app)
+    .post(`/posts/${postId}/comments`)
+    .set("Authorization", `Bearer ${accessToken}`)
+    .send({
+      content: "There are a lot of content is here",
+      postId: postId,
+      userCommentator: userCommentator,
+    });
+
+  return responseComment.body;
 };
