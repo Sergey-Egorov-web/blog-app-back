@@ -15,15 +15,14 @@ export const commentQueryRepository = {
   ): Promise<PaginatorCommentViewModel | null> {
     const filter: any = {};
     filter.postId = postId;
-    // const foundComments: CommentDbType[] | null = await commentCollection
-    const foundComments = await commentCollection
+    const foundComments: CommentDbType[] | null = await commentCollection
+      // const foundComments = await commentCollection
       .find(filter)
       .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .toArray();
-    // console.log(foundPosts);
-    // console.log()
+
     const totalCount = (await commentCollection.find().toArray()).length;
     const page = pageNumber;
     const pagesCount = Math.ceil(totalCount / pageSize);
