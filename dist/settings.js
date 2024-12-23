@@ -10,6 +10,7 @@ const posts_router_1 = require("./routes/posts-route/posts-router");
 const tests_route_1 = require("./routes/tests-route");
 const auth_router_1 = require("./routes/auth-route/auth-router");
 const users_route_1 = require("./routes/users-route/users-route");
+const comments_route_1 = require("./routes/comments-route/comments-route");
 // import bodyParser from "body-parser";
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json()); // используем вместо bodyParser
@@ -17,6 +18,7 @@ exports.app.use("/blogs", blogs_router_1.blogsRouter);
 exports.app.use("/posts", posts_router_1.postsRouter);
 exports.app.use("/auth", auth_router_1.authRouter);
 exports.app.use("/users", users_route_1.usersRouter);
+exports.app.use("/comments", comments_route_1.commentsRouter);
 exports.app.use("/testing/all-data", tests_route_1.testingRouter);
 exports.app.get("/", (req, res) => {
     let helloMessage = "version 1.00!!!";

@@ -29,12 +29,7 @@ usersRouter.post(
     const newUser: UserViewModel | APIError = await usersService.addNewUser(
       userCreateData
     );
-    // console.log(newUser);
-    // if (newUser) {
-    //   res.status(201).send(newUser);
-    // } else {
-    //   res.status(400).send(newUser);
-    // }
+
     if ("errorsMessages" in newUser) {
       // Если это объект ошибки
       res.status(400).send(newUser);

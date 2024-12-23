@@ -50,21 +50,20 @@ export const commentQueryRepository = {
       return null;
     }
   },
-  //   async findPostById(id: string): Promise<PostOutputType | null> {
-  //     const post: PostOutputType | null = await postCollection.findOne({ id });
-  //     if (post) {
-  //       const resultWithoutMongoId: PostOutputType = {
-  //         id: post.id,
-  //         title: post.title,
-  //         shortDescription: post.shortDescription,
-  //         content: post.content,
-  //         blogId: post.blogId,
-  //         blogName: post.blogName,
-  //         createdAt: post.createdAt,
-  //       };
-  //       return resultWithoutMongoId;
-  //     } else {
-  //       return null;
-  //     }
-  //   },
+  async findCommentById(id: string): Promise<CommentViewModel | null> {
+    const comment: CommentDbType | null = await commentCollection.findOne({
+      id,
+    });
+    if (comment) {
+      const resultWithoutMongoId: CommentViewModel = {
+        id: comment.id,
+        content: comment.content,
+        commentatorInfo: comment.commentatorInfo,
+        createdAt: comment.createdAt,
+      };
+      return resultWithoutMongoId;
+    } else {
+      return null;
+    }
+  },
 };

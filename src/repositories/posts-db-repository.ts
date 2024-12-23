@@ -13,14 +13,14 @@ export const postRepository = {
     }
   },
 
-  async deleteAllComments(): Promise<boolean> {
-    const result = await commentCollection.deleteMany({});
-    if (result.deletedCount > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  },
+  // async deleteAllComments(): Promise<boolean> {
+  //   const result = await commentCollection.deleteMany({});
+  //   if (result.deletedCount > 0) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // },
 
   async deletePostById(id: string): Promise<boolean> {
     const result = await postCollection.deleteOne({ id: id });

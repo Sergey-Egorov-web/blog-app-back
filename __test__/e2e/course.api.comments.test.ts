@@ -194,28 +194,33 @@ describe("/", () => {
     const response = await request(app)
       .get(`/posts/${123}/comments`)
       .expect(404);
-    //   expect(response.body).toEqual({
-    //     pagesCount: expect.any(Number), // любое число в качестве количества страниц
-    //     page: expect.any(Number), // любое число в качестве номера страницы
-    //     pageSize: expect.any(Number), // любое число в качестве размера страницы
-    //     totalCount: expect.any(Number), // любое число в качестве количества блогов
-    //     items: expect.any(Array), // пустой массив объектов
-    //   });
-
-    //   response.body.items.forEach((item: CommentViewModel) => {
-    //     expect(item).toEqual(
-    //       expect.objectContaining({
-    //         id: expect.any(String),
-    //         content: expect.any(String),
-    //         commentatorInfo: expect.objectContaining({
-    //           // Исправлено: ожидаем объект
-    //           userId: expect.any(String),
-    //           userLogin: expect.any(String),
-    //         }),
-    //         createdAt: expect.any(String),
-    //       })
-    //     );
-    //   });
   });
   // _____________________________________________________________________________
+  it("GET should return 200 and comment", async () => {
+    // return comment by id
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "gxPy1H8t74",
+      "string1234",
+      "exa@exam4.com"
+    );
+    const comment1: CommentDbType = await helperCreateComment(user, post.id);
+    // const comment2: CommentDbType = await helperCreateComment(user, post.id);
+    // const comment3: CommentDbType = await helperCreateComment(user, post.id);
+
+    const response = await request(app)
+      .get(`/comments/${comment1.id}`)
+      .expect(200);
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      // content: expect.any(String),
+      content: expect.stringMatching(/.{20,300}/),
+      commentatorInfo: expect.objectContaining({
+        userId: expect.any(String),
+        userLogin: expect.any(String),
+      }),
+      createdAt: expect.any(String),
+    });
+  });
+  //_____________________________________________________________________________
 });
