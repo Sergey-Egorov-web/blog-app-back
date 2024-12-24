@@ -1,7 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-
-import { blogsService } from "../domains/blogs-service";
-import { blogsQueryRepository } from "../repositories/blog-db-query-repository";
 import { postQueryRepository } from "../repositories/post-db-query-repository";
 
 export const checkPostExistsMiddleware = async (
