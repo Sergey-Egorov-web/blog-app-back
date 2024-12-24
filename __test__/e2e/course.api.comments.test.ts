@@ -13,7 +13,7 @@ import {
   PaginatorCommentViewModel,
 } from "../../src/types/comment-types";
 import { jwtService } from "../../src/application/jwtService";
-import { faker } from "@faker-js/faker";
+
 describe("/", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");

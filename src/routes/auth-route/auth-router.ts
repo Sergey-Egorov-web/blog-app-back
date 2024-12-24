@@ -19,6 +19,8 @@ authRouter.post(
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
     const loginInputData: LoginInputModel = req.body;
+    // const passwordInputData: string = req.body.password;
+    console.log(loginInputData);
     const user: UserViewModel | APIError = await usersService.checkUser(
       loginInputData
     );

@@ -82,7 +82,7 @@ export const usersQueryRepository = {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      console.log("password is incorrect");
+      // console.log("password is incorrect");
       return null;
     }
     // console.log(user);

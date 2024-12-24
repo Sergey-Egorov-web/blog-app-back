@@ -22,7 +22,7 @@ const posts_service_1 = require("../../domains/posts-service");
 const post_db_query_repository_1 = require("../../repositories/post-db-query-repository");
 const jwt_authorization_middleware_1 = require("../../middlewares/jwt-authorization-middleware");
 const content_comment_validation_1 = require("../../middlewares/content-comment-validation");
-const check_post_exist_middlware_1 = require("../../middlewares/check-post-exist-middlware");
+const check_post_exist_middleware_1 = require("../../middlewares/check-post-exist-middleware");
 const user_db_query_repository_1 = require("../../repositories/user-repository/user-db-query-repository");
 const comment_db_query_repository_1 = require("../../repositories/comment-db-query-repository");
 exports.postsRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -76,7 +76,7 @@ exports.postsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
     }
 }));
 //Create new comment for specified post
-exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (0, content_comment_validation_1.contentCommentValidation)(), check_post_exist_middlware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (0, content_comment_validation_1.contentCommentValidation)(), check_post_exist_middleware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("post-router hello");
     if (req.userId) {
         const user = yield user_db_query_repository_1.usersQueryRepository.findUserById(req.userId);
@@ -102,7 +102,7 @@ exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuth
 exports.postsRouter.get("/:id/comments", 
 // jwtAuthorizationMiddleware,
 // contentCommentValidation(),
-check_post_exist_middlware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+check_post_exist_middleware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("post-router hello");
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;

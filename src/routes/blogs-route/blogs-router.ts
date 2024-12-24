@@ -20,7 +20,7 @@ import { titlePostValidation } from "../../middlewares/title-post-validation";
 import { shortDescriptionPostValidation } from "../../middlewares/short-description-post-validation";
 import { contentPostValidation } from "../../middlewares/content-post-validation";
 import { blogIdUriParamPostValidation } from "../../middlewares/blogId-from-param-post-validation";
-import { checkBlogExistsMiddleware } from "../../middlewares/check-blog-exist-middlware";
+import { checkBlogExistsMiddleware } from "../../middlewares/check-blog-exist-middleware";
 
 export const blogsRouter = Router({});
 

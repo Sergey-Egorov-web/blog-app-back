@@ -22,7 +22,7 @@ const posts_service_1 = require("../../domains/posts-service");
 const title_post_validation_1 = require("../../middlewares/title-post-validation");
 const short_description_post_validation_1 = require("../../middlewares/short-description-post-validation");
 const content_post_validation_1 = require("../../middlewares/content-post-validation");
-const check_blog_exist_middlware_1 = require("../../middlewares/check-blog-exist-middlware");
+const check_blog_exist_middleware_1 = require("../../middlewares/check-blog-exist-middleware");
 exports.blogsRouter = (0, express_1.Router)({});
 // blogsRouter.use(express.json());
 // const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
@@ -43,13 +43,13 @@ exports.blogsRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, fun
     const allBlogs = yield blog_db_query_repository_1.blogsQueryRepository.findAllBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize);
     res.status(200).send(allBlogs);
 }));
-exports.blogsRouter.get("/:blogId", check_blog_exist_middlware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.get("/:blogId", check_blog_exist_middleware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
     const blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(blogId);
     res.status(200).send(blog);
 }));
 //__________________________________________________________________________________
-exports.blogsRouter.get("/:blogId/posts", check_blog_exist_middlware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.get("/:blogId/posts", check_blog_exist_middleware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
@@ -63,7 +63,7 @@ exports.blogsRouter.get("/:blogId/posts", check_blog_exist_middlware_1.checkBlog
 //_______________________________________________________________
 exports.blogsRouter.post("/:blogId/posts", basic_authorization_middleware_1.basicAuthorizationMiddleware, 
 // blogIdUriParamPostValidation(),
-check_blog_exist_middlware_1.checkBlogExistsMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+check_blog_exist_middleware_1.checkBlogExistsMiddleware, (0, title_post_validation_1.titlePostValidation)(), (0, short_description_post_validation_1.shortDescriptionPostValidation)(), (0, content_post_validation_1.contentPostValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const postCreateData = req.body;
     const blogId = req.params.blogId; // Извлекаем blogId из параметров пути
     const post = {
@@ -93,7 +93,7 @@ exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
         res.sendStatus(404);
     }
 }));
-exports.blogsRouter.get("/:id", check_blog_exist_middlware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRouter.get("/:id", check_blog_exist_middleware_1.checkBlogExistsMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let blog = yield blog_db_query_repository_1.blogsQueryRepository.findBlogById(id);
     if (blog) {

@@ -20,7 +20,7 @@ import { postQueryRepository } from "../../repositories/post-db-query-repository
 import { SortDirection } from "mongodb";
 import { jwtAuthorizationMiddleware } from "../../middlewares/jwt-authorization-middleware";
 import { contentCommentValidation } from "../../middlewares/content-comment-validation";
-import { checkPostExistsMiddleware } from "../../middlewares/check-post-exist-middlware";
+import { checkPostExistsMiddleware } from "../../middlewares/check-post-exist-middleware";
 import {
   CommentatorInfo,
   CommentInputModel,

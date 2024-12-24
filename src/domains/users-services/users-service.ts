@@ -71,7 +71,7 @@ export const usersService = {
         user.password
       );
 
-    // console.log(user.loginOrEmail);
+    console.log(user.loginOrEmail);
 
     if (checkUser !== null) {
       // return true;
