@@ -26,10 +26,12 @@ exports.authRouter.post("/:login",
     // const passwordInputData: string = req.body.password;
     console.log(loginInputData);
     const user = yield users_service_1.usersService.checkUser(loginInputData);
+    console.log("authRouter", user);
     if ("id" in user) {
         // console.log("Success");
         const token = yield jwtService_1.jwtService.createJWT(user);
-        res.status(200).send(token);
+        // console.log("authRouter", token);
+        res.status(200).send({ accessToken: token });
     }
     else {
         res.status(401).json(user);

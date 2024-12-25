@@ -80,12 +80,12 @@ export const usersQueryRepository = {
     // const hash: string = await getHash(password);
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-
+    console.log("queryRepo", isPasswordValid);
     if (!isPasswordValid) {
       // console.log("password is incorrect");
       return null;
     }
-    // console.log(user);
+    console.log("queryRepo", user);
     return user;
   },
 

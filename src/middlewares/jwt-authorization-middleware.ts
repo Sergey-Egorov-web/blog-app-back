@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { usersQueryRepository } from "../repositories/user-repository/user-db-query-repository";
+
 import { jwtService } from "../application/jwtService";
 
 export const jwtAuthorizationMiddleware = async (

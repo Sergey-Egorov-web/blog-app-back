@@ -8,6 +8,7 @@ import { inputValidationMiddleware } from "../../middlewares/input-validation-mi
 import { jwtService } from "../../application/jwtService";
 import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
 import { jwtAuthorizationMiddleware } from "../../middlewares/jwt-authorization-middleware";
+import { access } from "fs";
 
 export const authRouter = Router({});
 
@@ -24,10 +25,12 @@ authRouter.post(
     const user: UserViewModel | APIError = await usersService.checkUser(
       loginInputData
     );
+    console.log("authRouter", user);
     if ("id" in user) {
       // console.log("Success");
       const token = await jwtService.createJWT(user);
-      res.status(200).send(token);
+      // console.log("authRouter", token);
+      res.status(200).send({ accessToken: token });
     } else {
       res.status(401).json(user);
     }
