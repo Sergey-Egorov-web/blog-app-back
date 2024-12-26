@@ -21,7 +21,6 @@ commentsRouter.delete(
   "/:id",
   jwtAuthorizationMiddleware,
   checkCommentExistsMiddleware,
-  // inputValidationMiddleware,
   checkCommentIsYourOwn,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;

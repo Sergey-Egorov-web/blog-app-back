@@ -143,7 +143,7 @@ postsRouter.post(
         if (newComment) {
           res.status(201).send(newComment);
         } else {
-          res.status(404).send("Post with this id not found");
+          res.status(404).send("Post with this id did not found");
         }
       }
     }

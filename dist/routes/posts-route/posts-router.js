@@ -93,7 +93,7 @@ exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuth
                 res.status(201).send(newComment);
             }
             else {
-                res.status(404).send("Post with this id not found");
+                res.status(404).send("Post with this id did not found");
             }
         }
     }

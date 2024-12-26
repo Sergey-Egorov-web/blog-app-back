@@ -8,7 +8,8 @@ export const jwtAuthorizationMiddleware = async (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-
+  console.log("jwtAuthorizationMiddleware1 commentId", req.params.id);
+  console.log("jwtAuthorizationMiddleware1 authHeader", authHeader);
   if (!authHeader) {
     res.sendStatus(401);
   } else {
@@ -19,8 +20,10 @@ export const jwtAuthorizationMiddleware = async (
 
         if (!userId) {
           res.sendStatus(401);
+          return;
         }
         req.userId = userId;
+        console.log("jwtAuthorizationMiddleware2", req.userId);
         next();
       }
     } catch (error) {

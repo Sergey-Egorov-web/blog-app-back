@@ -204,9 +204,10 @@ describe("/", () => {
       "string1234",
       "exa@exam4.com"
     );
+
     const comment1: CommentDbType = await helperCreateComment(user, post.id);
-    // const comment2: CommentDbType = await helperCreateComment(user, post.id);
-    // const comment3: CommentDbType = await helperCreateComment(user, post.id);
+    const comment2: CommentDbType = await helperCreateComment(user, post.id);
+    const comment3: CommentDbType = await helperCreateComment(user, post.id);
 
     const response = await request(app)
       .get(`/comments/${comment1.id}`)
@@ -221,6 +222,27 @@ describe("/", () => {
       }),
       createdAt: expect.any(String),
     });
+  });
+  //_____________________________________________________________________________
+  it("DELETE should return 204 no content", async () => {
+    // delete post specified by id
+    // const blog = await helperCreateBlog();
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "gxPy1H8t78",
+      "string123",
+      "exa@exam8.com"
+    );
+    const comment1: CommentDbType = await helperCreateComment(user, post.id);
+    console.log("DELETE comment 1", comment1);
+    const comment2: CommentDbType = await helperCreateComment(user, post.id);
+    const comment3: CommentDbType = await helperCreateComment(user, post.id);
+    const accessToken = await jwtService.createJWT(user);
+    console.log("DELETE comment 2", accessToken);
+    const responseComment: Response = await request(app)
+      .delete(`/comments/${comment1.id}`)
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(204);
   });
   //_____________________________________________________________________________
 });
