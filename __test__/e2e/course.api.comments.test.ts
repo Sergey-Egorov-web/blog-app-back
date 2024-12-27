@@ -246,4 +246,79 @@ describe("/", () => {
       .expect(204);
   });
   //_____________________________________________________________________________
+
+  it("DELETE should return 401 Unauthorized", async () => {
+    // delete post specified by id
+    // await request(app).delete("/testing/all-data");
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "gxPy1H8t79",
+      "string123",
+      "exa@exam9.com"
+    );
+
+    const comment1: CommentDbType = await helperCreateComment(user, post.id);
+
+    // const comment2: CommentDbType = await helperCreateComment(user, post.id);
+    // const comment3: CommentDbType = await helperCreateComment(user, post.id);
+    const accessToken = await jwtService.createJWT(user);
+    //
+    const responseComment: Response = await request(app)
+      .delete(`/comments/${comment1.id}`)
+      .set("Authorization", `Bearer ${125}`)
+      .expect(401);
+  });
+  //_____________________________________________________________________________
+  it("DELETE should return 403 comment that is not your own", async () => {
+    // delete post specified by id
+    await request(app).delete("/testing/all-data");
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "Py1H8t710",
+      "string123",
+      "exa@exam10.com"
+    );
+    console.log("commentTest return 403 user1", user);
+    const user1 = await helperCreateUser(
+      "gx1H8t711",
+      "string123",
+      "exa@exam11.com"
+    );
+
+    const comment1: CommentDbType = await helperCreateComment(user, post.id);
+
+    // const comment2: CommentDbType = await helperCreateComment(user, post.id);
+    // const comment3: CommentDbType = await helperCreateComment(user, post.id);
+    const accessToken = await jwtService.createJWT(user1);
+    //
+    console.log("commentTest return 403", comment1);
+    const responseComment: Response = await request(app)
+      .delete(`/comments/${comment1.id}`)
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(403);
+  });
+  //_____________________________________________________________________________
+
+  it("DELETE should return 404 comment not found", async () => {
+    // delete post specified by id
+    await request(app).delete("/testing/all-data");
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "Py1H8t710",
+      "string123",
+      "exa@exam10.com"
+    );
+
+    const comment1: CommentDbType = await helperCreateComment(user, post.id);
+
+    // const comment2: CommentDbType = await helperCreateComment(user, post.id);
+    // const comment3: CommentDbType = await helperCreateComment(user, post.id);
+    const accessToken = await jwtService.createJWT(user);
+
+    const responseComment: Response = await request(app)
+      .delete(`/comments/${123}`)
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(404);
+  });
+  //_____________________________________________________________________________
 });
