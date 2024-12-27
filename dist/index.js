@@ -13,11 +13,9 @@ const settings_1 = require("./settings");
 const db_1 = require("./repositories/db");
 const configuration_1 = require("./configuration");
 // const mongoURI = process.env.MONGO_URL || "mongodb://0.0.0.0:27017";
-// console.log(process.env.MONGO_URL);
+//
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, db_1.runDB)();
-    settings_1.app.listen(configuration_1.port, () => {
-        console.log(`blog-app-back app listening on port ${configuration_1.port}`);
-    });
+    settings_1.app.listen(configuration_1.port, () => { });
 });
 startApp();

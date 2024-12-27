@@ -7,7 +7,7 @@ export const checkCommentExistsMiddleware = async (
   next: NextFunction
 ) => {
   const commentId = req.params.id;
-  console.log("checkPostExistsMiddleware commentId", commentId);
+
   const comment = await commentQueryRepository.findCommentById(commentId);
 
   if (!comment) {

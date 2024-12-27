@@ -36,10 +36,8 @@ function runDB() {
         try {
             yield client.connect();
             yield client.db("BloggerPlatform").command({ ping: 1 });
-            console.log("Connected successfully to mongo server");
         }
         catch (_a) {
-            console.log("Can't connect to Db");
             yield client.close();
         }
     });

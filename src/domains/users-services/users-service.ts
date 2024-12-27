@@ -30,12 +30,12 @@ export const usersService = {
         createdAt: new Date().toISOString(),
       };
 
-      // console.log(newUser.password);
+      //
 
       const result: UserViewModel | null = await usersRepository.addNewUser(
         newUser
       );
-      // console.log(result);
+      //
       if (result) {
         return result;
       } else {
@@ -48,7 +48,7 @@ export const usersService = {
 
   async deleteUserById(id: string): Promise<boolean> {
     const result: boolean = await usersRepository.deleteUserById(id);
-    console.log(result);
+
     if (result === true) {
       return true;
     } else {
@@ -70,8 +70,6 @@ export const usersService = {
         user.loginOrEmail,
         user.password
       );
-
-    console.log(user.loginOrEmail);
 
     if (checkUser !== null) {
       // return true;

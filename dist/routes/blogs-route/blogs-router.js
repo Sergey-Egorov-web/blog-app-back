@@ -26,7 +26,7 @@ const check_blog_exist_middleware_1 = require("../../middlewares/check-blog-exis
 exports.blogsRouter = (0, express_1.Router)({});
 // blogsRouter.use(express.json());
 // const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
-//   console.log("IT-INCUBATOR");
+//
 //   next();
 // };
 // blogsRouter.use(ITINCUBATOR);
@@ -107,7 +107,7 @@ exports.blogsRouter.delete("/:id", basic_authorization_middleware_1.basicAuthori
 (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const answer = yield blogs_service_1.blogsService.deleteBlogById(id);
-    // console.log(answer);
+    //
     if (answer === true) {
         res.sendStatus(204);
     }

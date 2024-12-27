@@ -26,7 +26,6 @@ exports.blogsRepository = {
     deleteBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield db_1.blogCollection.deleteOne({ id });
-            console.log(result.deletedCount);
             if (result.deletedCount === 1) {
                 return true;
             }

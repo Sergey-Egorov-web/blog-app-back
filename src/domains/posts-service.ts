@@ -94,7 +94,7 @@ export const postService = {
         postId: postId,
         createdAt: new Date().toISOString(),
       };
-      console.log("post-service", newComment);
+      //
       const result = await postRepository.addNewComment(newComment);
 
       if (result) {

@@ -76,8 +76,6 @@ exports.postRepositories = {
                     blogName: blog.name,
                     createdAt: new Date().toISOString(),
                 };
-                console.log(typeof newPost.id);
-                console.log(newPost.id);
                 exports.posts.push(newPost);
                 return newPost;
             }

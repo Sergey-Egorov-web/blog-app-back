@@ -24,13 +24,11 @@ exports.authRouter.post("/:login",
 (0, user_login_or_email_validation_1.userLoginOrEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginInputData = req.body;
     // const passwordInputData: string = req.body.password;
-    console.log(loginInputData);
     const user = yield users_service_1.usersService.checkUser(loginInputData);
-    console.log("authRouter", user);
     if ("id" in user) {
-        // console.log("Success");
+        //
         const token = yield jwtService_1.jwtService.createJWT(user);
-        // console.log("authRouter", token);
+        //
         res.status(200).send({ accessToken: token });
     }
     else {
@@ -40,7 +38,6 @@ exports.authRouter.post("/:login",
 exports.authRouter.get("/:me", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.userId) {
         const user = yield user_db_query_repository_1.usersQueryRepository.findUserById(req.userId);
-        console.log("auth-router", user);
         res.status(200).send(user);
     }
 }));

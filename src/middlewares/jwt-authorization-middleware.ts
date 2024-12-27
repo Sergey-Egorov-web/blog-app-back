@@ -8,22 +8,21 @@ export const jwtAuthorizationMiddleware = async (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-  console.log("jwtAuthorizationMiddleware1 commentId", req.params.id);
-  console.log("jwtAuthorizationMiddleware1 authHeader", authHeader);
+
   if (!authHeader) {
     res.sendStatus(401);
   } else {
     const token: string | null = authHeader.split(" ")[1];
     try {
       if (token) {
-        const userId = await jwtService.getUserIdByToken(token);
-
+        const userId: string = await jwtService.getUserIdByToken(token);
+        console.log("JWT userId1", userId);
         if (!userId) {
           res.sendStatus(401);
           return;
         }
         req.userId = userId;
-        console.log("jwtAuthorizationMiddleware2", req.userId);
+
         next();
       }
     } catch (error) {

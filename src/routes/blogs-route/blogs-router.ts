@@ -27,7 +27,7 @@ export const blogsRouter = Router({});
 // blogsRouter.use(express.json());
 
 // const ITINCUBATOR = (req: Request, res: Response, next: NextFunction): void => {
-//   console.log("IT-INCUBATOR");
+//
 //   next();
 // };
 
@@ -178,7 +178,7 @@ blogsRouter.delete(
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const answer = await blogsService.deleteBlogById(id);
-    // console.log(answer);
+    //
     if (answer === true) {
       res.sendStatus(204);
     } else {

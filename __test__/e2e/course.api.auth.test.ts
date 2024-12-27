@@ -10,7 +10,7 @@ describe("/", () => {
     await request(app).delete("/testing/all-data");
   });
   it("POST AUTH/Login should return 200 and JWT token", async () => {
-    // console.log("authTest1");
+    //
     const password: string = "string123";
     const user: UserDbType = await helperCreateUser(
       "gxPy1H8t75",
@@ -18,8 +18,8 @@ describe("/", () => {
       "exa@exam5.com"
     );
 
-    // console.log("authTest2", user.login);
-    // console.log("authTest4", user);
+    //
+    //
     const responseToken: Response = await request(app)
       .post("/auth/login")
 
@@ -29,18 +29,18 @@ describe("/", () => {
       })
 
       .expect(200);
-    // console.log("authTest3", responseToken.body);
+    //
     expect(responseToken.body).toHaveProperty("accessToken");
     expect(typeof responseToken.body.accessToken).toBe("string");
   });
   //_____________________________________________________________________________
   it("POST AUTH/Login should return 400 incorrect values", async () => {
-    // console.log("authTest1");
+    //
     const password: string = "string123";
     const user: UserDbType = await helperCreateUser("gxPy1H8t76", password, "");
 
-    // console.log("authTest2", user.login);
-    // console.log("authTest4", user);
+    //
+    //
     const responseToken: Response = await request(app)
       .post("/auth/login")
 
@@ -61,7 +61,7 @@ describe("/", () => {
   });
   //_____________________________________________________________________________
   it("POST AUTH/Login should return 401 Unauthorized", async () => {
-    // console.log("authTest1");
+    //
     const password: string = "string123";
     const user: UserDbType = await helperCreateUser(
       "gxPy1H8t77",
@@ -69,8 +69,8 @@ describe("/", () => {
       "exa@exam7.com"
     );
 
-    // console.log("authTest2", user.login);
-    // console.log("authTest4", user);
+    //
+    //
     const responseToken: Response = await request(app)
       .post("/auth/login")
 
@@ -80,7 +80,7 @@ describe("/", () => {
       })
 
       .expect(401);
-    // console.log("authTest3", responseToken.body);
+    //
   });
   //_____________________________________________________________________________
 });

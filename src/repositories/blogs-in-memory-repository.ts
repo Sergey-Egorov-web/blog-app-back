@@ -49,7 +49,7 @@ export const blogsRepository = {
         return true;
       }
     }
-    // console.log(false);
+    //
     return false;
   },
 
@@ -62,8 +62,8 @@ export const blogsRepository = {
       createdAt: new Date().toISOString(),
       isMembership: false,
     };
-    // console.log(typeof newBlog.id);
-    // console.log(newBlog.id);
+    //
+    //
     blogs.push(newBlog);
     return newBlog;
   },

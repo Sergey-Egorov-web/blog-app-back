@@ -120,18 +120,19 @@ postsRouter.post(
   checkPostExistsMiddleware,
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
-    // console.log("post-router hello");
     if (req.userId) {
       const user: meViewModel | null = await usersQueryRepository.findUserById(
         req.userId
       );
+      console.log("postRouter userId1", req.userId);
+      console.log("postRouter user1", user);
       if (user) {
         const userCommentator: CommentatorInfo = {
           userId: user.userId,
           userLogin: user.login,
         };
         const commentCreateData: string = req.body.content;
-        // console.log("post-router", commentCreateData);
+
         const postId: string = req.params.id;
         const newComment: CommentViewModel | null =
           await postService.addNewComment(
@@ -157,7 +158,7 @@ postsRouter.get(
   checkPostExistsMiddleware,
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
-    // console.log("post-router hello");
+    //
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
     const sortBy = req.query.sortBy ? req.query.sortBy.toString() : "createdAt";

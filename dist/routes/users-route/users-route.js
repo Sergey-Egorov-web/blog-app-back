@@ -44,7 +44,6 @@ exports.usersRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, fun
         : "desc";
     const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
     const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
-    console.log(searchEmailTerm, searchLoginTerm);
     const allUsers = yield user_db_query_repository_1.usersQueryRepository.findAllUsers(sortBy, sortDirection, pageNumber, pageSize, searchLoginTerm, searchEmailTerm);
     res.status(200).send(allUsers);
 }));
@@ -53,7 +52,7 @@ exports.usersRouter.delete("/:id", basic_authorization_middleware_1.basicAuthori
 (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const answer = yield users_service_1.usersService.deleteUserById(id);
-    // console.log(answer);
+    //
     if (answer === true) {
         res.sendStatus(204);
     }

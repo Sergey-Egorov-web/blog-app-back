@@ -22,7 +22,6 @@ exports.blogsService = {
     deleteBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield blogs_db_repository_1.blogsRepository.deleteBlogById(id);
-            console.log(result);
             if (result === true) {
                 return true;
             }

@@ -18,7 +18,7 @@ exports.blogsQueryRepository = {
             if (searchNameTerm) {
                 filter.name = { $regex: searchNameTerm, $options: "i" };
             }
-            // console.log(filter);
+            //
             const foundBlogs = yield db_1.blogCollection
                 .find(filter)
                 .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
@@ -36,7 +36,7 @@ exports.blogsQueryRepository = {
                 createdAt: blog.createdAt,
                 isMembership: blog.isMembership,
             }));
-            // console.log(resultWithoutMongoId);
+            //
             const result = {
                 pagesCount: pagesCount,
                 page: page,
@@ -44,7 +44,7 @@ exports.blogsQueryRepository = {
                 totalCount: totalCount,
                 items: resultWithoutMongoId,
             };
-            // console.log(resultWithoutMongoId);
+            //
             return result;
             // return result;
         });
@@ -72,14 +72,13 @@ exports.blogsQueryRepository = {
         return __awaiter(this, void 0, void 0, function* () {
             const filter = {};
             // const result: PostOutputType[] = [];
-            console.log(filter);
             const foundPosts = yield db_1.postCollection
                 .find({ blogId })
                 .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
-            // console.log(`foundPosts: ${JSON.stringify(foundPosts)}`);
+            //
             const resultWithoutMongoId = foundPosts.map((model) => ({
                 id: model.id,
                 title: model.title,
@@ -89,7 +88,7 @@ exports.blogsQueryRepository = {
                 blogName: model.blogName,
                 createdAt: model.createdAt,
             }));
-            // console.log(resultWithoutMongoId);
+            //
             const totalCount = (yield db_1.postCollection.find({ blogId }).toArray()).length;
             const page = pageNumber;
             const pagesCount = Math.ceil(totalCount / pageSize);
@@ -100,7 +99,6 @@ exports.blogsQueryRepository = {
                 totalCount: totalCount,
                 items: resultWithoutMongoId,
             };
-            console.log(result);
             if (result) {
                 return result;
             }

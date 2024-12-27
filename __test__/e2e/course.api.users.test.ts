@@ -65,7 +65,7 @@ describe("/", () => {
       "string123",
       "exa@exam.com"
     );
-    console.log(user.email);
+
     const responseUser: Response = await request(app)
       .post("/users")
       .set(
@@ -78,7 +78,7 @@ describe("/", () => {
         email: user.email,
       })
       .expect(400);
-    // console.log(responseUser.body.email);
+    //
     expect(responseUser.body).toEqual({
       errorsMessages: [
         {
@@ -96,7 +96,7 @@ describe("/", () => {
       "string123",
       "exa@exam.com"
     );
-    // console.log(user.email);
+    //
     const responseUser: Response = await request(app)
       .post("/users")
       .send({

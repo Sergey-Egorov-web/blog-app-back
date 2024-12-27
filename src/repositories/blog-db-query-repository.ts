@@ -20,7 +20,7 @@ export const blogsQueryRepository = {
       filter.name = { $regex: searchNameTerm, $options: "i" };
     }
 
-    // console.log(filter);
+    //
     const foundBlogs = await blogCollection
 
       .find(filter)
@@ -42,7 +42,7 @@ export const blogsQueryRepository = {
       isMembership: blog.isMembership,
     }));
 
-    // console.log(resultWithoutMongoId);
+    //
 
     const result: PaginatorBlogViewModel = {
       pagesCount: pagesCount,
@@ -51,7 +51,7 @@ export const blogsQueryRepository = {
       totalCount: totalCount,
       items: resultWithoutMongoId,
     };
-    // console.log(resultWithoutMongoId);
+    //
 
     return result;
     // return result;
@@ -87,7 +87,6 @@ export const blogsQueryRepository = {
 
     // const result: PostOutputType[] = [];
 
-    console.log(filter);
     const foundPosts = await postCollection
 
       .find({ blogId })
@@ -95,7 +94,7 @@ export const blogsQueryRepository = {
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .toArray();
-    // console.log(`foundPosts: ${JSON.stringify(foundPosts)}`);
+    //
 
     const resultWithoutMongoId: PostOutputType[] | null = foundPosts.map(
       (model) => ({
@@ -108,7 +107,7 @@ export const blogsQueryRepository = {
         createdAt: model.createdAt,
       })
     );
-    // console.log(resultWithoutMongoId);
+    //
     const totalCount = (await postCollection.find({ blogId }).toArray()).length;
     const page = pageNumber;
     const pagesCount = Math.ceil(totalCount / pageSize);
@@ -120,7 +119,7 @@ export const blogsQueryRepository = {
       totalCount: totalCount,
       items: resultWithoutMongoId,
     };
-    console.log(result);
+
     if (result) {
       return result;
     } else {

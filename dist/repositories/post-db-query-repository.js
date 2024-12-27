@@ -21,7 +21,7 @@ exports.postQueryRepository = {
                 .skip((pageNumber - 1) * pageSize)
                 .limit(pageSize)
                 .toArray();
-            // console.log(foundPosts);
+            //
             // console.log()
             const totalCount = (yield db_1.postCollection.find().toArray()).length;
             const page = pageNumber;

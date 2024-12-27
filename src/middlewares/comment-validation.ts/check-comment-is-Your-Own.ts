@@ -9,13 +9,12 @@ export const checkCommentIsYourOwn = async (
   next: NextFunction
 ) => {
   const commentId: string = req.params.id;
-  console.log("checkCommentIsYourOwn1 commentId", req.params.id);
 
   const comment: CommentViewModel | null =
     await commentQueryRepository.findCommentById(commentId);
 
   const authHeader = req.headers.authorization;
-  console.log("checkCommentIsYourOwn authHeader", authHeader);
+
   if (!authHeader) {
     res.sendStatus(401);
     return;
@@ -30,8 +29,6 @@ export const checkCommentIsYourOwn = async (
       return;
     }
     if (comment) {
-      console.log("checkCommentIsYourOwn2", comment.commentatorInfo.userId);
-      console.log("checkCommentIsYourOwn3", req.userId);
       if (comment.commentatorInfo.userId !== req.userId) {
         res.sendStatus(403);
         return;

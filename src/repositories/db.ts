@@ -34,9 +34,7 @@ export async function runDB() {
     await client.connect();
 
     await client.db("BloggerPlatform").command({ ping: 1 });
-    console.log("Connected successfully to mongo server");
   } catch {
-    console.log("Can't connect to Db");
     await client.close();
   }
 }

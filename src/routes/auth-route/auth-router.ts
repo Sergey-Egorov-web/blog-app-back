@@ -21,15 +21,15 @@ authRouter.post(
   async (req: Request, res: Response) => {
     const loginInputData: LoginInputModel = req.body;
     // const passwordInputData: string = req.body.password;
-    console.log(loginInputData);
+
     const user: UserViewModel | APIError = await usersService.checkUser(
       loginInputData
     );
-    console.log("authRouter", user);
+
     if ("id" in user) {
-      // console.log("Success");
+      //
       const token = await jwtService.createJWT(user);
-      // console.log("authRouter", token);
+      //
       res.status(200).send({ accessToken: token });
     } else {
       res.status(401).json(user);
@@ -43,7 +43,7 @@ authRouter.get(
   async (req: Request, res: Response) => {
     if (req.userId) {
       const user = await usersQueryRepository.findUserById(req.userId);
-      console.log("auth-router", user);
+
       res.status(200).send(user);
     }
   }

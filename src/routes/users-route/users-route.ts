@@ -55,8 +55,6 @@ usersRouter.get("/", async (req: Request, res: Response) => {
   const pageNumber = req.query.pageNumber ? +req.query.pageNumber : 1;
   const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
 
-  console.log(searchEmailTerm, searchLoginTerm);
-
   const allUsers = await usersQueryRepository.findAllUsers(
     sortBy,
     sortDirection,
@@ -76,7 +74,7 @@ usersRouter.delete(
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const answer = await usersService.deleteUserById(id);
-    // console.log(answer);
+    //
     if (answer === true) {
       res.sendStatus(204);
     } else {

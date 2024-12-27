@@ -55,7 +55,7 @@ exports.blogsRepository = {
                     return true;
                 }
             }
-            // console.log(false);
+            //
             return false;
         });
     },
@@ -69,8 +69,8 @@ exports.blogsRepository = {
                 createdAt: new Date().toISOString(),
                 isMembership: false,
             };
-            // console.log(typeof newBlog.id);
-            // console.log(newBlog.id);
+            //
+            //
             exports.blogs.push(newBlog);
             return newBlog;
         });

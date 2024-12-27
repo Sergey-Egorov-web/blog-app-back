@@ -31,8 +31,6 @@ export const usersQueryRepository = {
       }
     }
 
-    console.log(filter);
-
     const foundUsers = await userCollection
       .find(filter)
 
@@ -80,21 +78,21 @@ export const usersQueryRepository = {
     // const hash: string = await getHash(password);
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log("queryRepo", isPasswordValid);
+
     if (!isPasswordValid) {
-      // console.log("password is incorrect");
+      //
       return null;
     }
-    console.log("queryRepo", user);
+
     return user;
   },
 
   async findUserById(userId: string): Promise<meViewModel | null> {
-    // console.log("queryRepo", userId);
+    //
     const user: UserDbType | null = await userCollection.findOne({
       id: userId.toString,
     }); // Ищем по id
-    // console.log("queryRepo", user);
+    //
     if (!user) {
       return null;
     }

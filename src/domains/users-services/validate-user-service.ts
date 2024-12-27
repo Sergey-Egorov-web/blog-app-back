@@ -43,7 +43,7 @@ async function getUsersLogins(): Promise<string[]> {
 
   if (users) {
     const usersLogin = users.map((user) => user.login);
-    // console.log(usersLogin);
+    //
     return usersLogin;
   } else {
     return [];
