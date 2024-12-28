@@ -54,6 +54,10 @@ commentsRouter.put(
   checkCommentIsYourOwn,
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
+    if (!req.userId) {
+      res.sendStatus(401);
+    }
+
     if (req.userId) {
       const user: meViewModel | null = await usersQueryRepository.findUserById(
         req.userId
@@ -65,7 +69,7 @@ commentsRouter.put(
         await commentsService.updateCommentById(commentUpdateData, commentId);
 
       if (updateComment) {
-        res.status(204);
+        res.sendStatus(204);
       } else {
         res.status(404).send("Comment with this id did not found");
       }
