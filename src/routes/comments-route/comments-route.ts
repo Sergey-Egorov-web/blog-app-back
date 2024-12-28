@@ -6,6 +6,10 @@ import { jwtAuthorizationMiddleware } from "../../middlewares/jwt-authorization-
 import { checkCommentExistsMiddleware } from "../../middlewares/comment-validation.ts/check-comment-exist-middleware";
 import { inputValidationMiddleware } from "../../middlewares/input-validation-middleware";
 import { checkCommentIsYourOwn } from "../../middlewares/comment-validation.ts/check-comment-is-Your-Own";
+import { contentCommentValidation } from "../../middlewares/content-comment-validation";
+import { meViewModel } from "../../types/types";
+import { usersQueryRepository } from "../../repositories/user-repository/user-db-query-repository";
+import { CommentViewModel } from "../../types/comment-types";
 
 export const commentsRouter = Router({});
 
@@ -29,6 +33,41 @@ commentsRouter.delete(
       res.sendStatus(204);
     } else {
       res.sendStatus(404);
+    }
+  }
+);
+
+commentsRouter.put("/:id", async (req: Request, res: Response) => {
+  const id: string = req.params.id;
+  let comment = await commentQueryRepository.findCommentById(id);
+  if (comment) {
+    res.send(comment);
+  } else res.sendStatus(404);
+});
+
+//Update comment for id
+commentsRouter.put(
+  "/:id/comments",
+  jwtAuthorizationMiddleware,
+  contentCommentValidation(),
+  checkCommentExistsMiddleware,
+  checkCommentIsYourOwn,
+  async (req: Request, res: Response) => {
+    if (req.userId) {
+      const user: meViewModel | null = await usersQueryRepository.findUserById(
+        req.userId
+      );
+      const commentUpdateData: string = req.body.content;
+
+      const commentId: string = req.params.id;
+      const updateComment: CommentViewModel | null =
+        await commentsService.updateCommentById(commentUpdateData, commentId);
+
+      if (updateComment) {
+        res.status(204);
+      } else {
+        res.status(404).send("Comment with this id did not found");
+      }
     }
   }
 );

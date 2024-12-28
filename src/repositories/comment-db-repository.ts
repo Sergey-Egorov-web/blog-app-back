@@ -22,4 +22,29 @@ export const commentRepository = {
       return false;
     }
   },
+  async updateCommentById(
+    id: string,
+    commentUpdateData: string
+  ): Promise<CommentViewModel | null> {
+    // const updateComment: CommentViewModel | null =
+    await commentCollection.updateOne(
+      {
+        id: id,
+      },
+      {
+        $set: {
+          content: commentUpdateData,
+        },
+      }
+    );
+
+    const result = await commentCollection.findOne({
+      id,
+    });
+    if (!result) {
+      return null;
+    } else {
+      return result;
+    }
+  },
 };
