@@ -58,21 +58,20 @@ commentsRouter.put(
       res.sendStatus(401);
     }
 
-    if (req.userId) {
-      const user: meViewModel | null = await usersQueryRepository.findUserById(
-        req.userId
-      );
-      const commentUpdateData: string = req.body.content;
+    // if (req.userId) {
+    //   const user: meViewModel | null = await usersQueryRepository.findUserById(
+    //     req.userId
+    //   );
+    const commentUpdateData: string = req.body.content;
 
-      const commentId: string = req.params.id;
-      const updateComment: CommentViewModel | null =
-        await commentsService.updateCommentById(commentUpdateData, commentId);
+    const commentId: string = req.params.id;
+    const updateComment: CommentViewModel | null =
+      await commentsService.updateCommentById(commentUpdateData, commentId);
 
-      if (updateComment) {
-        res.sendStatus(204);
-      } else {
-        res.status(404).send("Comment with this id did not found");
-      }
+    if (updateComment !== null) {
+      res.sendStatus(204);
+    } else {
+      res.status(404).send("Comment with this id did not found");
     }
   }
 );
