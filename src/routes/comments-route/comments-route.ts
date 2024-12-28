@@ -47,11 +47,12 @@ commentsRouter.put("/:id", async (req: Request, res: Response) => {
 
 //Update comment for id
 commentsRouter.put(
-  "/:id/comments",
+  "/comments/:id",
   jwtAuthorizationMiddleware,
   contentCommentValidation(),
   checkCommentExistsMiddleware,
   checkCommentIsYourOwn,
+  inputValidationMiddleware,
   async (req: Request, res: Response) => {
     if (req.userId) {
       const user: meViewModel | null = await usersQueryRepository.findUserById(
