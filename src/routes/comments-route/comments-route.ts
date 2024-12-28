@@ -37,14 +37,6 @@ commentsRouter.delete(
   }
 );
 
-commentsRouter.put("/:id", async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-  let comment = await commentQueryRepository.findCommentById(id);
-  if (comment) {
-    res.send(comment);
-  } else res.sendStatus(404);
-});
-
 //Update comment for id
 commentsRouter.put(
   "/comments/:id",
