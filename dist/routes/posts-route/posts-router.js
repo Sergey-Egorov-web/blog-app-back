@@ -79,8 +79,8 @@ exports.postsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizat
 exports.postsRouter.post("/:id/comments", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (0, content_comment_validation_1.contentCommentValidation)(), check_post_exist_middleware_1.checkPostExistsMiddleware, input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.userId) {
         const user = yield user_db_query_repository_1.usersQueryRepository.findUserById(req.userId);
-        console.log("postRouter userId1", req.userId);
-        console.log("postRouter user1", user);
+        // console.log("postRouter userId1", req.userId);
+        // console.log("postRouter user1", user);
         if (user) {
             const userCommentator = {
                 userId: user.userId,

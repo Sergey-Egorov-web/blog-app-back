@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 
 export function contentCommentValidation() {
+  console.log("contentCommentValidation");
   return body("content")
     .trim()
     .isString()

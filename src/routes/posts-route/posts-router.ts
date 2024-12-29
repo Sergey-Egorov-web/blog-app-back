@@ -124,8 +124,8 @@ postsRouter.post(
       const user: meViewModel | null = await usersQueryRepository.findUserById(
         req.userId
       );
-      console.log("postRouter userId1", req.userId);
-      console.log("postRouter user1", user);
+      // console.log("postRouter userId1", req.userId);
+      // console.log("postRouter user1", user);
       if (user) {
         const userCommentator: CommentatorInfo = {
           userId: user.userId,

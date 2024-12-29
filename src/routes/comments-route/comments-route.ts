@@ -39,7 +39,7 @@ commentsRouter.delete(
 
 //Update comment for id
 commentsRouter.put(
-  "/comments/:id",
+  "/:id",
   jwtAuthorizationMiddleware,
   contentCommentValidation(),
   checkCommentExistsMiddleware,
@@ -47,6 +47,7 @@ commentsRouter.put(
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
     if (!req.userId) {
+      console.log("commentsRouter", req.userId);
       res.sendStatus(401);
     }
 
@@ -55,12 +56,13 @@ commentsRouter.put(
     //     req.userId
     //   );
     const commentUpdateData: string = req.body.content;
-
+    console.log("comments-route1", commentUpdateData);
     const commentId: string = req.params.id;
+    console.log("comments-route2", commentId);
     const updateComment: CommentViewModel | null =
       await commentsService.updateCommentById(commentUpdateData, commentId);
-
-    if (updateComment !== null) {
+    console.log("comments-route3", updateComment);
+    if (updateComment) {
       res.sendStatus(204);
     } else {
       res.status(404).send("Comment with this id did not found");
