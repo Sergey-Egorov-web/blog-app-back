@@ -7,9 +7,7 @@ export const checkCommentExistsMiddleware = async (
   next: NextFunction
 ) => {
   const commentId = req.params.id;
-  console.log("checkCommentExistsMiddleware1", commentId);
   const comment = await commentQueryRepository.findCommentById(commentId);
-  console.log("checkCommentExistsMiddleware2", comment);
   if (!comment) {
     res.status(404).send("Comment not found");
     return;

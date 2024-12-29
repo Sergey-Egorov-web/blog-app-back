@@ -81,8 +81,7 @@ export const helperCreateComment = async (
     userId: user.id,
     userLogin: user.login,
   };
-  // console.log("helperCreateComment userCommentator1", userCommentator);
-  // console.log("helperCreateComment user1", user);
+
   const responseComment: Response = await request(app)
     .post(`/posts/${postId}/comments`)
     .set("Authorization", `Bearer ${accessToken}`)
@@ -91,6 +90,6 @@ export const helperCreateComment = async (
       postId: postId,
       userCommentator: userCommentator,
     });
-  // console.log("helperCreateComment responseComment1", responseComment.body);
+
   return responseComment.body;
 };

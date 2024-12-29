@@ -56,12 +56,12 @@ commentsRouter.put(
     //     req.userId
     //   );
     const commentUpdateData: string = req.body.content;
-    console.log("comments-route1", commentUpdateData);
+    // console.log("comments-route1", commentUpdateData);
     const commentId: string = req.params.id;
-    console.log("comments-route2", commentId);
+    // console.log("comments-route2", commentId);
     const updateComment: CommentViewModel | null =
       await commentsService.updateCommentById(commentUpdateData, commentId);
-    console.log("comments-route3", updateComment);
+    // console.log("comments-route3", updateComment);
     if (updateComment) {
       res.sendStatus(204);
     } else {

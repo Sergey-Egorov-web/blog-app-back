@@ -8,7 +8,7 @@ export const jwtAuthorizationMiddleware = async (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-  console.log("JWT userId1", authHeader);
+
   if (!authHeader) {
     res.sendStatus(401);
   } else {
@@ -22,7 +22,7 @@ export const jwtAuthorizationMiddleware = async (
           return;
         }
         req.userId = userId;
-        console.log("JWT userId2", req.userId);
+
         next();
       }
     } catch (error) {

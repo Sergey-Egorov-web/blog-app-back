@@ -325,13 +325,13 @@ describe("/", () => {
     // update comment by id
     await request(app).delete("/testing/all-data");
     const post = await helperCreatePost();
-    console.log("comment test put by id1", post);
+
     const user = await helperCreateUser(
       "gxPy1H8t9",
       "string123",
       "exa@exam.com"
     );
-    console.log("comment test put by id2", user);
+
     const accessToken = await jwtService.createJWT(user);
     if (user) {
       const userCommentator: CommentatorInfo = {
@@ -339,7 +339,7 @@ describe("/", () => {
         userLogin: user.login,
       };
       const comment: CommentDbType = await helperCreateComment(user, post.id);
-      console.log("comment test put by id3", comment);
+
       const responseComment: Response = await request(app)
         .put(`/comments/${comment.id}`)
         .set("Authorization", `Bearer ${accessToken}`)
@@ -347,6 +347,109 @@ describe("/", () => {
           content: "It is a new content it is wonderful and amazing",
         })
         .expect(204);
+      // expect(responseComment.body).toEqual({
+      //   id: expect.any(String), // любое число в качестве id
+      //   content: "There are a lot of content must be here",
+      //   commentatorInfo: userCommentator,
+      //   createdAt: expect.stringMatching(
+      //     /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/
+      //   ),
+      // });
+    }
+  });
+  //___________________________________________________________________________
+  it("PUT COMMENT should return 400 bad request", async () => {
+    // don't update comment by id
+    await request(app).delete("/testing/all-data");
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "gxPy1H8t9",
+      "string123",
+      "exa@exam.com"
+    );
+    const accessToken = await jwtService.createJWT(user);
+    if (user) {
+      const userCommentator: CommentatorInfo = {
+        userId: user.id,
+        userLogin: user.login,
+      };
+      const comment: CommentDbType = await helperCreateComment(user, post.id);
+      const responseComment: Response = await request(app)
+        .put(`/comments/${comment.id}`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send({
+          content: "It is a new comment",
+        })
+        .expect(400);
+      expect(responseComment.body).toEqual({
+        errorsMessages: [
+          {
+            message: "content length must be between 20 and 300 characters",
+            field: "content",
+          },
+        ],
+      });
+    }
+  });
+  //___________________________________________________________________________
+  it("PUT COMMENT should return 400 bad request", async () => {
+    // don't update comment by id
+    await request(app).delete("/testing/all-data");
+    const post = await helperCreatePost();
+    const user = await helperCreateUser(
+      "gxPy1H8t9",
+      "string123",
+      "exa@exam.com"
+    );
+    const accessToken = await jwtService.createJWT(user);
+    if (user) {
+      const userCommentator: CommentatorInfo = {
+        userId: user.id,
+        userLogin: user.login,
+      };
+      const comment: CommentDbType = await helperCreateComment(user, post.id);
+      const responseComment: Response = await request(app)
+        .put(`/comments/${comment.id}`)
+        .set("Authorization", `Bearer ${123}`)
+        .send({
+          content: "It is a new comment",
+        })
+        .expect(401);
+    }
+  });
+  //___________________________________________________________________________
+  it("PUT COMMENT should return 403 not found", async () => {
+    // update comment by id
+    await request(app).delete("/testing/all-data");
+    const post = await helperCreatePost();
+
+    const user = await helperCreateUser(
+      "gxPy1H8t9",
+      "string123",
+      "exa@exam.com"
+    );
+    const user2 = await helperCreateUser(
+      "gxPy1H8t91",
+      "string123",
+      "exa@exam1.com"
+    );
+    const comment2: CommentDbType = await helperCreateComment(user2, post.id);
+    const accessToken = await jwtService.createJWT(user);
+    if (user) {
+      // const userCommentator: CommentatorInfo = {
+      //   userId: user.id,
+      //   userLogin: user.login,
+      // };
+      const comment: CommentDbType = await helperCreateComment(user, post.id);
+
+      const responseComment: Response = await request(app)
+        .put(`/comments/${comment2.id}`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send({
+          content: "It is a new content it is wonderful and amazing",
+        })
+        .expect(403);
+
       // expect(responseComment.body).toEqual({
       //   id: expect.any(String), // любое число в качестве id
       //   content: "There are a lot of content must be here",
