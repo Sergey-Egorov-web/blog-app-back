@@ -76,20 +76,22 @@ export const helperCreateComment = async (
   user: UserDbType,
   postId: string
 ): Promise<CommentDbType> => {
+  // console.log("helperCreateComment user", user);
   const accessToken = await jwtService.createJWT(user);
-  const userCommentator: CommentatorInfo = {
-    userId: user.id,
-    userLogin: user.login,
-  };
-
+  // const userCommentator: CommentatorInfo = {
+  //   userId: user.id,
+  //   userLogin: user.login,
+  // };
+  // console.log("helperCreateComment accessToken user", accessToken);
   const responseComment: Response = await request(app)
     .post(`/posts/${postId}/comments`)
     .set("Authorization", `Bearer ${accessToken}`)
     .send({
       content: "There are a lot of content is here",
-      postId: postId,
-      userCommentator: userCommentator,
+      // postId: postId,
+      // userCommentator: userCommentator,
     });
+  // console.log("helperCreateComment return", responseComment.body);
 
   return responseComment.body;
 };

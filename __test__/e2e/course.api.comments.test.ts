@@ -429,18 +429,23 @@ describe("/", () => {
       "exa@exam.com"
     );
     const user2 = await helperCreateUser(
-      "gxPy1H8t91",
+      "Py1H8t91",
       "string123",
       "exa@exam1.com"
     );
-    const comment2: CommentDbType = await helperCreateComment(user2, post.id);
+    const comment: CommentDbType = await helperCreateComment(user, post.id);
+    console.log("course.api.comments.test1 comment", comment);
     const accessToken = await jwtService.createJWT(user);
+    console.log("course.api.comments.test2 accessToken user", accessToken);
+    const comment2: CommentDbType = await helperCreateComment(user2, post.id);
+    console.log("course.api.comments.test2 comment2", comment2);
+    const accessToken2 = await jwtService.createJWT(user2);
+    console.log("course.api.comments.test3 accessToken user2", accessToken2);
     if (user) {
       // const userCommentator: CommentatorInfo = {
       //   userId: user.id,
       //   userLogin: user.login,
       // };
-      const comment: CommentDbType = await helperCreateComment(user, post.id);
 
       const responseComment: Response = await request(app)
         .put(`/comments/${comment2.id}`)

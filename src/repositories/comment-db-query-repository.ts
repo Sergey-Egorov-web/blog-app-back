@@ -23,7 +23,7 @@ export const commentQueryRepository = {
       .limit(pageSize)
       .toArray();
 
-    const totalCount = (await commentCollection.find().toArray()).length;
+    const totalCount = (await commentCollection.find(filter).toArray()).length;
     const page = pageNumber;
     const pagesCount = Math.ceil(totalCount / pageSize);
 
