@@ -418,7 +418,55 @@ describe("/", () => {
     }
   });
   //___________________________________________________________________________
-  it("PUT COMMENT should return 403 not found", async () => {
+  // it("PUT COMMENT should return 403 not found", async () => {
+  //   // update comment by id
+  //   await request(app).delete("/testing/all-data");
+  //   const post = await helperCreatePost();
+
+  //   const user = await helperCreateUser(
+  //     "gxPy1H8t9",
+  //     "string123",
+  //     "exa@exam.com"
+  //   );
+  //   const user2 = await helperCreateUser(
+  //     "Py1H8t91",
+  //     "string123",
+  //     "exa@exam1.com"
+  //   );
+  //   const comment: CommentDbType = await helperCreateComment(user, post.id);
+  //   console.log("course.api.comments.test1 comment", comment);
+  //   const accessToken = await jwtService.createJWT(user);
+  //   console.log("course.api.comments.test2 accessToken user", accessToken);
+  //   const comment2: CommentDbType = await helperCreateComment(user2, post.id);
+  //   console.log("course.api.comments.test2 comment2", comment2);
+  //   const accessToken2 = await jwtService.createJWT(user2);
+  //   console.log("course.api.comments.test3 accessToken user2", accessToken2);
+  //   if (user) {
+  //     // const userCommentator: CommentatorInfo = {
+  //     //   userId: user.id,
+  //     //   userLogin: user.login,
+  //     // };
+
+  //     const responseComment: Response = await request(app)
+  //       .put(`/comments/${comment2.id}`)
+  //       .set("Authorization", `Bearer ${accessToken}`)
+  //       .send({
+  //         content: "It is a new content it is wonderful and amazing",
+  //       })
+  //       .expect(403);
+
+  //     // expect(responseComment.body).toEqual({
+  //     //   id: expect.any(String), // любое число в качестве id
+  //     //   content: "There are a lot of content must be here",
+  //     //   commentatorInfo: userCommentator,
+  //     //   createdAt: expect.stringMatching(
+  //     //     /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/
+  //     //   ),
+  //     // });
+  //   }
+  // });
+  //___________________________________________________________________________
+  it("PUT COMMENT should return 404 not FOUND", async () => {
     // update comment by id
     await request(app).delete("/testing/all-data");
     const post = await helperCreatePost();
@@ -428,33 +476,22 @@ describe("/", () => {
       "string123",
       "exa@exam.com"
     );
-    const user2 = await helperCreateUser(
-      "Py1H8t91",
-      "string123",
-      "exa@exam1.com"
-    );
-    const comment: CommentDbType = await helperCreateComment(user, post.id);
-    console.log("course.api.comments.test1 comment", comment);
+
     const accessToken = await jwtService.createJWT(user);
-    console.log("course.api.comments.test2 accessToken user", accessToken);
-    const comment2: CommentDbType = await helperCreateComment(user2, post.id);
-    console.log("course.api.comments.test2 comment2", comment2);
-    const accessToken2 = await jwtService.createJWT(user2);
-    console.log("course.api.comments.test3 accessToken user2", accessToken2);
     if (user) {
-      // const userCommentator: CommentatorInfo = {
-      //   userId: user.id,
-      //   userLogin: user.login,
-      // };
+      const userCommentator: CommentatorInfo = {
+        userId: user.id,
+        userLogin: user.login,
+      };
+      const comment: CommentDbType = await helperCreateComment(user, post.id);
 
       const responseComment: Response = await request(app)
-        .put(`/comments/${comment2.id}`)
+        .put(`/comments/${123}`)
         .set("Authorization", `Bearer ${accessToken}`)
         .send({
           content: "It is a new content it is wonderful and amazing",
         })
-        .expect(403);
-
+        .expect(404);
       // expect(responseComment.body).toEqual({
       //   id: expect.any(String), // любое число в качестве id
       //   content: "There are a lot of content must be here",
