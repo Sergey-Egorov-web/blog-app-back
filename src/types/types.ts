@@ -118,6 +118,6 @@ export type meViewModel = {
   userId: string;
 };
 
-export interface CustomRequest extends Request {
-  userId?: string; // Добавляем свойство userId
-}
+// export interface CustomRequest extends Request {
+//   userId?: string; // Добавляем свойство userId
+// }

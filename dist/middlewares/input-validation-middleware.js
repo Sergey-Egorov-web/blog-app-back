@@ -4,7 +4,8 @@ exports.inputValidationMiddleware = void 0;
 const express_validator_1 = require("express-validator");
 const inputValidationMiddleware = (req, res, next) => {
     const result = (0, express_validator_1.validationResult)(req);
-    let errors = result.array({ onlyFirstError: true });
+    // let errors = result.array({ onlyFirstError: true });
+    let errors = result.array();
     const errorsMessages = errors.map((model) => ({
         message: model.msg,
         field: model.path,
