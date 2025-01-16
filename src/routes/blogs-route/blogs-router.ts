@@ -134,7 +134,7 @@ blogsRouter.post(
     const newBlog: BlogOutputType | null = await blogsService.addNewBlog(
       blogCreateData
     );
-
+    console.log(blogCreateData);
     res.status(201).send(newBlog);
   }
 );

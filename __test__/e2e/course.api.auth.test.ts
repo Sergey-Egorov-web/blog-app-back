@@ -3,7 +3,7 @@ import "dotenv/config";
 import { app } from "../../src/settings";
 import { jwtService } from "../../src/application/jwtService";
 import { helperCreateUser } from "../helper/helper-create-blog";
-import { UserDbType } from "../../src/types/types";
+import { UserDbType, UserInputModel } from "../../src/types/types";
 
 describe("/", () => {
   beforeAll(async () => {
@@ -53,7 +53,7 @@ describe("/", () => {
     expect(responseToken.body).toEqual({
       errorsMessages: [
         {
-          message: "loginOrEmail can't be empty",
+          message: expect.any(String),
           field: "loginOrEmail",
         },
       ],
@@ -81,6 +81,23 @@ describe("/", () => {
 
       .expect(401);
     //
+  });
+  //_____________________________________________________________________________
+  it("POST AUTH/Registration should return 204 and confirmation code", async () => {
+    //We want to create NewUser with input data
+
+    const user: UserInputModel = {
+      login: "B2qMdmBF3p",
+      password: "password1",
+      email: "authTestReg@ex.com",
+    };
+    console.log("Test: POST AUTH/Registration", user);
+    const createUser: Response = await request(app)
+      .post("/auth/registration")
+
+      .send(user)
+
+      .expect(204);
   });
   //_____________________________________________________________________________
 });

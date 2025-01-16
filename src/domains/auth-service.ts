@@ -10,24 +10,24 @@ import { validateUserService } from "./users-services/validate-user-service";
 
 export const authService = {
   async createUser(
-    // login: string,
-    // email: string,
-    // password: string
-    user: UserInputModel
+    login: string,
+    email: string,
+    password: string
+    // user: UserInputModel
   ): Promise<UserViewModel | APIError> {
     let errorsMessages: { field: string; message: string }[] = [];
 
-    errorsMessages = await validateUserService.validateUser(user);
+    // errorsMessages = await validateUserService.validateUser(user);
 
     if (errorsMessages.length) {
       return { errorsMessages };
     } else {
-      const hash: string = await getHash(user.password);
+      const hash: string = await getHash(password);
       const newUser: UserDbType = {
         id: Date.now().toString(),
-        login: user.login,
+        login: login,
         password: hash,
-        email: user.email,
+        email: email,
         createdAt: new Date().toISOString(),
       };
 

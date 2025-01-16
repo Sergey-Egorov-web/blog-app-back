@@ -22,7 +22,7 @@ const auth_service_1 = require("../../domains/auth-service");
 const user_email_validation_1 = require("../../middlewares/user-validation/user-email-validation");
 const user_login_validation_1 = require("../../middlewares/user-validation/user-login-validation");
 exports.authRouter = (0, express_1.Router)({});
-exports.authRouter.post("/:login", 
+exports.authRouter.post("/login", 
 // basicAuthorizationMiddleware,
 (0, user_login_or_email_validation_1.userLoginOrEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginInputData = req.body;
@@ -38,26 +38,25 @@ exports.authRouter.post("/:login",
         res.status(401).json(user);
     }
 }));
-exports.authRouter.get("/:me", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.get("/me", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.userId) {
         const user = yield user_db_query_repository_1.usersQueryRepository.findUserById(req.userId);
         res.status(200).send(user);
     }
 }));
-exports.authRouter.post("/:registration", (0, user_login_validation_1.userLoginValidation)(), (0, user_email_validation_1.userEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/registration", (0, user_login_validation_1.userLoginValidation)(), (0, user_email_validation_1.userEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const UserInputData = req.body;
+    // console.log("authService", req.body);
     // const passwordInputData: string = req.body.password;
-    console.log("authService");
-    const user = yield auth_service_1.authService.createUser(
-    // UserInputData.login,
-    // UserInputData.email,
-    // UserInputData.password
-    UserInputData);
+    // console.log("authService", passwordInputData);
+    const user = yield auth_service_1.authService.createUser(UserInputData.login, UserInputData.email, UserInputData.password
+    // UserInputData
+    );
     if (user) {
         //
         // const token = await jwtService.createJWT(user);
         //
-        res.status(201).json(user);
+        res.status(204).json(user);
     }
     else {
         res.status(401).json(user);

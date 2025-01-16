@@ -19,8 +19,9 @@ import { userLoginValidation } from "../../middlewares/user-validation/user-logi
 export const authRouter = Router({});
 
 authRouter.post(
-  "/:login",
+  "/login",
   // basicAuthorizationMiddleware,
+
   userLoginOrEmailValidation(),
   userPasswordValidation(),
   inputValidationMiddleware,
@@ -44,7 +45,7 @@ authRouter.post(
 );
 
 authRouter.get(
-  "/:me",
+  "/me",
   jwtAuthorizationMiddleware,
   async (req: Request, res: Response) => {
     if (req.userId) {
@@ -56,27 +57,29 @@ authRouter.get(
 );
 
 authRouter.post(
-  "/:registration",
+  "/registration",
   userLoginValidation(),
   userEmailValidation(),
   userPasswordValidation(),
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
     const UserInputData: UserInputModel = req.body;
+    // console.log("authService", req.body);
     // const passwordInputData: string = req.body.password;
-    console.log("authService");
+    // console.log("authService", passwordInputData);
+
     const user: UserViewModel | APIError = await authService.createUser(
-      // UserInputData.login,
-      // UserInputData.email,
-      // UserInputData.password
-      UserInputData
+      UserInputData.login,
+      UserInputData.email,
+      UserInputData.password
+      // UserInputData
     );
 
     if (user) {
       //
       // const token = await jwtService.createJWT(user);
       //
-      res.status(201).json(user);
+      res.status(204).json(user);
     } else {
       res.status(401).json(user);
     }

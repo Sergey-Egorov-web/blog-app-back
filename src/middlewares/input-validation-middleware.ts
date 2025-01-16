@@ -8,8 +8,8 @@ export const inputValidationMiddleware = (
 ) => {
   const result: Result = validationResult(req);
 
-  // let errors = result.array({ onlyFirstError: true });
-  let errors = result.array();
+  let errors = result.array({ onlyFirstError: true });
+  // let errors = result.array();
   const errorsMessages = errors.map((model) => ({
     message: model.msg,
     field: model.path,

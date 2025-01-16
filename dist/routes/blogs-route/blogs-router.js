@@ -78,6 +78,7 @@ check_blog_exist_middleware_1.checkBlogExistsMiddleware, (0, title_post_validati
 exports.blogsRouter.post("/", basic_authorization_middleware_1.basicAuthorizationMiddleware, (0, name_validation_1.nameValidation)(), (0, description_validation_1.descriptionValidation)(), (0, webSiteUrl_validation_1.webSiteUrlValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogCreateData = req.body;
     const newBlog = yield blogs_service_1.blogsService.addNewBlog(blogCreateData);
+    console.log(blogCreateData);
     res.status(201).send(newBlog);
 }));
 exports.blogsRouter.put("/:id", basic_authorization_middleware_1.basicAuthorizationMiddleware, 
