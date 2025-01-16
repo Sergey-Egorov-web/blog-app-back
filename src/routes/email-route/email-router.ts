@@ -5,7 +5,7 @@ export const emailRouter = Router({});
 
 emailRouter.post("/send", async (req: Request, res: Response) => {
   const login = "serg-dcdeveloper@yandex.ru";
-
+  const put = "";
   const transporter = nodemailer.createTransport({
     // service: "yandex",
     host: "smtp.yandex.ru",
@@ -29,6 +29,7 @@ emailRouter.post("/send", async (req: Request, res: Response) => {
 
   try {
     // Отправка письма
+
     const info = await transporter.sendMail(mailOptions);
     console.log("Письмо успешно отправлено:", info.response);
 
