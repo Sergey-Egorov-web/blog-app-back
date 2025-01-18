@@ -28,6 +28,9 @@ export const usersService = {
         password: hash,
         email: user.email,
         createdAt: new Date().toISOString(),
+        emailConfirmation: {
+          isConfirmed: true,
+        },
       };
 
       //

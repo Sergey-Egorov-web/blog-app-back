@@ -81,6 +81,11 @@ export type UserDbType = {
   password: string;
   email: string;
   createdAt: string;
+  emailConfirmation: {
+    confirmationCode?: string;
+    expirationDate?: Date;
+    isConfirmed: boolean;
+  };
 };
 
 export type UserViewModel = {
