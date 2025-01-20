@@ -46,19 +46,12 @@ exports.authRouter.get("/me", jwt_authorization_middleware_1.jwtAuthorizationMid
 }));
 exports.authRouter.post("/registration", (0, user_login_validation_1.userLoginValidation)(), (0, user_email_validation_1.userEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const UserInputData = req.body;
-    // console.log("authService", req.body);
-    // const passwordInputData: string = req.body.password;
-    // console.log("authService", passwordInputData);
-    const user = yield auth_service_1.authService.createUser(UserInputData.login, UserInputData.email, UserInputData.password
-    // UserInputData
-    );
-    if (user) {
-        //
-        // const token = await jwtService.createJWT(user);
-        //
-        res.status(204).json(user);
+    const user = yield auth_service_1.authService.createUser(UserInputData.login, UserInputData.email, UserInputData.password);
+    // Проверка, является ли результат ошибкой
+    if ("errorsMessages" in user) {
+        // Если это ошибка, возвращаем статус 400 и тело ошибки
+        res.status(400).json(user);
     }
-    else {
-        res.status(401).json(user);
-    }
+    // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
+    res.sendStatus(200);
 }));

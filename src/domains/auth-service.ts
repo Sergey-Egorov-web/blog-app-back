@@ -9,6 +9,8 @@ import { getHash } from "./users-services/users-service";
 import { validateUserService } from "./users-services/validate-user-service";
 import { v4 as uuidv4 } from "uuid";
 import { add } from "date-fns/add";
+import { error } from "console";
+import { emailsService } from "./emails-service";
 
 export const authService = {
   async createUser(
@@ -26,7 +28,7 @@ export const authService = {
     };
 
     errorsMessages = await validateUserService.validateUser(user);
-
+    console.log(errorsMessages);
     if (errorsMessages.length) {
       return { errorsMessages };
     } else {
@@ -46,10 +48,24 @@ export const authService = {
 
       const createResult: UserViewModel | null =
         await usersRepository.addNewUser(newUser);
-      // await emailManager.sendEmailConfirmationMessage(user);
+      await emailsService.sendEmailConfirmationMessage(newUser);
 
       //   return createResult;
       if (createResult) {
+        try {
+          // await emailsService.sendEmailConfirmationMessage(createResult);
+        } catch (error) {
+          console.error("Ошибка при отправке email:", error);
+          await usersRepository.deleteUserById(createResult.id);
+          return {
+            errorsMessages: [
+              {
+                field: "email",
+                message: "Не удалось отправить письмо с подтверждением",
+              },
+            ],
+          }; // Возвращаем APIError
+        }
         return createResult;
       } else {
         return {
