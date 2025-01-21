@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import {
   APIError,
+  FieldError,
   LoginInputModel,
   UserInputModel,
   UserViewModel,
@@ -77,6 +78,27 @@ authRouter.post(
     }
 
     // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
-    res.sendStatus(200);
+    res.sendStatus(204);
+  }
+);
+
+authRouter.post(
+  "/registration-confirmation",
+
+  async (req: Request, res: Response) => {
+    const code: string = req.body.code;
+    // console.log(code);
+    const result: boolean | APIError = await authService.confirmEmail(code);
+    console.log(result);
+    // Проверка, является ли результат ошибкой
+    // if ("errorsMessages" in result)
+    if (typeof result === "object" && "errorsMessages" in result) {
+      console.log(result);
+      // Если это ошибка, возвращаем статус 400 и тело ошибки
+      res.status(400).json(result);
+    } else {
+      // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
+      res.sendStatus(204);
+    }
   }
 );

@@ -53,4 +53,18 @@ export const usersRepository = {
       return false;
     }
   },
+  async updateConfirmation(id: string): Promise<boolean> {
+    const result = await userCollection.updateOne(
+      { id },
+      { $set: { "emailConfirmation.isConfirmed": true } }
+    );
+    // Проверяем, был ли документ обновлён
+    if (result.modifiedCount === 1) {
+      const user = await userCollection.findOne({ id });
+      console.log(user);
+      return true; // Успешное обновление
+    } else {
+      return false; // Документ не был обновлён
+    }
+  },
 };

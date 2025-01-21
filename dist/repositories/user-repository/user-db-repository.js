@@ -66,4 +66,18 @@ exports.usersRepository = {
             }
         });
     },
+    updateConfirmation(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.userCollection.updateOne({ id }, { $set: { "emailConfirmation.isConfirmed": true } });
+            // Проверяем, был ли документ обновлён
+            if (result.modifiedCount === 1) {
+                const user = yield db_1.userCollection.findOne({ id });
+                console.log(user);
+                return true; // Успешное обновление
+            }
+            else {
+                return false; // Документ не был обновлён
+            }
+        });
+    },
 };
