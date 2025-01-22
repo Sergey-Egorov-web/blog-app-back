@@ -57,13 +57,10 @@ exports.authRouter.post("/registration", (0, user_login_validation_1.userLoginVa
 }));
 exports.authRouter.post("/registration-confirmation", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const code = req.body.code;
-    // console.log(code);
     const result = yield auth_service_1.authService.confirmEmail(code);
-    console.log(result);
     // Проверка, является ли результат ошибкой
-    // if ("errorsMessages" in result)
     if (typeof result === "object" && "errorsMessages" in result) {
-        console.log(result);
+        // console.log(result);
         // Если это ошибка, возвращаем статус 400 и тело ошибки
         res.status(400).json(result);
     }
@@ -71,4 +68,14 @@ exports.authRouter.post("/registration-confirmation", (req, res) => __awaiter(vo
         // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
         res.sendStatus(204);
     }
+}));
+exports.authRouter.post("/registration-email-resending", (0, user_email_validation_1.userEmailValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const email = req.body.email;
+    const user = yield auth_service_1.authService.resendEmail(email);
+    if ("errorsMessages" in user) {
+        // Если это ошибка, возвращаем статус 400 и тело ошибки
+        res.status(400).json(user);
+    }
+    // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
+    res.sendStatus(204);
 }));

@@ -87,18 +87,35 @@ authRouter.post(
 
   async (req: Request, res: Response) => {
     const code: string = req.body.code;
-    // console.log(code);
+
     const result: boolean | APIError = await authService.confirmEmail(code);
-    console.log(result);
+
     // Проверка, является ли результат ошибкой
-    // if ("errorsMessages" in result)
+
     if (typeof result === "object" && "errorsMessages" in result) {
-      console.log(result);
+      // console.log(result);
       // Если это ошибка, возвращаем статус 400 и тело ошибки
       res.status(400).json(result);
     } else {
       // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
       res.sendStatus(204);
     }
+  }
+);
+
+authRouter.post(
+  "/registration-email-resending",
+  userEmailValidation(),
+  inputValidationMiddleware,
+  async (req: Request, res: Response) => {
+    const email: string = req.body.email;
+    const user: UserViewModel | APIError = await authService.resendEmail(email);
+    if ("errorsMessages" in user) {
+      // Если это ошибка, возвращаем статус 400 и тело ошибки
+      res.status(400).json(user);
+    }
+
+    // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
+    res.sendStatus(204);
   }
 );

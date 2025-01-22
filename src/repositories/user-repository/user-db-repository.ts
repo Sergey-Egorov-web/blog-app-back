@@ -61,7 +61,7 @@ export const usersRepository = {
     // Проверяем, был ли документ обновлён
     if (result.modifiedCount === 1) {
       const user = await userCollection.findOne({ id });
-      console.log(user);
+
       return true; // Успешное обновление
     } else {
       return false; // Документ не был обновлён

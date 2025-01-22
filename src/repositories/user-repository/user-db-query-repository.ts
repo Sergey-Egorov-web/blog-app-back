@@ -135,4 +135,32 @@ export const usersQueryRepository = {
     return resultWithoutMongoId;
     // }
   },
+
+  async findUserByEmail(email: string): Promise<UserDbType | null> {
+    //
+    const user: UserDbType | null = await userCollection.findOne({
+      email: email,
+    }); // Ищем по confirmationCode
+    //
+    if (!user) {
+      return null;
+    }
+
+    // if (user) {
+    const resultWithoutMongoId: UserDbType = {
+      id: user.id,
+      login: user.login,
+      email: user.email,
+      password: user.password,
+      createdAt: user.createdAt,
+      emailConfirmation: {
+        confirmationCode: user.emailConfirmation.confirmationCode,
+        expirationDate: user.emailConfirmation.expirationDate,
+        isConfirmed: user.emailConfirmation.isConfirmed,
+      },
+    };
+
+    return resultWithoutMongoId;
+    // }
+  },
 };

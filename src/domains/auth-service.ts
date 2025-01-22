@@ -113,4 +113,45 @@ export const authService = {
     const result: boolean = await usersRepository.updateConfirmation(user.id);
     return result;
   },
+
+  async resendEmail(email: string) {
+    const user: UserDbType | null = await usersQueryRepository.findUserByEmail(
+      email
+    );
+    // let errorsMessages: FieldError[] | null = [];
+    let errorsMessages: { field: string; message: string }[] = [];
+    if (!user) {
+      errorsMessages.push({ field: "user", message: "there is no such user" });
+      return { errorsMessages };
+    }
+
+    if (user.emailConfirmation.isConfirmed) {
+      errorsMessages.push({
+        field: "isConfirmed",
+        message: "the user has already been confirmed",
+      });
+      return { errorsMessages };
+    }
+    if (user) {
+      try {
+        await emailsService.sendEmailConfirmationMessage(user);
+      } catch (error) {
+        console.error("Ошибка при отправке email:", error);
+        await usersRepository.deleteUserById(user.id);
+        return {
+          errorsMessages: [
+            {
+              field: "email",
+              message: "Не удалось отправить письмо с кодом подтверждения",
+            },
+          ],
+        }; // Возвращаем APIError
+      }
+      return user;
+    } else {
+      return {
+        errorsMessages: [{ field: "server", message: "Failed to add user" }],
+      };
+    }
+  },
 };

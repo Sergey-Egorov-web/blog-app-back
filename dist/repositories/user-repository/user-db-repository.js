@@ -72,7 +72,6 @@ exports.usersRepository = {
             // Проверяем, был ли документ обновлён
             if (result.modifiedCount === 1) {
                 const user = yield db_1.userCollection.findOne({ id });
-                console.log(user);
                 return true; // Успешное обновление
             }
             else {
