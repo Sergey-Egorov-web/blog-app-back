@@ -89,7 +89,7 @@ describe("/", () => {
     const user: UserInputModel = {
       login: "B2qMdmBF3p",
       password: "password1",
-      email: "authTestReg@ex.com",
+      email: "serj-dc@yandex.ru",
     };
     console.log("Test: POST AUTH/Registration", user);
     const createUser: Response = await request(app)
