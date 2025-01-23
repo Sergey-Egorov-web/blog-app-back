@@ -52,8 +52,10 @@ exports.authRouter.post("/registration", (0, user_login_validation_1.userLoginVa
         // Если это ошибка, возвращаем статус 400 и тело ошибки
         res.status(400).json(user);
     }
-    // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
-    res.sendStatus(204);
+    else {
+        // Если пользователь успешно создан, возвращаем статус 201 и данные пользователя
+        res.sendStatus(204);
+    }
 }));
 exports.authRouter.post("/registration-confirmation", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const code = req.body.code;
