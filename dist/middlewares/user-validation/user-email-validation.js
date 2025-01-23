@@ -7,7 +7,7 @@ function userEmailValidation() {
         .trim()
         .notEmpty()
         .withMessage("email can't be empty")
-        .isLength({ min: 6, max: 20 })
+        // .isLength({ min: 6, max: 20 })
         .withMessage("email length must be between 3 and 10 characters")
         // .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
         // .withMessage(
