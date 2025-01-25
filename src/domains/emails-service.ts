@@ -42,7 +42,7 @@ export const emailsService = {
       // `
       `<h1>Thank for your registration</h1>
       <p>To finish registration please follow the link below:
-          <a href='https://somesite.com/confirm-email?${confirmationLink}'>complete registration</a>
+          <a href='https://somesite.com/confirm-email??code=${confirmationLink}'>complete registration</a>
       </p>`
     );
 
