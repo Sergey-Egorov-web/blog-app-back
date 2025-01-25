@@ -47,7 +47,8 @@ export const emailsService = {
     try {
       // Отправка письма
 
-      const info = await transporter.sendMail(mailOptions);
+      // const info = await transporter.sendMail(mailOptions);
+      const info = transporter.sendMail(mailOptions);
       console.log("Письмо успешно отправлено:", info);
 
       // Успешный ответ
