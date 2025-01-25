@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import { UserDbType, UserViewModel } from "../../types/types";
 import { userCollection } from "../db";
 
@@ -8,7 +9,7 @@ export const usersRepository = {
     const result = await userCollection.findOne({
       id: newUser.id,
     });
-
+    console.log("user-db-repository", result);
     if (result) {
       const resultWithoutMongoId: UserViewModel = {
         id: result.id,
@@ -66,5 +67,13 @@ export const usersRepository = {
     } else {
       return false; // Документ не был обновлён
     }
+  },
+  async updateConfirmationDate(id: string): Promise<boolean> {
+    const newExpirationDate: Date = add(new Date(), { hours: 1, minutes: 3 });
+    const result = await userCollection.updateOne(
+      { id },
+      { $set: { "emailConfirmation.expirationDate": newExpirationDate } }
+    );
+    return result.modifiedCount === 1;
   },
 };

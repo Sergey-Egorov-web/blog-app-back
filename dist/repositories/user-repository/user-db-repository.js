@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRepository = void 0;
+const date_fns_1 = require("date-fns");
 const db_1 = require("../db");
 exports.usersRepository = {
     addNewUser(newUser) {
@@ -18,6 +19,7 @@ exports.usersRepository = {
             const result = yield db_1.userCollection.findOne({
                 id: newUser.id,
             });
+            console.log("user-db-repository", result);
             if (result) {
                 const resultWithoutMongoId = {
                     id: result.id,
@@ -77,6 +79,13 @@ exports.usersRepository = {
             else {
                 return false; // Документ не был обновлён
             }
+        });
+    },
+    updateConfirmationDate(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newExpirationDate = (0, date_fns_1.add)(new Date(), { hours: 1, minutes: 3 });
+            const result = yield db_1.userCollection.updateOne({ id }, { $set: { "emailConfirmation.expirationDate": newExpirationDate } });
+            return result.modifiedCount === 1;
         });
     },
 };
