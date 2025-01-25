@@ -36,25 +36,25 @@ export const emailsService = {
       user.email,
       "Confirm registration",
       `To confirm registration, follow the link: ${confirmationLink}`,
-      `
-        <p>To confirm registration, follow the link:</p>
-        <a href="${confirmationLink}">${confirmationLink}</a>
-      `
+      // `
+      //   <p>To confirm registration, follow the link:</p>
+      //   <a href="${confirmationLink}">${confirmationLink}</a>
+      // `
+      `<h1>Thank for your registration</h1>
+      <p>To finish registration please follow the link below:
+          <a href='https://somesite.com/confirm-email?${confirmationLink}'>complete registration</a>
+      </p>`
     );
 
     console.log("Попытка отправки письма:", mailOptions);
 
     try {
-      // Отправка письма
-
-      // const info = await transporter.sendMail(mailOptions);
-      const info = transporter.sendMail(mailOptions);
+      const info = await transporter.sendMail(mailOptions);
+      // const info = transporter.sendMail(mailOptions);
       console.log("Письмо успешно отправлено:", info);
 
-      // Успешный ответ
       return true;
     } catch (error) {
-      // Обработка ошибки
       console.error("Ошибка при отправке письма:", error);
       return false;
     }
