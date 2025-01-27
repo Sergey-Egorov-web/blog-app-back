@@ -78,11 +78,11 @@ export const usersRepository = {
   },
   async updateConfirmationCode(
     id: string,
-    ConfirmationCode: string
+    confirmationCode: string
   ): Promise<boolean> {
     const result = await userCollection.updateOne(
       { id },
-      { $set: { "emailConfirmation.confirmationCode": ConfirmationCode } }
+      { $set: { "emailConfirmation.confirmationCode": confirmationCode } }
     );
     return result.modifiedCount === 1;
   },
