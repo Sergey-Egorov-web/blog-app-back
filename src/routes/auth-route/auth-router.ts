@@ -73,6 +73,7 @@ authRouter.post(
 
     // Проверка, является ли результат ошибкой
     if ("errorsMessages" in user) {
+      // console.log(user);
       // Если это ошибка, возвращаем статус 400 и тело ошибки
       res.status(400).json(user);
       return;

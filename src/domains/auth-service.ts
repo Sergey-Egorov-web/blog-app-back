@@ -30,7 +30,7 @@ export const authService = {
     };
 
     errorsMessages = await validateUserService.validateUser(user);
-    console.log(errorsMessages);
+    // console.log(errorsMessages);
     if (errorsMessages.length) {
       return { errorsMessages };
     } else {
@@ -84,7 +84,7 @@ export const authService = {
     // let errorsMessages: FieldError[] | null = [];
     let errorsMessages: { field: string; message: string }[] = [];
     if (!user) {
-      errorsMessages.push({ field: "user", message: "there is no such user" });
+      errorsMessages.push({ message: "there is no such user", field: "code" });
       return { errorsMessages };
     }
     if (user.emailConfirmation.confirmationCode !== code) {
@@ -104,8 +104,8 @@ export const authService = {
       }
     if (user.emailConfirmation.isConfirmed) {
       errorsMessages.push({
-        field: "isConfirmed",
         message: "the user has already been confirmed",
+        field: "code",
       });
       return { errorsMessages };
     }
@@ -121,14 +121,14 @@ export const authService = {
     // let errorsMessages: FieldError[] | null = [];
     let errorsMessages: { field: string; message: string }[] = [];
     if (!user) {
-      errorsMessages.push({ field: "user", message: "there is no such user" });
+      errorsMessages.push({ message: "there is no such user", field: "email" });
       return { errorsMessages };
     }
 
     if (user.emailConfirmation.isConfirmed) {
       errorsMessages.push({
-        field: "isConfirmed",
         message: "the user has already been confirmed",
+        field: "email",
       });
       return { errorsMessages };
     }

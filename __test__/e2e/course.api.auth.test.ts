@@ -100,4 +100,37 @@ describe("/", () => {
       .expect(204);
   });
   //_____________________________________________________________________________
+
+  it("POST AUTH/Registration should return 204 and confirmation code", async () => {
+    //We want to create NewUser with input data
+
+    const user = await helperCreateUser(
+      "B2qMdmBF3p",
+      "password1",
+      "serj-dc@yandex.ru"
+    );
+
+    const newUser: UserInputModel = {
+      login: "B2qMdmBF3p",
+      password: "password1",
+      email: "serj-dc@yandex.ru",
+    };
+    // console.log("Test: POST AUTH/Registration", user);
+    const createUser: Response = await request(app)
+      .post("/auth/registration")
+
+      .send(newUser)
+
+      .expect(400);
+    expect(createUser).toEqual({
+      errorsMessages: [
+        {
+          message: "login must be unique",
+          field: "login",
+        },
+        { field: "email", message: "email cant be empty" },
+      ],
+    });
+  });
+  //_____________________________________________________________________________
 });
