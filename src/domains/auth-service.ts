@@ -134,8 +134,13 @@ export const authService = {
     }
     if (user) {
       try {
-        await emailsService.sendEmailConfirmationMessage(user);
+        const newConfirmationCode = uuidv4();
+        await usersRepository.updateConfirmationCode(
+          user.id,
+          newConfirmationCode
+        );
         await usersRepository.updateConfirmationDate(user.id);
+        await emailsService.sendEmailConfirmationMessage(user);
       } catch (error) {
         console.error("Ошибка при отправке email:", error);
         await usersRepository.deleteUserById(user.id);
