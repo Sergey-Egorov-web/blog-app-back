@@ -88,9 +88,9 @@ exports.usersRepository = {
             return result.modifiedCount === 1;
         });
     },
-    updateConfirmationCode(id, ConfirmationCode) {
+    updateConfirmationCode(id, confirmationCode) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield db_1.userCollection.updateOne({ id }, { $set: { "emailConfirmation.confirmationCode": ConfirmationCode } });
+            const result = yield db_1.userCollection.updateOne({ id }, { $set: { "emailConfirmation.confirmationCode": confirmationCode } });
             return result.modifiedCount === 1;
         });
     },

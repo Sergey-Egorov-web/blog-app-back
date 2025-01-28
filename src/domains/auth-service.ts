@@ -143,7 +143,7 @@ export const authService = {
         await emailsService.sendEmailConfirmationMessage(user);
       } catch (error) {
         console.error("Ошибка при отправке email:", error);
-        await usersRepository.deleteUserById(user.id);
+        // await usersRepository.deleteUserById(user.id);
         return {
           errorsMessages: [
             {

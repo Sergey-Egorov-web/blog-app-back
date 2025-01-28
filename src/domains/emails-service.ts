@@ -53,7 +53,7 @@ export const emailsService = {
     try {
       const info = await transporter.sendMail(mailOptions);
       // const info = transporter.sendMail(mailOptions);
-      console.log("Письмо успешно отправлено:", info);
+      // console.log("Письмо успешно отправлено:", info);
 
       return true;
     } catch (error) {
