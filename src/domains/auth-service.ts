@@ -114,7 +114,7 @@ export const authService = {
     return result;
   },
 
-  async resendEmail(email: string) {
+  async resendEmail(email: string): Promise<UserDbType | APIError> {
     const user: UserDbType | null = await usersQueryRepository.findUserByEmail(
       email
     );
@@ -144,6 +144,7 @@ export const authService = {
       } catch (error) {
         console.error("Ошибка при отправке email:", error);
         // await usersRepository.deleteUserById(user.id);
+
         return {
           errorsMessages: [
             {
