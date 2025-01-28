@@ -115,7 +115,7 @@ export const authService = {
   },
 
   async resendEmail(email: string): Promise<UserDbType | APIError> {
-    const user: UserDbType | null = await usersQueryRepository.findUserByEmail(
+    let user: UserDbType | null = await usersQueryRepository.findUserByEmail(
       email
     );
     // let errorsMessages: FieldError[] | null = [];
@@ -140,7 +140,12 @@ export const authService = {
           newConfirmationCode
         );
         await usersRepository.updateConfirmationDate(user.id);
-        await emailsService.sendEmailConfirmationMessage(user);
+        user.emailConfirmation.confirmationCode = newConfirmationCode;
+        const updateUser: UserDbType | null =
+          await usersQueryRepository.findUserByEmail(user.email);
+        if (updateUser) {
+          await emailsService.sendEmailConfirmationMessage(updateUser); //  email : string, code : string
+        }
       } catch (error) {
         console.error("Ошибка при отправке email:", error);
         // await usersRepository.deleteUserById(user.id);
