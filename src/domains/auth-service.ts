@@ -55,7 +55,10 @@ export const authService = {
       //   return createResult;
       if (createResult) {
         try {
-          await emailsService.sendEmailConfirmationMessage(newUser);
+          await emailsService.sendEmailConfirmationMessage(
+            newUser.email,
+            newUser.emailConfirmation.confirmationCode!
+          );
         } catch (error) {
           console.error("Ошибка при отправке email:", error);
           await usersRepository.deleteUserById(createResult.id);
@@ -144,7 +147,10 @@ export const authService = {
         const updateUser: UserDbType | null =
           await usersQueryRepository.findUserByEmail(user.email);
         if (updateUser) {
-          await emailsService.sendEmailConfirmationMessage(updateUser); //  email : string, code : string
+          await emailsService.sendEmailConfirmationMessage(
+            updateUser.email,
+            updateUser.emailConfirmation.confirmationCode!
+          ); //  email : string, code : string
         }
       } catch (error) {
         console.error("Ошибка при отправке email:", error);

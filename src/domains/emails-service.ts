@@ -29,16 +29,19 @@ export const emailsService = {
       return false;
     }
   },
-  async sendEmailConfirmationMessage(user: UserDbType): Promise<boolean> {
+  async sendEmailConfirmationMessage(
+    email: string,
+    confirmationCode: string
+  ): Promise<boolean> {
     const transporter = createTransporter();
-    const confirmationLink = user.emailConfirmation.confirmationCode;
+    const confirmationLink = confirmationCode;
     const emailText = `
   <h1>Thank you for your registration!</h1>
   <p>To finish registration, please follow the link below:</p>
   <a href='https://somesite.com/confirm-email?code=${confirmationLink}'>Complete Registration</a>
 `;
     const mailOptions = createMailOptions(
-      user.email,
+      email,
       "Confirm registration",
       `To confirm registration, follow the link: ${confirmationLink}`,
       // `
