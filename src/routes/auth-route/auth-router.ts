@@ -36,14 +36,39 @@ authRouter.post(
 
     if ("id" in user) {
       //
-      const token = await jwtService.createJWT(user);
+      const accessToken = await jwtService.createAccessTokenJWT(user.id);
       //
-      res.status(200).send({ accessToken: token });
+      const refreshToken = await jwtService.createRefreshTokenJWT(user.id);
+      //
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+      });
+      res.status(200).send({ accessToken: accessToken });
     } else {
       res.status(401).json(user);
     }
   }
 );
+authRouter.post("/refresh-token", async (req: Request, res: Response) => {
+  console.log("/refresh-token", req.cookies.refreshToken);
+  const refreshToken = req.cookies.refreshToken;
+  const userId: string = await jwtService.getUserIdByRefreshToken(refreshToken);
+
+  if (!userId) {
+    res.sendStatus(401).json({ message: "Refresh token is missing" });
+  }
+  //
+  const newAccessToken = await jwtService.createAccessTokenJWT(userId);
+  //
+  const newRefreshToken = await jwtService.createRefreshTokenJWT(userId);
+  //
+  res.cookie("refreshToken", newRefreshToken, {
+    httpOnly: true,
+    secure: true,
+  });
+  res.status(200).send({ accessToken: newAccessToken });
+});
 
 authRouter.get(
   "/me",

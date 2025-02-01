@@ -30,13 +30,37 @@ exports.authRouter.post("/login",
     const user = yield users_service_1.usersService.checkUser(loginInputData);
     if ("id" in user) {
         //
-        const token = yield jwtService_1.jwtService.createJWT(user);
+        const accessToken = yield jwtService_1.jwtService.createAccessTokenJWT(user.id);
         //
-        res.status(200).send({ accessToken: token });
+        const refreshToken = yield jwtService_1.jwtService.createRefreshTokenJWT(user.id);
+        //
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+        });
+        res.status(200).send({ accessToken: accessToken });
     }
     else {
         res.status(401).json(user);
     }
+}));
+exports.authRouter.post("/refresh-token", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("/refresh-token", req.cookies.refreshToken);
+    const refreshToken = req.cookies.refreshToken;
+    const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
+    if (!userId) {
+        res.sendStatus(401).json({ message: "Refresh token is missing" });
+    }
+    //
+    const newAccessToken = yield jwtService_1.jwtService.createAccessTokenJWT(userId);
+    //
+    const newRefreshToken = yield jwtService_1.jwtService.createRefreshTokenJWT(userId);
+    //
+    res.cookie("refreshToken", newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+    });
+    res.status(200).send({ accessToken: newAccessToken });
 }));
 exports.authRouter.get("/me", jwt_authorization_middleware_1.jwtAuthorizationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.userId) {
