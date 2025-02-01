@@ -12,6 +12,9 @@ import cookieParser from "cookie-parser";
 // import bodyParser from "body-parser";
 
 export const app = express();
+
+app.use(cookieParser());
+
 app.use(express.json()); // используем вместо bodyParser
 app.use("/blogs", blogsRouter);
 app.use("/posts", postsRouter);
@@ -20,7 +23,6 @@ app.use("/users", usersRouter);
 app.use("/comments", commentsRouter);
 app.use("/email", emailRouter);
 app.use("/testing/all-data", testingRouter);
-app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
   let helloMessage = "version 1.00!!!";

@@ -48,6 +48,7 @@ exports.authRouter.post("/refresh-token", (req, res) => __awaiter(void 0, void 0
     console.log("/refresh-token", req.cookies.refreshToken);
     const refreshToken = req.cookies.refreshToken;
     const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
+    console.log("/refresh-token", userId);
     if (!userId) {
         res.sendStatus(401).json({ message: "Refresh token is missing" });
     }

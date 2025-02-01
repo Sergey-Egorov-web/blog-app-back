@@ -15,6 +15,7 @@ const email_router_1 = require("./routes/email-route/email-router");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 // import bodyParser from "body-parser";
 exports.app = (0, express_1.default)();
+exports.app.use((0, cookie_parser_1.default)());
 exports.app.use(express_1.default.json()); // используем вместо bodyParser
 exports.app.use("/blogs", blogs_router_1.blogsRouter);
 exports.app.use("/posts", posts_router_1.postsRouter);
@@ -23,7 +24,6 @@ exports.app.use("/users", users_route_1.usersRouter);
 exports.app.use("/comments", comments_route_1.commentsRouter);
 exports.app.use("/email", email_router_1.emailRouter);
 exports.app.use("/testing/all-data", tests_route_1.testingRouter);
-exports.app.use((0, cookie_parser_1.default)());
 exports.app.get("/", (req, res) => {
     let helloMessage = "version 1.00!!!";
     res.send(helloMessage);
