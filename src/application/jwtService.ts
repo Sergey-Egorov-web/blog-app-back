@@ -6,15 +6,15 @@ import { expireTimeAccessToken, expireTimeRefreshToken } from "../constant";
 import { blacklistDbRepository } from "../repositories/blacklist-db-repository";
 
 export const jwtService = {
-  async createAccessTokenJWT(id: string) {
-    const accessToken = jwt.sign({ userId: id }, JWT_ACCESS_SECRET, {
+  async createAccessTokenJWT(id: string): Promise<string> {
+    const accessToken: string = jwt.sign({ userId: id }, JWT_ACCESS_SECRET, {
       expiresIn: expireTimeAccessToken,
     });
     return accessToken;
   },
 
-  async createRefreshTokenJWT(id: string) {
-    const refreshToken = jwt.sign({ userId: id }, JWT_REFRESH_SECRET, {
+  async createRefreshTokenJWT(id: string): Promise<string> {
+    const refreshToken: string = jwt.sign({ userId: id }, JWT_REFRESH_SECRET, {
       expiresIn: expireTimeRefreshToken,
     });
     return refreshToken;
