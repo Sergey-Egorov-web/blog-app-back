@@ -27,27 +27,31 @@ authRouter.post(
   userPasswordValidation(),
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
-    const loginInputData: LoginInputModel = req.body;
+    try {
+      const loginInputData: LoginInputModel = req.body;
 
-    const user: UserViewModel | APIError = await usersService.checkUser(
-      loginInputData
-    );
-    if (!user) {
-      res.sendStatus(401);
-    }
-    if ("id" in user) {
-      //
-      const accessToken = await jwtService.createAccessTokenJWT(user.id);
-      //
-      const refreshToken = await jwtService.createRefreshTokenJWT(user.id);
-      //
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-      });
-      res.status(200).send({ accessToken: accessToken });
-    } else {
-      res.status(401).json(user);
+      const user: UserViewModel | APIError = await usersService.checkUser(
+        loginInputData
+      );
+      if (!user) {
+        res.sendStatus(401);
+      }
+      if ("id" in user) {
+        //
+        const accessToken = await jwtService.createAccessTokenJWT(user.id);
+        //
+        const refreshToken = await jwtService.createRefreshTokenJWT(user.id);
+        //
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: true,
+        });
+        res.status(200).send({ accessToken: accessToken });
+      } else {
+        res.status(401).json(user);
+      }
+    } catch (error) {
+      res.json(error);
     }
   }
 );
