@@ -26,7 +26,6 @@ exports.authRouter.post("/login",
 // basicAuthorizationMiddleware,
 (0, user_login_or_email_validation_1.userLoginOrEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginInputData = req.body;
-    // const passwordInputData: string = req.body.password;
     const user = yield users_service_1.usersService.checkUser(loginInputData);
     if ("id" in user) {
         //
