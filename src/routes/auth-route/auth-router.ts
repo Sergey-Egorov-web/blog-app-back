@@ -32,7 +32,9 @@ authRouter.post(
     const user: UserViewModel | APIError = await usersService.checkUser(
       loginInputData
     );
-
+    if (!user) {
+      res.sendStatus(401);
+    }
     if ("id" in user) {
       //
       const accessToken = await jwtService.createAccessTokenJWT(user.id);
