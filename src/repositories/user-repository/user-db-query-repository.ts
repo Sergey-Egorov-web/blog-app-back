@@ -61,7 +61,7 @@ export const usersQueryRepository = {
     return result;
   },
 
-  async findUserByLoginOrPassword(
+  async findUserByLoginOrEmail(
     loginOrEmail: string,
     password: string
   ): Promise<UserViewModel | null> {

@@ -69,12 +69,12 @@ export const usersService = {
   },
   async checkUser(user: LoginInputModel): Promise<UserViewModel | APIError> {
     let checkUser: UserViewModel | null =
-      await usersQueryRepository.findUserByLoginOrPassword(
+      await usersQueryRepository.findUserByLoginOrEmail(
         user.loginOrEmail,
         user.password
       );
 
-    if (checkUser !== null) {
+    if (checkUser) {
       // return true;
       return checkUser;
     } else {
