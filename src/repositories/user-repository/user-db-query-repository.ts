@@ -66,10 +66,7 @@ export const usersQueryRepository = {
     password: string
   ): Promise<UserViewModel | null> {
     const user: UserDbType | null = await userCollection.findOne({
-      $or: [
-        { login: loginOrEmail }, // Ищем по логину
-        { email: loginOrEmail }, // Ищем по email
-      ],
+      $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
     });
 
     if (!user) {

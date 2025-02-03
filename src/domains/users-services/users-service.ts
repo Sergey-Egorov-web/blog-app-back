@@ -74,7 +74,7 @@ export const usersService = {
         user.password
       );
 
-    if (checkUser) {
+    if (checkUser !== null) {
       // return true;
       return checkUser;
     } else {
