@@ -56,7 +56,7 @@ exports.authRouter.post("/logout",
     }
     const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
     if (userId) {
-        // const result = await jwtService.addRefreshTokenToBlacklist(refreshToken);
+        const result = yield jwtService_1.jwtService.addRefreshTokenToBlacklist(refreshToken);
         res.sendStatus(204);
     }
     else {
@@ -80,7 +80,7 @@ exports.authRouter.post("/refresh-token", (req, res) => __awaiter(void 0, void 0
     //
     const newRefreshToken = yield jwtService_1.jwtService.createRefreshTokenJWT(userId);
     //
-    // const result = await jwtService.addRefreshTokenToBlacklist(refreshToken);
+    const result = yield jwtService_1.jwtService.addRefreshTokenToBlacklist(refreshToken);
     res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
         secure: true,
