@@ -1,5 +1,10 @@
 import { MongoClient } from "mongodb";
-import { BlogDbType, PostOutputType, UserDbType } from "../types/types";
+import {
+  blackListRefreshTokenDbType,
+  BlogDbType,
+  PostOutputType,
+  UserDbType,
+} from "../types/types";
 
 import "dotenv/config";
 import { CommentDbType, CommentViewModel } from "../types/comment-types";
@@ -28,6 +33,10 @@ export const userCollection = client
 export const commentCollection = client
   .db("BloggerPlatform")
   .collection<CommentDbType>("comments");
+
+export const blackListRefreshTokenCollection = client
+  .db("BloggerPlatform")
+  .collection<blackListRefreshTokenDbType>("blackList");
 
 export async function runDB() {
   try {

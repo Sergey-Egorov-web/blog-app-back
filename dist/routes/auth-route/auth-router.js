@@ -44,11 +44,25 @@ exports.authRouter.post("/login",
         res.status(401).json(user);
     }
 }));
+exports.authRouter.post("/logout", 
+// basicAuthorizationMiddleware,
+(req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshToken = req.cookies.refreshToken;
+    // const passwordInputData: string = req.body.password;
+    const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
+    if (userId) {
+        const result = yield jwtService_1.jwtService.addRefreshTokenToBlacklist(refreshToken);
+        res.sendStatus(204);
+    }
+    else {
+        res.status(401);
+    }
+}));
 exports.authRouter.post("/refresh-token", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("/refresh-token", req.cookies.refreshToken);
+    // console.log("/refresh-token", req.cookies.refreshToken);
     const refreshToken = req.cookies.refreshToken;
     const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
-    console.log("/refresh-token", userId);
+    // console.log("/refresh-token", userId);
     if (!userId) {
         res.sendStatus(401).json({ message: "Refresh token is missing" });
     }

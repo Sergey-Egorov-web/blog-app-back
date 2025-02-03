@@ -28,3 +28,7 @@ export type PaginatorCommentViewModel = {
   totalCount: number;
   items: CommentViewModel[];
 };
+
+export type blackListRefreshTokenDbType = {
+  tokens: string[];
+};

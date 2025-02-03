@@ -123,6 +123,7 @@ export type meViewModel = {
   userId: string;
 };
 
+export type blackListRefreshTokenDbType = { tokens: string[] };
 // export interface CustomRequest extends Request {
 //   userId?: string; // Добавляем свойство userId
 // }
