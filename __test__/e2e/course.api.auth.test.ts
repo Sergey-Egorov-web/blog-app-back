@@ -133,4 +133,26 @@ describe("/", () => {
     });
   });
   //_____________________________________________________________________________
+  // it("POST AUTH/refresh-token should return accessToken  and refreshToken ", async () => {
+  //   //
+  //   const password: string = "string123";
+  //   const user: UserDbType = await helperCreateUser(
+  //     "gxPy1H8t77",
+  //     password,
+  //     "exa@exam7.com"
+  //   );
+
+  //   //
+  //   //
+  //   const responseToken: Response = await request(app)
+  //     .post("/auth/login")
+
+  //     .send({
+  //       loginOrEmail: user.login,
+  //       password: 1256718,
+  //     })
+
+  //     .expect(401);
+  //   //
+  // });
 });

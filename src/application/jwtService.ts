@@ -59,7 +59,7 @@ export const jwtService = {
       // console.log("jwtService userId", result.userId);
       return result;
     } catch (error) {
-      return null;
+      return false;
     }
   },
 };

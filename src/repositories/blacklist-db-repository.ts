@@ -29,15 +29,14 @@ export const blacklistDbRepository = {
     newRefreshToken: string
   ): Promise<boolean> {
     try {
-      // Проверяем, существует ли уже документ с массивом токенов
       const result: blackListRefreshTokenDbType | null =
         await blackListRefreshTokenCollection.findOne({
           tokens: newRefreshToken,
         });
-      // Добавляем новую строку в массив токенов, если токен не существует
+
       if (result) {
         return true;
-      } // Возвращаем true, если токен не существует в черном списке
+      }
       return false;
     } catch (error) {
       console.error("Ошибка добавления нового refresh токена:", error);

@@ -61,6 +61,14 @@ authRouter.post(
       res.sendStatus(401);
     }
 
+    const checkRefreshToken = await jwtService.checkRefreshTokenIntoBlacklist(
+      refreshToken
+    );
+
+    if (checkRefreshToken === true) {
+      res.sendStatus(401);
+    }
+
     const userId: string = await jwtService.getUserIdByRefreshToken(
       refreshToken
     );
@@ -76,6 +84,15 @@ authRouter.post(
 authRouter.post("/refresh-token", async (req: Request, res: Response) => {
   // console.log("/refresh-token", req.cookies.refreshToken);
   const refreshToken = req.cookies.refreshToken;
+
+  const checkRefreshToken = await jwtService.checkRefreshTokenIntoBlacklist(
+    refreshToken
+  );
+
+  if (checkRefreshToken === true) {
+    res.sendStatus(401);
+  }
+
   const userId: string = await jwtService.getUserIdByRefreshToken(refreshToken);
   // console.log("/refresh-token", userId);
 

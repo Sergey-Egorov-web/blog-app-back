@@ -51,6 +51,10 @@ exports.authRouter.post("/logout",
     if (!refreshToken) {
         res.sendStatus(401);
     }
+    const checkRefreshToken = yield jwtService_1.jwtService.checkRefreshTokenIntoBlacklist(refreshToken);
+    if (checkRefreshToken === true) {
+        res.sendStatus(401);
+    }
     const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
     if (userId) {
         const result = yield jwtService_1.jwtService.addRefreshTokenToBlacklist(refreshToken);
@@ -63,6 +67,10 @@ exports.authRouter.post("/logout",
 exports.authRouter.post("/refresh-token", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("/refresh-token", req.cookies.refreshToken);
     const refreshToken = req.cookies.refreshToken;
+    const checkRefreshToken = yield jwtService_1.jwtService.checkRefreshTokenIntoBlacklist(refreshToken);
+    if (checkRefreshToken === true) {
+        res.sendStatus(401);
+    }
     const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
     // console.log("/refresh-token", userId);
     if (!userId) {
