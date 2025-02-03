@@ -48,14 +48,16 @@ exports.authRouter.post("/logout",
 // basicAuthorizationMiddleware,
 (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshToken = req.cookies.refreshToken;
-    // const passwordInputData: string = req.body.password;
+    if (!refreshToken) {
+        res.sendStatus(401);
+    }
     const userId = yield jwtService_1.jwtService.getUserIdByRefreshToken(refreshToken);
     if (userId) {
         const result = yield jwtService_1.jwtService.addRefreshTokenToBlacklist(refreshToken);
         res.sendStatus(204);
     }
     else {
-        res.status(401);
+        res.sendStatus(401);
     }
 }));
 exports.authRouter.post("/refresh-token", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

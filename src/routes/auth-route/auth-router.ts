@@ -56,7 +56,10 @@ authRouter.post(
 
   async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;
-    // const passwordInputData: string = req.body.password;
+
+    if (!refreshToken) {
+      res.sendStatus(401);
+    }
 
     const userId: string = await jwtService.getUserIdByRefreshToken(
       refreshToken
@@ -66,7 +69,7 @@ authRouter.post(
       const result = await jwtService.addRefreshTokenToBlacklist(refreshToken);
       res.sendStatus(204);
     } else {
-      res.status(401);
+      res.sendStatus(401);
     }
   }
 );
