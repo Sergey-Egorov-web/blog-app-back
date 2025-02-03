@@ -74,6 +74,7 @@ authRouter.post(
     );
 
     if (userId) {
+      await jwtService.addRefreshTokenToBlacklist(refreshToken);
       const result = await jwtService.addRefreshTokenToBlacklist(refreshToken);
       res.sendStatus(204);
     } else {
@@ -104,6 +105,8 @@ authRouter.post("/refresh-token", async (req: Request, res: Response) => {
   //
   const newRefreshToken = await jwtService.createRefreshTokenJWT(userId);
   //
+
+  await jwtService.addRefreshTokenToBlacklist(refreshToken);
   res.cookie("refreshToken", newRefreshToken, {
     httpOnly: true,
     secure: true,
