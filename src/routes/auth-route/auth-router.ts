@@ -21,26 +21,28 @@ export const authRouter = Router({});
 
 authRouter.post(
   "/login",
-  // basicAuthorizationMiddleware,
-
   userLoginOrEmailValidation(),
   userPasswordValidation(),
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
     try {
       const loginInputData: LoginInputModel = req.body;
-
+      // console.log("authRouter/login1", loginInputData);
       const user: UserViewModel | APIError = await usersService.checkUser(
         loginInputData
       );
+      // console.log("authRouter/login2", user);
       if (!user) {
         res.sendStatus(401);
+        return;
       }
       if ("id" in user) {
         //
         const accessToken = await jwtService.createAccessTokenJWT(user.id);
         //
+        // console.log("authRouter/login3", accessToken);
         const refreshToken = await jwtService.createRefreshTokenJWT(user.id);
+        // console.log("authRouter/login4", refreshToken);
         //
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
@@ -64,6 +66,7 @@ authRouter.post(
 
     if (!refreshToken) {
       res.sendStatus(401);
+      return;
     }
 
     const checkRefreshToken = await jwtService.checkRefreshTokenIntoBlacklist(
@@ -72,6 +75,15 @@ authRouter.post(
 
     if (checkRefreshToken === true) {
       res.sendStatus(401);
+      return;
+    }
+
+    const decoded = await jwtService.verifyRefreshToken(refreshToken);
+    console.log("authRouter-logout1", decoded);
+    if (decoded == null) {
+      // res.sendStatus(401).json({ message: "Invalid or expired refresh token" });
+      res.sendStatus(401);
+      return;
     }
 
     const userId: string = await jwtService.getUserIdByRefreshToken(
@@ -89,28 +101,43 @@ authRouter.post(
 authRouter.post("/refresh-token", async (req: Request, res: Response) => {
   // console.log("/refresh-token", req.cookies.refreshToken);
   const refreshToken = req.cookies.refreshToken;
-
+  // console.log("authRouter/refresh-token1", refreshToken);
   const checkRefreshToken = await jwtService.checkRefreshTokenIntoBlacklist(
     refreshToken
   );
+  // console.log("authRouter/refresh-token2", checkRefreshToken);
 
   if (checkRefreshToken === true) {
     res.sendStatus(401);
+    return;
+  }
+
+  const decoded = await jwtService.verifyRefreshToken(refreshToken);
+  console.log("authRouter-refresh-token2", decoded);
+  if (decoded == null) {
+    // res.status(401).json({ message: "Invalid or expired refresh token" });
+
+    res.sendStatus(401);
+    return;
   }
 
   const userId: string = await jwtService.getUserIdByRefreshToken(refreshToken);
   // console.log("/refresh-token", userId);
-
+  // console.log("authRouter/refresh-token3", userId);
   if (!userId) {
-    res.sendStatus(401).json({ message: "Refresh token is missing" });
+    res.status(401).json({ message: "Refresh token is missing" });
+    return;
+    // res.sendStatus(401);
   }
   //
   const newAccessToken = await jwtService.createAccessTokenJWT(userId);
   //
+  // console.log("authRouter/refresh-token4", newAccessToken);
   const newRefreshToken = await jwtService.createRefreshTokenJWT(userId);
   //
-
+  // console.log("authRouter/refresh-token5", newRefreshToken);
   const result = await jwtService.addRefreshTokenToBlacklist(refreshToken);
+  // console.log("authRouter/refresh-token6", result);
   res.cookie("refreshToken", newRefreshToken, {
     httpOnly: true,
     secure: true,

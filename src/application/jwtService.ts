@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload, TokenExpiredError } from "jsonwebtoken";
 
 import "dotenv/config";
 import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from "../configuration";
@@ -57,10 +57,21 @@ export const jwtService = {
   },
   async getUserIdByRefreshToken(token: string) {
     try {
+      console.log("jwtService11 userId", token);
       const result: any = jwt.verify(token, JWT_REFRESH_SECRET);
-      // console.log("jwtService userId", result.userId);
+      console.log("jwtService1 userId", result.userId);
       return result.userId;
     } catch (error) {
+      // if (error instanceof TokenExpiredError) {
+      //   // Если токен истек
+      //   return res.status(401).json({ message: "Refresh token expired" });
+      // }
+      // else {
+      //   // Другие ошибки (например, неверная подпись)
+      //   console.error("Error verifying refresh token:", error);
+      //   return res.status(401).json({ message: "Invalid refresh token" });
+      // }
+      console.log("jwtService2 userId", error);
       return null;
     }
   },
@@ -86,6 +97,19 @@ export const jwtService = {
       return result;
     } catch (error) {
       return false;
+    }
+  },
+  async verifyRefreshToken(token: string): Promise<JwtPayload | null> {
+    try {
+      const decoded = jwt.verify(token, JWT_REFRESH_SECRET) as JwtPayload;
+      return decoded;
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        console.error("Refresh token expired:", error);
+      } else {
+        console.error("Error verifying refresh token:", error);
+      }
+      return null;
     }
   },
 };
