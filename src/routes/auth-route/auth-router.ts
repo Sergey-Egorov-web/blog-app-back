@@ -79,9 +79,7 @@ authRouter.post(
     }
 
     const decoded = await jwtService.verifyRefreshToken(refreshToken);
-    console.log("authRouter-logout1", decoded);
-    if (decoded == null) {
-      // res.sendStatus(401).json({ message: "Invalid or expired refresh token" });
+    if (decoded === null) {
       res.sendStatus(401);
       return;
     }

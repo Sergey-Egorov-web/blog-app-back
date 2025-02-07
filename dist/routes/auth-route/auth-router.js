@@ -68,9 +68,7 @@ exports.authRouter.post("/logout",
         return;
     }
     const decoded = yield jwtService_1.jwtService.verifyRefreshToken(refreshToken);
-    console.log("authRouter-logout1", decoded);
-    if (decoded == null) {
-        // res.sendStatus(401).json({ message: "Invalid or expired refresh token" });
+    if (decoded === null) {
         res.sendStatus(401);
         return;
     }
