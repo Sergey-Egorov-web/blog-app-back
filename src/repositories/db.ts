@@ -3,6 +3,7 @@ import {
   blackListRefreshTokenDbType,
   BlogDbType,
   PostOutputType,
+  sessionsCollectionDbType,
   UserDbType,
 } from "../types/types";
 
@@ -37,6 +38,9 @@ export const commentCollection = client
 export const blackListRefreshTokenCollection = client
   .db("BloggerPlatform")
   .collection<blackListRefreshTokenDbType>("blackList");
+export const sessionsCollection = client
+  .db("BloggerPlatform")
+  .collection<sessionsCollectionDbType>("sessions");
 
 export async function runDB() {
   try {

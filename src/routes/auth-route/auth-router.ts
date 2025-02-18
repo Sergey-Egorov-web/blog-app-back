@@ -16,6 +16,7 @@ import { jwtAuthorizationMiddleware } from "../../middlewares/jwt-authorization-
 import { authService } from "../../domains/auth-service";
 import { userEmailValidation } from "../../middlewares/user-validation/user-email-validation";
 import { userLoginValidation } from "../../middlewares/user-validation/user-login-validation";
+import { sessionsService } from "../../application/sessions-service";
 
 export const authRouter = Router({});
 
@@ -27,6 +28,10 @@ authRouter.post(
   async (req: Request, res: Response) => {
     try {
       const loginInputData: LoginInputModel = req.body;
+      const ip: string = req.ip ? req.ip : "1"; // Если req.ip существует, используем его, иначе "1"
+      const title = req.headers["user-agent"]
+        ? req.headers["user-agent"]
+        : "title undefined";
       // console.log("authRouter/login1", loginInputData);
       const user: UserViewModel | APIError = await usersService.checkUser(
         loginInputData
@@ -42,8 +47,15 @@ authRouter.post(
         //
         // console.log("authRouter/login3", accessToken);
         const refreshToken = await jwtService.createRefreshTokenJWT(user.id);
+        // const decodedRefreshToken = jwt.verify(refreshToken, secretKey);
         // console.log("authRouter/login4", refreshToken);
         //
+
+        const session = await jwtService.createNewSession(
+          refreshToken,
+          ip,
+          title
+        );
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
@@ -84,7 +96,7 @@ authRouter.post(
       return;
     }
 
-    const userId: string = await jwtService.getUserIdByRefreshToken(
+    const userId: string | null = await jwtService.getUserIdByRefreshToken(
       refreshToken
     );
 
@@ -119,7 +131,9 @@ authRouter.post("/refresh-token", async (req: Request, res: Response) => {
     return;
   }
 
-  const userId: string = await jwtService.getUserIdByRefreshToken(refreshToken);
+  const userId: string | null = await jwtService.getUserIdByRefreshToken(
+    refreshToken
+  );
   // console.log("/refresh-token", userId);
   // console.log("authRouter/refresh-token3", userId);
   if (!userId) {

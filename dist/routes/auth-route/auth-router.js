@@ -25,6 +25,10 @@ exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", (0, user_login_or_email_validation_1.userLoginOrEmailValidation)(), (0, user_password_validation_1.userPasswordValidation)(), input_validation_middleware_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const loginInputData = req.body;
+        const ip = req.ip ? req.ip : "1"; // Если req.ip существует, используем его, иначе "1"
+        const title = req.headers["user-agent"]
+            ? req.headers["user-agent"]
+            : "title undefined";
         // console.log("authRouter/login1", loginInputData);
         const user = yield users_service_1.usersService.checkUser(loginInputData);
         // console.log("authRouter/login2", user);
@@ -38,8 +42,10 @@ exports.authRouter.post("/login", (0, user_login_or_email_validation_1.userLogin
             //
             // console.log("authRouter/login3", accessToken);
             const refreshToken = yield jwtService_1.jwtService.createRefreshTokenJWT(user.id);
+            // const decodedRefreshToken = jwt.verify(refreshToken, secretKey);
             // console.log("authRouter/login4", refreshToken);
             //
+            const session = yield jwtService_1.jwtService.createNewSession(refreshToken, ip, title);
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: true,

@@ -23,15 +23,6 @@ export const blogsRepository = {
   },
 
   async addNewBlog(newBlog: BlogDbType): Promise<BlogOutputType | null> {
-    // const newBlog = {
-    //   id: Date.now().toString(),
-    //   name: blog.name,
-    //   description: blog.description,
-    //   websiteUrl: blog.websiteUrl,
-    //   createdAt: new Date().toISOString(),
-    //   isMembership: false,
-    // };
-
     await blogCollection.insertOne(newBlog);
 
     // return newBlog;

@@ -4,6 +4,9 @@ import "dotenv/config";
 import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from "../configuration";
 import { expireTimeAccessToken, expireTimeRefreshToken } from "../constant";
 import { blacklistDbRepository } from "../repositories/blacklist-db-repository";
+import { v4 as uuidv4 } from "uuid";
+import { sessionsCollectionDbType } from "../types/types";
+import { sessionDbRepository } from "../repositories/session-db-repository";
 
 export const jwtService = {
   async createAccessTokenJWT(id: string): Promise<string> {
@@ -20,32 +23,6 @@ export const jwtService = {
     return refreshToken;
   },
 
-  //_____________________________________________________________________________
-
-  // async createAccessTokenJWT(userId: string): Promise<string> {
-  //   try {
-  //     const token = jwt.sign({ userId }, JWT_ACCESS_SECRET, {
-  //       expiresIn: expireTimeAccessToken,
-  //     });
-  //     return token;
-  //   } catch (error) {
-  //     console.error("Error creating access token:", error);
-  //     throw error; // Пробрасываем ошибку дальше
-  //   }
-  // },
-
-  // async createRefreshTokenJWT(userId: string): Promise<string> {
-  //   try {
-  //     const token = jwt.sign({ userId }, JWT_REFRESH_SECRET, {
-  //       expiresIn: expireTimeRefreshToken,
-  //     });
-  //     return token;
-  //   } catch (error) {
-  //     console.error("Error creating refresh token:", error);
-  //     throw error; // Пробрасываем ошибку дальше
-  //   }
-  // },
-  //________________________________________________________________________________________
   async getUserIdByAccessToken(token: string) {
     try {
       const result: any = jwt.verify(token, JWT_ACCESS_SECRET);
@@ -55,11 +32,11 @@ export const jwtService = {
       return null;
     }
   },
-  async getUserIdByRefreshToken(token: string) {
+  async getUserIdByRefreshToken(token: string): Promise<string | null> {
     try {
-      console.log("jwtService11 userId", token);
+      // console.log("jwtService11 userId", token);
       const result: any = jwt.verify(token, JWT_REFRESH_SECRET);
-      console.log("jwtService1 userId", result.userId);
+      // console.log("jwtService1 userId", result.userId);
       return result.userId;
     } catch (error) {
       // if (error instanceof TokenExpiredError) {
@@ -71,7 +48,7 @@ export const jwtService = {
       //   console.error("Error verifying refresh token:", error);
       //   return res.status(401).json({ message: "Invalid refresh token" });
       // }
-      console.log("jwtService2 userId", error);
+      // console.log("jwtService2 userId", error);
       return null;
     }
   },
@@ -110,6 +87,35 @@ export const jwtService = {
         console.error("Error verifying refresh token:", error);
       }
       return null;
+    }
+  },
+
+  async createNewSession(refreshToken: string, newIp: string, title: string) {
+    const newDeviceId: string = uuidv4();
+    // const userId: string | null = await this.getUserIdByRefreshToken(
+    //   refreshToken
+    const decoded: JwtPayload = jwt.verify(
+      refreshToken,
+      JWT_REFRESH_SECRET
+    ) as JwtPayload;
+
+    let newSession: sessionsCollectionDbType;
+
+    try {
+      if (decoded && decoded.iat !== undefined && decoded.exp !== undefined) {
+        newSession = {
+          sessionId: uuidv4(),
+          deviceId: newDeviceId,
+          userId: decoded.userId,
+          issuedAt: new Date(decoded.iat * 1000),
+          deviceName: title,
+          ip: newIp,
+          expirationDate: new Date(decoded.exp * 1000),
+        };
+        const result = sessionDbRepository.addNewSession(newSession);
+      }
+    } catch (error) {
+      console.error("Can't create new session:", error);
     }
   },
 };

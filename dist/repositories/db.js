@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blackListRefreshTokenCollection = exports.commentCollection = exports.userCollection = exports.blogCollection = exports.postCollection = void 0;
+exports.sessionsCollection = exports.blackListRefreshTokenCollection = exports.commentCollection = exports.userCollection = exports.blogCollection = exports.postCollection = void 0;
 exports.runDB = runDB;
 const mongodb_1 = require("mongodb");
 require("dotenv/config");
@@ -34,6 +34,9 @@ exports.commentCollection = client
 exports.blackListRefreshTokenCollection = client
     .db("BloggerPlatform")
     .collection("blackList");
+exports.sessionsCollection = client
+    .db("BloggerPlatform")
+    .collection("sessions");
 function runDB() {
     return __awaiter(this, void 0, void 0, function* () {
         try {

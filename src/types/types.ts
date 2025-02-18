@@ -127,3 +127,19 @@ export type blackListRefreshTokenDbType = { tokens: string[] };
 // export interface CustomRequest extends Request {
 //   userId?: string; // Добавляем свойство userId
 // }
+
+export type sessionsCollectionDbType = {
+  sessionId: string;
+  deviceId: string;
+  userId: string;
+  issuedAt: Date;
+  deviceName: string;
+  ip: string;
+  expirationDate: Date;
+};
+
+export enum createEntity {
+  create = "Create",
+  alreadyExists = "alreadyExists",
+  mistake = "mistake",
+}

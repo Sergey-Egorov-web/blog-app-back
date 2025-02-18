@@ -36,14 +36,6 @@ exports.blogsRepository = {
     },
     addNewBlog(newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const newBlog = {
-            //   id: Date.now().toString(),
-            //   name: blog.name,
-            //   description: blog.description,
-            //   websiteUrl: blog.websiteUrl,
-            //   createdAt: new Date().toISOString(),
-            //   isMembership: false,
-            // };
             yield db_1.blogCollection.insertOne(newBlog);
             // return newBlog;
             const result = yield db_1.blogCollection.findOne({
