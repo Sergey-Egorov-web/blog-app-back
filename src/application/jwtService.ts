@@ -118,4 +118,13 @@ export const jwtService = {
       console.error("Can't create new session:", error);
     }
   },
+  async deleteSessionById(id: string): Promise<boolean> {
+    const result = await sessionDbRepository.deleteSessionById(id);
+    console.log("JWTService-deleteSessionById", result);
+    if (result === true) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };

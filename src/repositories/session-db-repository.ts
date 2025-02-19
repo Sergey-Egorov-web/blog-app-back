@@ -19,4 +19,13 @@ export const sessionDbRepository = {
       return createEntity.mistake;
     }
   },
+  async deleteSessionById(id: string): Promise<boolean> {
+    const result = await sessionsCollection.deleteOne({ sessionId: id });
+    console.log("SessionDbRepository", result);
+    if (result.deletedCount === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };
