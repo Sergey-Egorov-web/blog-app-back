@@ -8,7 +8,7 @@ export const jwtAuthorizationMiddleware = async (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-
+  // console.log("jwtAuthorizationMiddleware", authHeader);
   if (!authHeader) {
     res.sendStatus(401);
   } else {

@@ -107,10 +107,10 @@ export const jwtService = {
           sessionId: uuidv4(),
           deviceId: newDeviceId,
           userId: decoded.userId,
-          issuedAt: new Date(decoded.iat * 1000),
+          issuedAt: decoded.iat.toString(),
           deviceName: title,
           ip: newIp,
-          expirationDate: new Date(decoded.exp * 1000),
+          expirationDate: decoded.exp.toString(),
         };
         const result = sessionDbRepository.addNewSession(newSession);
       }

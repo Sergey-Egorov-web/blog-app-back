@@ -16,7 +16,6 @@ import { jwtAuthorizationMiddleware } from "../../middlewares/jwt-authorization-
 import { authService } from "../../domains/auth-service";
 import { userEmailValidation } from "../../middlewares/user-validation/user-email-validation";
 import { userLoginValidation } from "../../middlewares/user-validation/user-login-validation";
-import { sessionsService } from "../../application/sessions-service";
 
 export const authRouter = Router({});
 

@@ -132,10 +132,17 @@ export type sessionsCollectionDbType = {
   sessionId: string;
   deviceId: string;
   userId: string;
-  issuedAt: Date;
+  issuedAt: string;
   deviceName: string;
   ip: string;
-  expirationDate: Date;
+  expirationDate: string;
+};
+
+export type DeviceViewModel = {
+  ip: string;
+  title: string;
+  lastActivateDate: string;
+  deviceId: string;
 };
 
 export enum createEntity {

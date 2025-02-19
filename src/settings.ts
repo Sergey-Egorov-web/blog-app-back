@@ -8,6 +8,7 @@ import { usersRouter } from "./routes/users-route/users-route";
 import { commentsRouter } from "./routes/comments-route/comments-route";
 import { emailRouter } from "./routes/email-route/email-router";
 import cookieParser from "cookie-parser";
+import { securityRouter } from "./routes/security-route/security-route";
 
 // import bodyParser from "body-parser";
 
@@ -22,6 +23,7 @@ app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/comments", commentsRouter);
 app.use("/email", emailRouter);
+app.use("/security", securityRouter);
 app.use("/testing/all-data", testingRouter);
 
 app.get("/", (req: Request, res: Response) => {
