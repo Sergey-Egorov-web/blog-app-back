@@ -27,10 +27,10 @@ securityRouter.delete(
   //   basicAuthorizationMiddleware,
   async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    console.log("securityRouter/devices/:id", id);
+    // console.log("securityRouter/devices/:id", id);
     const refreshToken = req.cookies.refreshToken;
     const answer = await jwtService.deleteSessionById(id);
-    console.log("securityRouter/devices/:id", answer);
+    // console.log("securityRouter/devices/:id", answer);
     if (answer === true) {
       res.sendStatus(204);
     } else {
