@@ -11,9 +11,11 @@ securityRouter.get(
 
   async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;
+    console.log("securityRouter/devices", refreshToken);
     const userId: string | null = await jwtService.getUserIdByRefreshToken(
       refreshToken
     );
+    console.log("securityRouter/devices/userId", userId);
     if (userId) {
       const sessions: DeviceViewModel[] | null =
         await sessionQueryRepository.findAllSessionsByUserId(userId);
